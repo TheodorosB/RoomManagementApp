@@ -4,38 +4,44 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.runtime.Composable
+import androidx.compose.foundation.background
+import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import dagger.hilt.android.AndroidEntryPoint
+import net.arx.roommanagementapp.ui.dashboard.navigation.DashboardNavDisplay
+import net.arx.roommanagementapp.ui.theme.ColorBlueBackgroundColor
 import net.arx.roommanagementapp.ui.theme.RoomManagementAppTheme
-import kotlin.getValue
 
 @AndroidEntryPoint
 class AppActivity : ComponentActivity() {
 
-    private val viewModel: AppViewModel by viewModels()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        hideSystemBars()
         setContent {
             RoomManagementAppTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
+                Surface(
+                    modifier = Modifier.background(
+                        color = ColorBlueBackgroundColor
                     )
+                ) {
+                    DashboardNavDisplay()
                 }
             }
         }
     }
-}
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
+    private fun hideSystemBars() {
+        WindowCompat.setDecorFitsSystemWindows(window, false)
 
+        WindowInsetsControllerCompat(window, window.decorView).let { controller ->
+            controller.hide(WindowInsetsCompat.Type.statusBars())
+            controller.systemBarsBehavior =
+                WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        }
+    }
 }
