@@ -1,5 +1,6 @@
 package net.arx.roommanagementapp.ui.dashboard.navigation
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
@@ -16,6 +17,7 @@ import net.arx.roommanagementapp.ui.admin.composable.AdminScreen
 import net.arx.roommanagementapp.ui.cleaner.composable.CleanerScreen
 import net.arx.roommanagementapp.ui.dashboard.model.DashboardNavEntries
 import net.arx.roommanagementapp.ui.dashboard.viewmodel.DashboardViewModel
+import net.arx.roommanagementapp.ui.theme.ColorBaseBackground
 
 @Composable
 fun DashboardNavDisplay(
@@ -29,6 +31,7 @@ fun DashboardNavDisplay(
             .fillMaxSize()
             .statusBarsPadding()
             .navigationBarsPadding()
+            .background(color = ColorBaseBackground)
             .padding(horizontal = 8.dp),
         backStack = uiState.value.backstackEntries,
         contentAlignment = Alignment.Center,

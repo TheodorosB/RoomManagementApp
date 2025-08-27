@@ -11,4 +11,5 @@ val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
 
 // Dashboard
-val ColorBlueBackgroundColor = Color(0xFF434E57)
+val ColorBaseBackground = Color(0xFFECF0F8)
+val ColorBaseGrey = Color(0xFFABABB6)

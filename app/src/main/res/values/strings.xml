@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Room Management App</string>
+
+    !-- Admin -->
+    <string name="add_cleaner_title">Προσθήκη Καθαριστή</string>
+    <string name="add_cleaner_dialog_label">Όνομα Καθαριστή</string>
+    <string name="add_cleaner_dialog_confirm">Προσθήκη</string>
+    <string name="add_cleaner_dialog_cancel">Ακύρωση</string>
 </resources>

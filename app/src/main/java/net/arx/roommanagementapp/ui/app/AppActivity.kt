@@ -4,15 +4,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.background
-import androidx.compose.material3.Surface
-import androidx.compose.ui.Modifier
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import dagger.hilt.android.AndroidEntryPoint
 import net.arx.roommanagementapp.ui.dashboard.navigation.DashboardNavDisplay
-import net.arx.roommanagementapp.ui.theme.ColorBlueBackgroundColor
 import net.arx.roommanagementapp.ui.theme.RoomManagementAppTheme
 
 @AndroidEntryPoint
@@ -24,13 +20,7 @@ class AppActivity : ComponentActivity() {
         hideSystemBars()
         setContent {
             RoomManagementAppTheme {
-                Surface(
-                    modifier = Modifier.background(
-                        color = ColorBlueBackgroundColor
-                    )
-                ) {
-                    DashboardNavDisplay()
-                }
+                DashboardNavDisplay()
             }
         }
     }
