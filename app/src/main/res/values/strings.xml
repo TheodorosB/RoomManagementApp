@@ -3,7 +3,26 @@
 
     !-- Admin -->
     <string name="add_cleaner_title">Προσθήκη Καθαριστή</string>
+    <string name="add_room_title">Προσθήκη Δωματίου</string>
     <string name="add_cleaner_dialog_label">Όνομα Καθαριστή</string>
-    <string name="add_cleaner_dialog_confirm">Προσθήκη</string>
-    <string name="add_cleaner_dialog_cancel">Ακύρωση</string>
+
+    <!-- Dialog -->
+    <string name="dialog_form_confirm_button">Προσθήκη</string>
+    <string name="dialog_form_cancel_button">Ακύρωση</string>
+
+    <!-- Cleaner Dialog Form -->
+    <string name="dialog_form_cleaner_field">Καθαριστής</string>
+
+    <!-- Room Dialog Form -->
+    <string name="dialog_form_room_field">Αριθμός Δωματίου</string>
+    <string name="room_general_status">Γενικός</string>
+    <string name="room_regular_status">Ήπιος</string>
+    <string name="room_clean_status">Καθαρό</string>
+
+    <!-- Cleaning Tasks -->
+    <string name="cleaning_tasks_mopping_title">Σφουγγάρισμα</string>"
+    <string name="cleaning_tasks_sweeping_title">Σκούπισμα</string>"
+    <string name="cleaning_tasks_disposables_title">Αναλώσιμα</string>"
+    <string name="cleaning_tasks_bedding_title">Σεντόνια</string>"
+    <string name="cleaning_tasks_garbages_title">Σπουδίπια</string>"
 </resources>
