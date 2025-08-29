@@ -1,10 +1,13 @@
 <resources>
     <string name="app_name">Room Management App</string>
 
-    !-- Admin -->
+    !-- Admin Screen -->
     <string name="add_cleaner_title">Προσθήκη Καθαριστή</string>
     <string name="add_room_title">Προσθήκη Δωματίου</string>
     <string name="add_cleaner_dialog_label">Όνομα Καθαριστή</string>
+    
+    <!-- Cleaner Screen -->
+    <string name="cleaner_screen_tasks">Οι εργασίες που πρέπει να γίνουν σήμερα:</string>
 
     <!-- Dialog -->
     <string name="dialog_form_confirm_button">Προσθήκη</string>
@@ -24,5 +27,5 @@
     <string name="cleaning_tasks_sweeping_title">Σκούπισμα</string>"
     <string name="cleaning_tasks_disposables_title">Αναλώσιμα</string>"
     <string name="cleaning_tasks_bedding_title">Σεντόνια</string>"
-    <string name="cleaning_tasks_garbages_title">Σπουδίπια</string>"
+    <string name="cleaning_tasks_garbages_title">Σκουπίδια</string>"
 </resources>

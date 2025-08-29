@@ -8,13 +8,8 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import net.arx.roommanagementapp.R
 import net.arx.roommanagementapp.ui.cleaner.model.CleanerUiItem
 import net.arx.roommanagementapp.ui.room.model.RoomUiItem
-import net.arx.roommanagementapp.util.ext.formatDate
-import java.util.Calendar
 
 data class AdminUiState(
-    val onPinPanelIconClicked: () -> Unit,
-    val onHomeScreenClicked: () -> Unit,
-    val date: MutableState<String> = mutableStateOf(Calendar.getInstance().formatDate()),
     val cleaners: SnapshotStateList<CleanerUiItem> = mutableStateListOf(),
     val rooms: SnapshotStateList<RoomUiItem> = mutableStateListOf(),
     val onAddNewCleanerClicked: () -> Unit,
@@ -24,19 +19,7 @@ data class AdminUiState(
     val openDialogForm: MutableState<Boolean?> = mutableStateOf(null),
     val formUiItem: MutableState<DialogFormUiItem> = mutableStateOf(DialogFormUiItem.Cleaner()),
     val onCloseAlertDialog: () -> Unit,
-) {
-    private val calendar = Calendar.getInstance()
-
-    fun onPreviousDateClicked() {
-        calendar.add(Calendar.DAY_OF_MONTH, -1)
-        date.value = calendar.formatDate()
-    }
-
-    fun onNextDateClicked() {
-        calendar.add(Calendar.DAY_OF_MONTH, 1)
-        date.value = calendar.formatDate()
-    }
-}
+)
 
 sealed class DialogFormUiItem(
     val fields: List<FieldUiItem>,

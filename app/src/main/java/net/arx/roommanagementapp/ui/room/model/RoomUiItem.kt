@@ -8,6 +8,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.style.TextDecoration
 import net.arx.roommanagementapp.R
 import net.arx.roommanagementapp.ui.cleaner.model.CleanerUiItem
 import net.arx.roommanagementapp.ui.theme.ColorRoomCleanedStatus
@@ -16,7 +17,8 @@ import net.arx.roommanagementapp.ui.theme.ColorRoomRegularStatus
 
 data class RoomUiItem(
     val name: String,
-    val cleaner: CleanerUiItem,
+    val isAdmin: Boolean,
+    val cleaner: CleanerUiItem = CleanerUiItem(),
     val statusIcon: ImageVector = Icons.Outlined.CheckCircle,
     val status: MutableState<RoomCleaningStatus> = mutableStateOf(RoomCleaningStatus.Cleaned())
 ) {
@@ -27,8 +29,11 @@ data class RoomUiItem(
                 .all { it.isDone.value } && status.value !is RoomCleaningStatus.Cleaned
         }
 
+    val statusIsVisible: Boolean
+        get() = status.value !is RoomCleaningStatus.Cleaned && isAdmin
+
     val statusColor: Color
-        get() = if(isCleaned) Color.Green else Color.Gray
+        get() = if(isCleaned) Color.Green else Color.Gray.copy(alpha = 0.2f)
 }
 
 sealed class RoomCleaningStatus(
@@ -60,6 +65,13 @@ data class CleaningTask(
     val isDone: MutableState<Boolean> = mutableStateOf(false),
     val isRequired: Boolean = true
 ) {
+
+    val textDecoration: TextDecoration
+        get() = if(isDone.value) TextDecoration.LineThrough else TextDecoration.None
+
+    fun onTaskClicked() {
+        isDone.value = !isDone.value
+    }
     companion object {
         fun allTasks(requiredCount: Int, allDone: Boolean = false): List<CleaningTask> {
             val baseTasks = listOf(

@@ -20,8 +20,6 @@ class AdminViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow(
         AdminUiState(
-            onPinPanelIconClicked = { onPinPanelIconClicked() },
-            onHomeScreenClicked = { onHomeScreenClicked() },
             onSubmitFormClicked = { onSubmitFormClicked() },
             onCleanerClicked = { onCleanerClicked() },
             onCloseAlertDialog = { closeDialogForm() },
@@ -33,14 +31,6 @@ class AdminViewModel @Inject constructor(
 
     init {
         _uiState.value.cleaners.addAll(cleanerUiMapper())
-    }
-
-    private fun onPinPanelIconClicked() {
-
-    }
-
-    private fun onHomeScreenClicked() {
-
     }
 
     private fun onCleanerClicked() {
@@ -63,7 +53,8 @@ class AdminViewModel @Inject constructor(
             is DialogFormUiItem.Room -> {
                 _uiState.value.rooms.add(
                     roomUiMapper(
-                        name = formUiItem.fields.first().text.value
+                        name = formUiItem.fields.first().text.value,
+                        isAdmin = true
                     )
                 )
             }

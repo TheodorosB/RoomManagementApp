@@ -1,10 +1,10 @@
 package net.arx.roommanagementapp.ui.dashboard.navigation
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -14,6 +14,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.ui.NavDisplay
 import net.arx.roommanagementapp.ui.admin.composable.AdminScreen
+import net.arx.roommanagementapp.ui.admin.composable.RoomManagementToolBar
 import net.arx.roommanagementapp.ui.cleaner.composable.CleanerScreen
 import net.arx.roommanagementapp.ui.dashboard.model.DashboardNavEntries
 import net.arx.roommanagementapp.ui.dashboard.viewmodel.DashboardViewModel
@@ -26,34 +27,44 @@ fun DashboardNavDisplay(
     val viewModel: DashboardViewModel = hiltViewModel()
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
 
-    NavDisplay(
+    Column(
         modifier = modifier
             .fillMaxSize()
-            .statusBarsPadding()
-            .navigationBarsPadding()
-            .background(color = ColorBaseBackground)
-            .padding(horizontal = 8.dp),
-        backStack = uiState.value.backstackEntries,
-        contentAlignment = Alignment.Center,
-        entryProvider = { key ->
-            when (key) {
-                DashboardNavEntries.Admin -> NavEntry(
-                    key = key,
-                    content = {
-                        AdminScreen(
-                            navigateToCleaner = uiState.value.onNavigateToCleanerClicked
-                        )
-                    }
-                )
-                DashboardNavEntries.Cleaner -> NavEntry(
-                    key = key,
-                    content = {
-                        CleanerScreen(
-                            navigateToAdmin = uiState.value.onNavigateToAdminClicked
-                        )
-                    }
-                )
+            .background(color = ColorBaseBackground),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(space = 8.dp, alignment = Alignment.Top)
+    ) {
+        RoomManagementToolBar(
+            date = uiState.value.date.value,
+            onPreviousDateClick = { uiState.value.onPreviousDateClicked() },
+            onNextDateClick = { uiState.value.onNextDateClicked() },
+            onPinPanelIconClicked = uiState.value.onNavigateToAdminClicked,
+            onUserIconClicked = uiState.value.onNavigateToCleanerClicked,
+            onHomeScreenClicked = {},
+        )
+
+        NavDisplay(
+            modifier = Modifier
+                .padding(horizontal = 8.dp),
+            backStack = uiState.value.backstackEntries,
+            contentAlignment = Alignment.Center,
+            entryProvider = { key ->
+                when (key) {
+                    DashboardNavEntries.Admin -> NavEntry(
+                        key = key,
+                        content = {
+                            AdminScreen()
+                        }
+                    )
+
+                    DashboardNavEntries.Cleaner -> NavEntry(
+                        key = key,
+                        content = {
+                            CleanerScreen()
+                        }
+                    )
+                }
             }
-        }
-    )
+        )
+    }
 }

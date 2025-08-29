@@ -11,6 +11,7 @@ class RoomUiMapper @Inject constructor() {
     operator fun invoke(
         name: String,
         cleaner: String = "",
+        isAdmin: Boolean,
         status: RoomCleaningStatus = RoomCleaningStatus.Cleaned()
     ): RoomUiItem {
         return RoomUiItem(
@@ -18,6 +19,7 @@ class RoomUiMapper @Inject constructor() {
             cleaner = CleanerUiItem(
                 name = name
             ),
+            isAdmin = isAdmin,
             status = mutableStateOf(status)
         )
     }

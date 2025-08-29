@@ -22,11 +22,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import net.arx.roommanagementapp.R
+import net.arx.roommanagementapp.ui.base.compose.ifable
 import net.arx.roommanagementapp.ui.cleaner.model.CleanerUiItem
 import net.arx.roommanagementapp.ui.theme.ColorBaseBackground
 
@@ -48,17 +48,14 @@ fun CleanersRow(
         items(cleaners, key = { it.name }) { cleaner ->
             CleanerItem(
                 modifier = Modifier.fillMaxWidth(0.2f),
-                name = cleaner.name,
-                icon = cleaner.icon,
-                onItemClicked = onCleanerClicked
+                cleaner = cleaner,
+                onCleanerClicked = onCleanerClicked
             )
         }
         item {
-            CleanerItem(
+            AddNewCleanerItem(
                 modifier = Modifier.fillMaxWidth(0.2f),
-                name = stringResource(R.string.add_cleaner_title),
-                icon = Icons.Outlined.Add,
-                onItemClicked = onAddNewCleanerClicked
+                onAddNewCleanerClicked = onAddNewCleanerClicked
             )
         }
     }
@@ -66,10 +63,48 @@ fun CleanersRow(
 
 @Composable
 fun CleanerItem(
-    name: String,
-    icon: ImageVector,
-    onItemClicked: () -> Unit,
-    modifier: Modifier = Modifier
+    cleaner: CleanerUiItem,
+    modifier: Modifier = Modifier,
+    onCleanerClicked: () -> Unit = {}
+) {
+    Row(
+        modifier = modifier
+            .shadow(
+                elevation = 5.dp,
+                shape = RoundedCornerShape(25.dp)
+            )
+            .border(
+                width = 3.dp,
+                color = Color.White,
+                shape = RoundedCornerShape(25.dp)
+            )
+            .clip(shape = RoundedCornerShape(25.dp))
+            .background(cleaner.backgroundColor)
+            .ifable(condition = cleaner.isClickable) {
+                clickable {
+                    onCleanerClicked()
+                }
+            }
+            .padding(all = 12.dp),
+        horizontalArrangement = Arrangement.spacedBy(space = 6.dp, alignment = Alignment.CenterHorizontally),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            modifier = Modifier.size(60.dp),
+            imageVector = cleaner.icon,
+            contentDescription = null
+        )
+        Text(
+            text = cleaner.name,
+            fontSize = 30.sp,
+        )
+    }
+}
+
+@Composable
+fun AddNewCleanerItem(
+    modifier: Modifier = Modifier,
+    onAddNewCleanerClicked: () -> Unit
 ) {
     Row(
         modifier = modifier
@@ -85,7 +120,7 @@ fun CleanerItem(
             .clip(shape = RoundedCornerShape(10.dp))
             .background(ColorBaseBackground)
             .clickable {
-                onItemClicked()
+                onAddNewCleanerClicked()
             }
             .padding(all = 12.dp),
         horizontalArrangement = Arrangement.spacedBy(space = 6.dp, alignment = Alignment.CenterHorizontally),
@@ -93,11 +128,11 @@ fun CleanerItem(
     ) {
         Icon(
             modifier = Modifier.size(60.dp),
-            imageVector = icon,
+            imageVector = Icons.Outlined.Add,
             contentDescription = null
         )
         Text(
-            text = name,
+            text = stringResource(R.string.add_cleaner_title),
             fontSize = 30.sp,
         )
     }

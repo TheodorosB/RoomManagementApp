@@ -1,43 +1,179 @@
 package net.arx.roommanagementapp.ui.cleaner.composable
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import net.arx.roommanagementapp.R
+import net.arx.roommanagementapp.ui.base.compose.ifelseable
+import net.arx.roommanagementapp.ui.cleaner.model.CleanerUiState
+import net.arx.roommanagementapp.ui.cleaner.viewmodel.CleanerViewModel
+import net.arx.roommanagementapp.ui.room.composable.RoomItem
+import net.arx.roommanagementapp.ui.room.model.CleaningTask
+import net.arx.roommanagementapp.ui.room.model.RoomUiItem
 
 @Composable
 fun CleanerScreen(
-    navigateToAdmin: () -> Unit,
+) {
+    val viewModel: CleanerViewModel = hiltViewModel()
+    val uiState = viewModel.uiState.collectAsStateWithLifecycle()
+
+    CleanerContent(uiState = uiState)
+}
+
+@Composable
+fun CleanerContent(
+    uiState: State<CleanerUiState>
 ) {
     Column(
         modifier = Modifier
-            .fillMaxSize(),
+            .fillMaxWidth(),
+        horizontalAlignment = Alignment.Start,
+        verticalArrangement = Arrangement.spacedBy(space = 8.dp, alignment = Alignment.Top)
+    ) {
+        CleanerItem(
+            cleaner = uiState.value.cleaner
+        )
+
+        Text(
+            modifier = Modifier.alpha(0.5f),
+            text = stringResource(id = R.string.cleaner_screen_tasks),
+            fontSize = 25.sp
+        )
+
+        CleanerRooms(
+            rooms = uiState.value.rooms
+        )
+    }
+}
+
+@Composable
+fun CleanerRooms(
+    rooms: List<RoomUiItem>
+) {
+
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxWidth(),
+        horizontalAlignment = Alignment.Start,
+        verticalArrangement = Arrangement.spacedBy(space = 20.dp, alignment = Alignment.Top)
+    ) {
+
+        items(rooms, key = { it.name }) { room ->
+            CleanerRoomItem(room = room)
+        }
+    }
+}
+
+@Composable
+fun CleanerRoomItem(
+    room: RoomUiItem
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .aspectRatio(6.5f),
+        horizontalArrangement = Arrangement.spacedBy(space = 4.dp, alignment = Alignment.Start),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        RoomItem(
+            modifier = Modifier.fillMaxWidth(0.15f),
+            roomUiItem = room,
+            alignment = Alignment.CenterVertically
+        )
+
+        Icon(
+            modifier = Modifier
+                .fillMaxWidth(0.05f)
+                .aspectRatio(1f),
+            imageVector = Icons.Filled.KeyboardArrowRight,
+            contentDescription = null
+        )
+
+        LazyVerticalGrid(
+            modifier = Modifier.fillMaxWidth(0.8f),
+            columns = GridCells.Fixed(3),
+            horizontalArrangement = Arrangement.spacedBy(space = 8.dp, alignment = Alignment.Start),
+            verticalArrangement = Arrangement.spacedBy(space = 8.dp, alignment = Alignment.Top)
+        ) {
+
+            items(items = room.status.value.tasks, key = { it.name }) { task ->
+                TaskItem(
+                    task = task
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.fillMaxWidth(0.3f))
+
+        Icon(
+            modifier = Modifier
+                .fillMaxWidth(0.8f)
+                .aspectRatio(1f),
+            imageVector = room.statusIcon,
+            tint = room.statusColor,
+            contentDescription = null
+        )
+    }
+}
+
+@Composable
+fun TaskItem(
+    task: CleaningTask
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .aspectRatio(3f)
+            .clip(shape = RoundedCornerShape(25.dp))
+            .background(Color.White)
+            .ifelseable(
+                condition = !task.isRequired,
+                ifable = {
+                    alpha(0.2f)
+                },
+                elseable = {
+                    clickable {
+                        task.onTaskClicked()
+                    }
+                }
+            )
+            .padding(all = 2.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(space = 8.dp, alignment = Alignment.CenterVertically)
     ) {
-        Text(text = "This is Lobby Screen")
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        Button(
-            modifier = Modifier
-                .fillMaxWidth(0.3f)
-                .padding(all = 4.dp),
-            onClick = {
-                navigateToAdmin()
-            }
-        ) {
-            Text(text = "Go to Admin Screen", fontSize = 15.sp)
-        }
+        Text(
+            modifier = Modifier,
+            text = stringResource(id = task.name),
+            textDecoration = task.textDecoration,
+            fontSize = 25.sp
+        )
     }
 }

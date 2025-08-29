@@ -2,7 +2,7 @@ package net.arx.roommanagementapp.ui.admin.composable
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
@@ -23,38 +23,25 @@ import net.arx.roommanagementapp.ui.room.model.RoomCleaningStatus
 import net.arx.roommanagementapp.ui.room.model.RoomUiItem
 
 @Composable
-fun AdminScreen(
-    navigateToCleaner: () -> Unit,
-) {
+fun AdminScreen() {
 
     val viewModel: AdminViewModel = hiltViewModel()
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
 
     AdminContent(
-        uiState = uiState,
-        navigateToCleaner = navigateToCleaner
+        uiState = uiState
     )
 }
 
 @Composable
 fun AdminContent(
     uiState: State<AdminUiState>,
-    navigateToCleaner: () -> Unit,
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxSize(),
+        modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(space = 8.dp, alignment = Alignment.Top)
     ) {
-        RoomManagementToolBar(
-            date = uiState.value.date.value,
-            onPreviousDateClick = { uiState.value.onPreviousDateClicked() },
-            onNextDateClick = { uiState.value.onNextDateClicked() },
-            onPinPanelIconClicked = uiState.value.onPinPanelIconClicked,
-            onUserIconClicked = navigateToCleaner,
-            onHomeScreenClicked = uiState.value.onHomeScreenClicked,
-        )
 
         CleanersRow(
             cleaners = uiState.value.cleaners,
@@ -97,31 +84,32 @@ private fun AdminContentPreview() {
                     RoomUiItem(
                         name = "101",
                         cleaner = CleanerUiItem(name = "Γεωργία"),
+                        isAdmin = true,
                     ),
                     RoomUiItem(
                         name = "101",
                         cleaner = CleanerUiItem(name = "Άννα"),
+                        isAdmin = true,
                         status = mutableStateOf(RoomCleaningStatus.General()),
                     ),
                     RoomUiItem(
                         name = "101",
                         cleaner = CleanerUiItem(name = "Δήμητρα"),
+                        isAdmin = true,
                         status = mutableStateOf(RoomCleaningStatus.Regular()),
                     ),
                     RoomUiItem(
                         name = "101",
                         cleaner = CleanerUiItem(name = "Ελένη"),
+                        isAdmin = true,
                         status = mutableStateOf(RoomCleaningStatus.Cleaned()),
                     )
                 ),
-                onPinPanelIconClicked = {},
-                onHomeScreenClicked = {},
                 onCleanerClicked = {},
                 onSubmitFormClicked = {},
                 onCloseAlertDialog = {},
                 onAddNewCleanerClicked = {},
                 onAddNewRoomClicked = {}
-            ))},
-        navigateToCleaner = {}
+            ))}
     )
 }

@@ -45,7 +45,8 @@ fun RoomsRow(
     ) {
         items(rooms, key = { it.name }) { room ->
             RoomItem(
-                roomUiItem = room
+                roomUiItem = room,
+                alignment = Alignment.Bottom
             )
         }
         item {
@@ -59,6 +60,7 @@ fun RoomsRow(
 @Composable
 fun RoomItem(
     roomUiItem: RoomUiItem,
+    alignment: Alignment.Vertical,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -69,9 +71,9 @@ fun RoomItem(
             .background(Color.White)
             .padding(all = 14.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(space = 8.dp, alignment = Alignment.Bottom)
+        verticalArrangement = Arrangement.spacedBy(space = 8.dp, alignment = alignment)
     ) {
-        if(roomUiItem.status.value !is RoomCleaningStatus.Cleaned) {
+        if(roomUiItem.statusIsVisible) {
             Icon(
                 imageVector = roomUiItem.statusIcon,
                 contentDescription = null,

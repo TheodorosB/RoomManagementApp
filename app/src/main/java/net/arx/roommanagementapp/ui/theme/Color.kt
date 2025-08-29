@@ -12,6 +12,7 @@ val Pink40 = Color(0xFF7D5260)
 
 // Dashboard
 val ColorBaseBackground = Color(0xFFECF0F8)
+val ColorDarkBaseBackground = Color(0xFFABABB2)
 val ColorBaseGrey = Color(0xFFABABB6)
 
 val ColorRoomCleanedStatus = Color(0xFF43A047)
