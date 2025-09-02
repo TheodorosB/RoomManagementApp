@@ -27,7 +27,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import net.arx.roommanagementapp.R
-import net.arx.roommanagementapp.ui.room.model.RoomCleaningStatus
+import net.arx.roommanagementapp.ui.composable.text.AutoSizeText
 import net.arx.roommanagementapp.ui.room.model.RoomUiItem
 
 @Composable
@@ -79,10 +79,10 @@ fun RoomItem(
                 contentDescription = null,
                 tint = roomUiItem.statusColor
             )
-            Text(
+            AutoSizeText(
                 text = roomUiItem.cleaner.name,
-                fontSize = 14.sp,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                maxFontSize = 14.sp
             )
         }
 
@@ -99,12 +99,12 @@ fun RoomItem(
                 tint = roomUiItem.status.value.color,
                 contentDescription = null
             )
-            Text(
+            AutoSizeText(
                 modifier = Modifier
                     .weight(0.5f),
                 text = roomUiItem.name,
-                fontSize = 50.sp,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                maxFontSize = 50.sp
             )
         }
     }

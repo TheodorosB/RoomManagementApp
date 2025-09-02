@@ -14,6 +14,7 @@ composeBom = "2025.08.00"
 lifecycleViewmodelCompose = "2.9.2"
 navigation3Runtime = "1.0.0-alpha07"
 roomRuntime = "2.7.1"
+timber = "4.7.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -40,6 +41,7 @@ androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-man
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroid" }
+timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 
 [plugins]
 ksp = { id = "com.google.devtools.ksp", version = "2.1.10-1.0.31" }
