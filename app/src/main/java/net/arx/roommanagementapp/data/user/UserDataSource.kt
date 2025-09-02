@@ -1,0 +1,13 @@
+package net.arx.roommanagementapp.data.user
+
+import net.arx.roommanagementapp.framework.db.entity.UserEntity
+
+interface UserDataSource {
+
+    suspend fun insertUser(userEntity: UserEntity): Long
+
+    suspend fun login(username: String, password: String): UserEntity?
+
+    suspend fun getAllCleaners(): List<UserEntity>
+
+}
