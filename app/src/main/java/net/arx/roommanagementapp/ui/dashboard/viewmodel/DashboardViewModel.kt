@@ -2,6 +2,7 @@ package net.arx.roommanagementapp.ui.dashboard.viewmodel
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import net.arx.roommanagementapp.ui.base.BaseViewModel
 import net.arx.roommanagementapp.ui.dashboard.model.DashboardNavEntries
@@ -17,7 +18,7 @@ class DashboardViewModel @Inject constructor(): BaseViewModel() {
             onNavigateToCleanerClicked = { onNavigateToCleanerClicked() }
         )
     )
-    val uiState = _uiState.asStateFlow()
+    val uiState: StateFlow<DashboardUiState> = _uiState.asStateFlow()
 
     private fun onNavigateToCleanerClicked() {
         _uiState.value.backstackEntries.add(DashboardNavEntries.Cleaner)
