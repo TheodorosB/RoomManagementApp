@@ -22,12 +22,12 @@ data class AdminUiState(
 )
 
 sealed class DialogFormUiItem(
-    val fields: List<FieldUiItem>,
-    val dropDownBoxes: List<DropDownBoxUiItem> = listOf()
+    val fields: List<FieldUiItem>
 ) {
     class Cleaner : DialogFormUiItem(
         fields = listOf(
-            FieldUiItem.CleanerField()
+            FieldUiItem.UsernameField(),
+            FieldUiItem.PasswordField()
         )
     )
 
@@ -49,14 +49,16 @@ sealed class FieldUiItem(
     val text: MutableState<String> = mutableStateOf(""),
 ) {
 
-    class CleanerField : FieldUiItem(
-        label = R.string.dialog_form_cleaner_field,
-        text = mutableStateOf("")
+    class UsernameField: FieldUiItem(
+        label = R.string.dialog_form_cleaner_field
     )
 
-    class RoomField : FieldUiItem(
-        label = R.string.dialog_form_room_field,
-        text = mutableStateOf("")
+    class PasswordField: FieldUiItem(
+        label = R.string.dialog_form_cleaner_password_field
+    )
+
+    class RoomField: FieldUiItem(
+        label = R.string.dialog_form_room_field
     )
 
     fun onUpdateName(name: String) {
@@ -67,7 +69,3 @@ sealed class FieldUiItem(
         this.text.value = ""
     }
 }
-
-data class DropDownBoxUiItem(
-    val options: List<String>
-)

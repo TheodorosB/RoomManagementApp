@@ -15,6 +15,7 @@
 
     <!-- Cleaner Dialog Form -->
     <string name="dialog_form_cleaner_field">Καθαριστής</string>
+    <string name="dialog_form_cleaner_password_field">Κωδικός</string>
 
     <!-- Room Dialog Form -->
     <string name="dialog_form_room_field">Αριθμός Δωματίου</string>

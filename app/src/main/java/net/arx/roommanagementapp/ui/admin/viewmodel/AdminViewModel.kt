@@ -2,20 +2,29 @@ package net.arx.roommanagementapp.ui.admin.viewmodel
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import net.arx.roommanagementapp.ui.admin.model.AdminUiState
 import net.arx.roommanagementapp.ui.admin.model.DialogFormUiItem
+import net.arx.roommanagementapp.ui.admin.model.FieldUiItem
 import net.arx.roommanagementapp.ui.base.BaseViewModel
 import net.arx.roommanagementapp.ui.cleaner.mapper.CleanerUiMapper
-import net.arx.roommanagementapp.ui.cleaner.model.CleanerUiItem
 import net.arx.roommanagementapp.ui.room.mapper.RoomUiMapper
+import net.arx.roommanagementapp.usecase.room.GetAllRoomsUseCase
+import net.arx.roommanagementapp.usecase.room.InsertRoomUseCase
+import net.arx.roommanagementapp.usecase.user.GetAllCleanersUseCase
+import net.arx.roommanagementapp.usecase.user.InsertUserUseCase
 import javax.inject.Inject
 
 
 @HiltViewModel
 class AdminViewModel @Inject constructor(
     private val cleanerUiMapper: CleanerUiMapper,
-    private val roomUiMapper: RoomUiMapper
+    private val roomUiMapper: RoomUiMapper,
+    private val insertRoomUseCase: InsertRoomUseCase,
+    private val insertUserUseCase: InsertUserUseCase,
+    private val getAllRoomsUseCase: GetAllRoomsUseCase,
+    private val getAllCleanersUseCase: GetAllCleanersUseCase
 ): BaseViewModel() {
 
     private val _uiState = MutableStateFlow(
@@ -27,10 +36,13 @@ class AdminViewModel @Inject constructor(
             onAddNewRoomClicked = { onAddNewRoomClicked() }
         )
     )
-    val uiState = _uiState.asStateFlow()
+    val uiState: StateFlow<AdminUiState> = _uiState.asStateFlow()
 
     init {
-        _uiState.value.cleaners.addAll(cleanerUiMapper())
+        launchWithProgress {
+            refreshCleaners()
+            refreshRooms()
+        }
     }
 
     private fun onCleanerClicked() {
@@ -46,17 +58,19 @@ class AdminViewModel @Inject constructor(
         val formUiItem = _uiState.value.formUiItem.value
         when(formUiItem) {
             is DialogFormUiItem.Cleaner -> {
-                _uiState.value.cleaners.add(
-                    CleanerUiItem(name = formUiItem.fields.first().text.value)
-                )
+                launchWithProgress {
+                    insertUserUseCase(
+                        username = formUiItem.fields.firstOrNull { it is FieldUiItem.UsernameField }?.text?.value,
+                        password = formUiItem.fields.firstOrNull { it is FieldUiItem.PasswordField }?.text?.value
+                    )
+                    refreshCleaners()
+                }
             }
             is DialogFormUiItem.Room -> {
-                _uiState.value.rooms.add(
-                    roomUiMapper(
-                        name = formUiItem.fields.first().text.value,
-                        isAdmin = true
-                    )
-                )
+                launchWithProgress {
+                    insertRoomUseCase(roomName = formUiItem.fields.firstOrNull { it is FieldUiItem.RoomField }?.text?.value)
+                    refreshRooms()
+                }
             }
         }
         _uiState.value.formUiItem.value.resetForm()
@@ -71,6 +85,18 @@ class AdminViewModel @Inject constructor(
     private fun closeDialogForm() {
         _uiState.value.formUiItem.value.resetForm()
         _uiState.value.openDialogForm.value = false
+    }
+
+    private suspend fun refreshRooms() {
+        val roomEntities = getAllRoomsUseCase()
+        _uiState.value.rooms.clear()
+        _uiState.value.rooms.addAll(roomUiMapper(roomEntities, isAdmin = true))
+    }
+
+    private suspend fun refreshCleaners() {
+        val userEntities = getAllCleanersUseCase()
+        _uiState.value.cleaners.clear()
+        _uiState.value.cleaners.addAll(cleanerUiMapper(userEntities))
     }
 
 }
