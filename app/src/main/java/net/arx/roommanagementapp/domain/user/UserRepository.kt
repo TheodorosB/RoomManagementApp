@@ -6,7 +6,7 @@ interface UserRepository {
 
     suspend fun insertUser(userEntity: UserEntity): Long
 
-    suspend fun login(username: String, password: String): UserEntity?
+    suspend fun login(password: String): UserEntity?
 
     suspend fun getAllCleaners(): List<UserEntity>
 }

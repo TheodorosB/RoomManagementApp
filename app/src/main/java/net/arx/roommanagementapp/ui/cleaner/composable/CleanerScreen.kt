@@ -20,6 +20,7 @@ import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,12 +39,19 @@ import net.arx.roommanagementapp.ui.cleaner.viewmodel.CleanerViewModel
 import net.arx.roommanagementapp.ui.room.composable.RoomItem
 import net.arx.roommanagementapp.ui.room.model.CleaningTask
 import net.arx.roommanagementapp.ui.room.model.RoomUiItem
+import net.arx.roommanagementapp.ui.user.model.UserUiItem
 
 @Composable
 fun CleanerScreen(
+    user: UserUiItem
 ) {
+
     val viewModel: CleanerViewModel = hiltViewModel()
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(user) {
+        viewModel.loadCleanerData(user)
+    }
 
     CleanerContent(uiState = uiState)
 }
@@ -59,7 +67,7 @@ fun CleanerContent(
         verticalArrangement = Arrangement.spacedBy(space = 8.dp, alignment = Alignment.Top)
     ) {
         CleanerItem(
-            cleaner = uiState.value.cleaner
+            cleaner = uiState.value.cleaner.value
         )
 
         Text(

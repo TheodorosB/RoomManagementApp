@@ -9,6 +9,14 @@
     <!-- Cleaner Screen -->
     <string name="cleaner_screen_tasks">Οι εργασίες που πρέπει να γίνουν σήμερα:</string>
 
+    <!-- Login Dialog -->
+    <string name="pin_dialog_title_user">Σύνδεση Χρήστη</string>
+    <string name="pin_dialog_title_admin">Σύνδεση Διαχειριστή</string>
+    <string name="pin_dialog_description">Παρακαλώ εισάγετε κωδικό</string>
+    <string name="pin_dialog_connect_button">Σύνδεση</string>
+    <string name="pin_dialog_wrong_password">Εισάγατε λανθασμένο κωδικό</string>
+    <string name="pin_filled_digit">*</string>
+
     <!-- Dialog -->
     <string name="dialog_form_confirm_button">Προσθήκη</string>
     <string name="dialog_form_cancel_button">Ακύρωση</string>
@@ -29,4 +37,6 @@
     <string name="cleaning_tasks_disposables_title">Αναλώσιμα</string>"
     <string name="cleaning_tasks_bedding_title">Σεντόνια</string>"
     <string name="cleaning_tasks_garbages_title">Σκουπίδια</string>"
+
+    <string name="empty_string" />
 </resources>

@@ -16,6 +16,7 @@ import androidx.navigation3.ui.NavDisplay
 import net.arx.roommanagementapp.ui.admin.composable.AdminScreen
 import net.arx.roommanagementapp.ui.admin.composable.RoomManagementToolBar
 import net.arx.roommanagementapp.ui.cleaner.composable.CleanerScreen
+import net.arx.roommanagementapp.ui.dashboard.composable.PinDialog
 import net.arx.roommanagementapp.ui.dashboard.model.DashboardNavEntries
 import net.arx.roommanagementapp.ui.dashboard.viewmodel.DashboardViewModel
 import net.arx.roommanagementapp.ui.theme.ColorBaseBackground
@@ -38,8 +39,8 @@ fun DashboardNavDisplay(
             date = uiState.value.date.value,
             onPreviousDateClick = { uiState.value.onPreviousDateClicked() },
             onNextDateClick = { uiState.value.onNextDateClicked() },
-            onPinPanelIconClicked = uiState.value.onNavigateToAdminClicked,
-            onUserIconClicked = uiState.value.onNavigateToCleanerClicked,
+            onOpenAdminPinFormClicked = uiState.value.openAdminPinForm,
+            onOpenCleanerPinFormClicked = uiState.value.openCleanerPinForm,
             onHomeScreenClicked = {},
         )
 
@@ -60,11 +61,21 @@ fun DashboardNavDisplay(
                     DashboardNavEntries.Cleaner -> NavEntry(
                         key = key,
                         content = {
-                            CleanerScreen()
+                            CleanerScreen(
+                                user = uiState.value.loggedInUser.value
+                            )
                         }
                     )
                 }
             }
+        )
+    }
+
+    if(uiState.value.openPinDialog.value) {
+        PinDialog(
+            pinForm = uiState.value.pinFormUiItem,
+            onPasswordComplete = uiState.value.onPinComplete,
+            onDismissRequest = uiState.value.onPinDialogDismiss
         )
     }
 }

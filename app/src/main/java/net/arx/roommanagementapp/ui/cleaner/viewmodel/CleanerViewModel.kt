@@ -5,13 +5,20 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import net.arx.roommanagementapp.ui.base.BaseViewModel
+import net.arx.roommanagementapp.ui.cleaner.mapper.CleanerUiMapper
 import net.arx.roommanagementapp.ui.cleaner.model.CleanerUiState
+import net.arx.roommanagementapp.ui.user.model.UserUiItem
 import javax.inject.Inject
 
 @HiltViewModel
-class CleanerViewModel @Inject constructor(): BaseViewModel() {
+class CleanerViewModel @Inject constructor(
+    private val cleanerUiMapper: CleanerUiMapper
+): BaseViewModel() {
 
     private val _uiState = MutableStateFlow(CleanerUiState())
     val uiState: StateFlow<CleanerUiState> = _uiState.asStateFlow()
 
+    fun loadCleanerData(user: UserUiItem) {
+        _uiState.value.cleaner.value = cleanerUiMapper(user = user)
+    }
 }

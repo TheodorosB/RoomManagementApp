@@ -11,8 +11,8 @@ interface UserDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertUser(userEntity: UserEntity): Long
 
-    @Query("SELECT * FROM users WHERE password = :password AND username = :username LIMIT 1")
-    suspend fun login(password: String, username: String): UserEntity?
+    @Query("SELECT * FROM users WHERE password = :password LIMIT 1")
+    suspend fun login(password: String): UserEntity?
 
     @Query("SELECT * FROM users WHERE role = 'CLEANER'")
     suspend fun getAllCleaners(): List<UserEntity>
