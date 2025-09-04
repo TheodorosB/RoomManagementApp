@@ -34,8 +34,8 @@ fun RoomManagementToolBar(
     modifier: Modifier = Modifier,
     onPreviousDateClick: () -> Unit,
     onNextDateClick: () -> Unit,
-    onPinPanelIconClicked: () -> Unit,
-    onUserIconClicked: () -> Unit,
+    onOpenAdminPinFormClicked: () -> Unit,
+    onOpenCleanerPinFormClicked: () -> Unit,
     onHomeScreenClicked: () -> Unit,
 ) {
     Row(
@@ -57,8 +57,8 @@ fun RoomManagementToolBar(
 
         RoomManagementActionsRow(
             modifier = Modifier.weight(0.3f),
-            onPinPanelIconClicked = onPinPanelIconClicked,
-            onUserIconClicked = onUserIconClicked,
+            onOpenAdminPinFormClicked = onOpenAdminPinFormClicked,
+            onOpenCleanerPinFormClicked = onOpenCleanerPinFormClicked,
             onHomeScreenClicked = onHomeScreenClicked
         )
     }
@@ -121,8 +121,8 @@ fun RoomManagementDateRow(
 @Composable
 fun RoomManagementActionsRow(
     modifier: Modifier = Modifier,
-    onPinPanelIconClicked: () -> Unit,
-    onUserIconClicked: () -> Unit,
+    onOpenAdminPinFormClicked: () -> Unit,
+    onOpenCleanerPinFormClicked: () -> Unit,
     onHomeScreenClicked: () -> Unit,
 ) {
     Row(
@@ -135,7 +135,7 @@ fun RoomManagementActionsRow(
             modifier = Modifier
                 .size(60.dp)
                 .clickable {
-                    onPinPanelIconClicked()
+                    onOpenAdminPinFormClicked()
                 },
             imageVector = Icons.Outlined.DateRange,
             contentDescription = null
@@ -144,7 +144,7 @@ fun RoomManagementActionsRow(
             modifier = Modifier
                 .size(60.dp)
                 .clickable {
-                    onUserIconClicked()
+                    onOpenCleanerPinFormClicked()
                 },
             imageVector = Icons.Outlined.AccountCircle,
             contentDescription = null

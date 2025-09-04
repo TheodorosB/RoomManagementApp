@@ -12,11 +12,7 @@ import net.arx.roommanagementapp.ui.theme.ColorBaseBackground
 import net.arx.roommanagementapp.ui.theme.ColorDarkBaseBackground
 
 data class CleanerUiState(
-    val cleaner: CleanerUiItem = CleanerUiItem(
-        name = "Πέτρος",
-        isSelected = mutableStateOf(true),
-        isClickable = false
-    ),
+    val cleaner: MutableState<CleanerUiItem> = mutableStateOf(CleanerUiItem()),
     val rooms: List<RoomUiItem> = ROOMS
 ) {
     companion object {

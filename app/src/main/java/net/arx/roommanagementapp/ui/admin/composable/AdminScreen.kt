@@ -56,7 +56,7 @@ fun AdminContent(
     }
 
     if(uiState.value.openDialogForm.value == true) {
-        CleanerDialogForm(
+        FormDialog(
             formUiItem = uiState.value.formUiItem.value,
             onDismissRequest = uiState.value.onCloseAlertDialog,
             onAddCleanerClicked = uiState.value.onSubmitFormClicked

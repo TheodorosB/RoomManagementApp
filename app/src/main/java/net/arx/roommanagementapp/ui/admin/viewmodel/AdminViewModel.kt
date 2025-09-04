@@ -4,6 +4,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import net.arx.roommanagementapp.R
 import net.arx.roommanagementapp.ui.admin.model.AdminUiState
 import net.arx.roommanagementapp.ui.admin.model.DialogFormUiItem
 import net.arx.roommanagementapp.ui.admin.model.FieldUiItem
@@ -39,7 +40,7 @@ class AdminViewModel @Inject constructor(
     val uiState: StateFlow<AdminUiState> = _uiState.asStateFlow()
 
     init {
-        launchWithProgress {
+        launch {
             refreshCleaners()
             refreshRooms()
         }
@@ -51,6 +52,7 @@ class AdminViewModel @Inject constructor(
 
     private fun onAddNewCleanerClicked() {
         _uiState.value.formUiItem.value = DialogFormUiItem.Cleaner()
+        _uiState.value.formUiItem.value.title.value = R.string.add_cleaner_title
         _uiState.value.openDialogForm.value = true
     }
 
@@ -58,7 +60,7 @@ class AdminViewModel @Inject constructor(
         val formUiItem = _uiState.value.formUiItem.value
         when(formUiItem) {
             is DialogFormUiItem.Cleaner -> {
-                launchWithProgress {
+                launch {
                     insertUserUseCase(
                         username = formUiItem.fields.firstOrNull { it is FieldUiItem.UsernameField }?.text?.value,
                         password = formUiItem.fields.firstOrNull { it is FieldUiItem.PasswordField }?.text?.value
@@ -67,7 +69,7 @@ class AdminViewModel @Inject constructor(
                 }
             }
             is DialogFormUiItem.Room -> {
-                launchWithProgress {
+                launch {
                     insertRoomUseCase(roomName = formUiItem.fields.firstOrNull { it is FieldUiItem.RoomField }?.text?.value)
                     refreshRooms()
                 }
@@ -79,6 +81,7 @@ class AdminViewModel @Inject constructor(
 
     private fun onAddNewRoomClicked() {
         _uiState.value.formUiItem.value = DialogFormUiItem.Room()
+        _uiState.value.formUiItem.value.title.value = R.string.add_room_title
         _uiState.value.openDialogForm.value = true
     }
 

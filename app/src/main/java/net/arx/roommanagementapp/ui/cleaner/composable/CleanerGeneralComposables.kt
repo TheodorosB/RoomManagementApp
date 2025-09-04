@@ -45,7 +45,7 @@ fun CleanersRow(
         horizontalArrangement = Arrangement.spacedBy(space = 10.dp, alignment = Alignment.Start),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        items(cleaners, key = { it.name }) { cleaner ->
+        items(items = cleaners, key = { it.name }) { cleaner ->
             CleanerItem(
                 modifier = Modifier.fillMaxWidth(0.2f),
                 cleaner = cleaner,
@@ -110,14 +110,14 @@ fun AddNewCleanerItem(
         modifier = modifier
             .shadow(
                 elevation = 5.dp,
-                shape = RoundedCornerShape(10.dp)
+                shape = RoundedCornerShape(25.dp)
             )
             .border(
                 width = 3.dp,
                 color = Color.White,
-                shape = RoundedCornerShape(10.dp)
+                shape = RoundedCornerShape(25.dp)
             )
-            .clip(shape = RoundedCornerShape(10.dp))
+            .clip(shape = RoundedCornerShape(25.dp))
             .background(ColorBaseBackground)
             .clickable {
                 onAddNewCleanerClicked()

@@ -2,9 +2,11 @@ package net.arx.roommanagementapp.ui.admin.model
 
 import androidx.annotation.StringRes
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.ui.text.input.KeyboardType
 import net.arx.roommanagementapp.R
 import net.arx.roommanagementapp.ui.cleaner.model.CleanerUiItem
 import net.arx.roommanagementapp.ui.room.model.RoomUiItem
@@ -22,7 +24,8 @@ data class AdminUiState(
 )
 
 sealed class DialogFormUiItem(
-    val fields: List<FieldUiItem>
+    val fields: List<FieldUiItem>,
+    @StringRes val title: MutableState<Int> = mutableIntStateOf(R.string.empty_string),
 ) {
     class Cleaner : DialogFormUiItem(
         fields = listOf(
@@ -46,15 +49,16 @@ sealed class DialogFormUiItem(
 
 sealed class FieldUiItem(
     @StringRes val label: Int,
+    val keyboardType: KeyboardType = KeyboardType.Text,
     val text: MutableState<String> = mutableStateOf(""),
 ) {
-
     class UsernameField: FieldUiItem(
         label = R.string.dialog_form_cleaner_field
     )
 
     class PasswordField: FieldUiItem(
-        label = R.string.dialog_form_cleaner_password_field
+        label = R.string.dialog_form_cleaner_password_field,
+        keyboardType = KeyboardType.NumberPassword
     )
 
     class RoomField: FieldUiItem(
