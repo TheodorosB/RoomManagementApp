@@ -8,6 +8,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import net.arx.roommanagementapp.framework.db.AppDatabase
+import net.arx.roommanagementapp.framework.db.dao.CleaningTaskDao
 import net.arx.roommanagementapp.framework.db.dao.RoomDao
 import net.arx.roommanagementapp.framework.db.dao.UserDao
 import javax.inject.Singleton
@@ -32,6 +33,6 @@ object DatabaseModule {
     @Provides
     fun provideRoomDao(db: AppDatabase): RoomDao = db.roomDao()
 
-    /*@Provides
-    fun provideCleaningTaskDao(db: AppDatabase): CleaningTaskDao = db.cleaningTaskDao()*/
+    @Provides
+    fun provideCleaningTaskDao(db: AppDatabase): CleaningTaskDao = db.cleaningTaskDao()
 }
