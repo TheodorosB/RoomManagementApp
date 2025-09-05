@@ -26,11 +26,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import net.arx.roommanagementapp.ui.dashboard.model.DateUiItem
 import net.arx.roommanagementapp.ui.theme.ColorBaseGrey
+import net.arx.roommanagementapp.util.ext.formatDate
 
 @Composable
 fun RoomManagementToolBar(
-    date: String,
+    date: DateUiItem,
     modifier: Modifier = Modifier,
     onPreviousDateClick: () -> Unit,
     onNextDateClick: () -> Unit,
@@ -50,7 +52,7 @@ fun RoomManagementToolBar(
 
         RoomManagementDateRow(
             modifier = Modifier.weight(0.4f),
-            date = date,
+            date = date.dayStart.value.formatDate(),
             onNextDateClick = onNextDateClick,
             onPreviousDateClick = onPreviousDateClick
         )

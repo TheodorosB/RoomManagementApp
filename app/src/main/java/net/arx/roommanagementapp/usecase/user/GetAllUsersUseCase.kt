@@ -6,17 +6,17 @@ import net.arx.roommanagementapp.usecase.UseCase
 import timber.log.Timber
 import javax.inject.Inject
 
-class GetAllCleanersUseCase @Inject constructor(
+class GetAllUsersUseCase @Inject constructor(
     private val userRepository: UserRepositoryImpl
 ): UseCase {
 
     suspend operator fun invoke(): List<UserEntity> {
         return try {
             val cleaners = userRepository.getAllCleaners()
-            Timber.tag(GetAllCleanersUseCase::class.simpleName.toString()).d("Retrieved all cleaners successfully: $cleaners")
+            Timber.tag(GetAllUsersUseCase::class.simpleName.toString()).d("Retrieved all cleaners successfully: $cleaners")
             cleaners
         } catch (ex: Exception) {
-            Timber.tag(GetAllCleanersUseCase::class.simpleName.toString()).e(ex)
+            Timber.tag(GetAllUsersUseCase::class.simpleName.toString()).e(ex)
             emptyList()
         }
     }

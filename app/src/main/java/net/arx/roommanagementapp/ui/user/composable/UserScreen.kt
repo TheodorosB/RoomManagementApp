@@ -1,4 +1,4 @@
-package net.arx.roommanagementapp.ui.cleaner.composable
+package net.arx.roommanagementapp.ui.user.composable
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -34,31 +34,37 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import net.arx.roommanagementapp.R
 import net.arx.roommanagementapp.ui.base.compose.ifelseable
-import net.arx.roommanagementapp.ui.cleaner.model.CleanerUiState
-import net.arx.roommanagementapp.ui.cleaner.viewmodel.CleanerViewModel
+import net.arx.roommanagementapp.ui.dashboard.model.DateUiItem
+import net.arx.roommanagementapp.ui.user.viewmodel.UserViewModel
 import net.arx.roommanagementapp.ui.room.composable.RoomItem
 import net.arx.roommanagementapp.ui.room.model.CleaningTask
 import net.arx.roommanagementapp.ui.room.model.RoomUiItem
 import net.arx.roommanagementapp.ui.user.model.UserUiItem
+import net.arx.roommanagementapp.ui.user.model.UserUiState
 
 @Composable
-fun CleanerScreen(
-    user: UserUiItem
+fun UserScreen(
+    user: UserUiItem,
+    date: DateUiItem
 ) {
 
-    val viewModel: CleanerViewModel = hiltViewModel()
+    val viewModel: UserViewModel = hiltViewModel()
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(user) {
-        viewModel.loadCleanerData(user)
+    LaunchedEffect(key1 = user, key2 = date.dayStart.value, key3 = date.dayEnd.value) {
+        viewModel.loadUserData(user = user, date = date)
     }
 
-    CleanerContent(uiState = uiState)
+    UserContent(
+        uiState = uiState,
+        date = date
+    )
 }
 
 @Composable
-fun CleanerContent(
-    uiState: State<CleanerUiState>
+fun UserContent(
+    uiState: State<UserUiState>,
+    date: DateUiItem
 ) {
     Column(
         modifier = Modifier
@@ -66,8 +72,8 @@ fun CleanerContent(
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.spacedBy(space = 8.dp, alignment = Alignment.Top)
     ) {
-        CleanerItem(
-            cleaner = uiState.value.cleaner.value
+        UserItem(
+            user = uiState.value.user.value
         )
 
         Text(
@@ -76,15 +82,17 @@ fun CleanerContent(
             fontSize = 25.sp
         )
 
-        CleanerRooms(
-            rooms = uiState.value.rooms
+        UserRooms(
+            rooms = uiState.value.rooms,
+            date = date
         )
     }
 }
 
 @Composable
-fun CleanerRooms(
-    rooms: List<RoomUiItem>
+fun UserRooms(
+    rooms: MutableList<RoomUiItem>,
+    date: DateUiItem
 ) {
 
     LazyColumn(
@@ -94,14 +102,14 @@ fun CleanerRooms(
         verticalArrangement = Arrangement.spacedBy(space = 20.dp, alignment = Alignment.Top)
     ) {
 
-        items(rooms, key = { it.name }) { room ->
-            CleanerRoomItem(room = room)
+        items(rooms, key = { it.id }) { room ->
+            UserRoomItem(room = room)
         }
     }
 }
 
 @Composable
-fun CleanerRoomItem(
+fun UserRoomItem(
     room: RoomUiItem
 ) {
     Row(
@@ -114,7 +122,7 @@ fun CleanerRoomItem(
         RoomItem(
             modifier = Modifier.fillMaxWidth(0.15f),
             roomUiItem = room,
-            alignment = Alignment.CenterVertically
+            arrangement = Arrangement.spacedBy(space = 8.dp, alignment = Alignment.CenterVertically)
         )
 
         Icon(

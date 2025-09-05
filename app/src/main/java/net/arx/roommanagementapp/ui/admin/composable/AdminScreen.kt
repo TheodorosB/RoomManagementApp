@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -16,17 +17,24 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import net.arx.roommanagementapp.ui.admin.model.AdminUiState
 import net.arx.roommanagementapp.ui.admin.viewmodel.AdminViewModel
-import net.arx.roommanagementapp.ui.cleaner.composable.CleanersRow
-import net.arx.roommanagementapp.ui.cleaner.model.CleanerUiItem
+import net.arx.roommanagementapp.ui.user.composable.UsersRow
+import net.arx.roommanagementapp.ui.dashboard.model.DateUiItem
 import net.arx.roommanagementapp.ui.room.composable.RoomsRow
 import net.arx.roommanagementapp.ui.room.model.RoomCleaningStatus
 import net.arx.roommanagementapp.ui.room.model.RoomUiItem
+import net.arx.roommanagementapp.ui.user.model.UserUiItem
 
 @Composable
-fun AdminScreen() {
+fun AdminScreen(
+    date: DateUiItem
+) {
 
     val viewModel: AdminViewModel = hiltViewModel()
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(key1 = date.dayStart.value, key2 = date.dayEnd.value) {
+        viewModel.updateDate(date = date)
+    }
 
     AdminContent(
         uiState = uiState
@@ -43,14 +51,15 @@ fun AdminContent(
         verticalArrangement = Arrangement.spacedBy(space = 8.dp, alignment = Alignment.Top)
     ) {
 
-        CleanersRow(
-            cleaners = uiState.value.cleaners,
-            onCleanerClicked = uiState.value.onCleanerClicked,
-            onAddNewCleanerClicked = uiState.value.onAddNewCleanerClicked
+        UsersRow(
+            users = uiState.value.users,
+            onUserClicked = uiState.value.onUserClicked,
+            onAddNewUserClicked = uiState.value.onAddNewUserClicked
         )
 
         RoomsRow(
             rooms = uiState.value.rooms,
+            onRoomClicked = uiState.value.onRoomClicked,
             onAddNewRoomClicked = uiState.value.onAddNewRoomClicked
         )
     }
@@ -58,7 +67,7 @@ fun AdminContent(
     if(uiState.value.openDialogForm.value == true) {
         FormDialog(
             formUiItem = uiState.value.formUiItem.value,
-            onDismissRequest = uiState.value.onCloseAlertDialog,
+            onDismissRequest = uiState.value.onCloseDialogForm,
             onAddCleanerClicked = uiState.value.onSubmitFormClicked
         )
     }
@@ -73,43 +82,48 @@ private fun AdminContentPreview() {
     AdminContent(
         uiState = remember { mutableStateOf(
             AdminUiState(
-                cleaners = mutableStateListOf(
-                    CleanerUiItem(name = "Γεωργία"),
-                    CleanerUiItem(name = "Άννα"),
-                    CleanerUiItem(name = "Ιωάννα"),
-                    CleanerUiItem(name = "Δήμητρα"),
-                    CleanerUiItem(name = "Ελένη")
+                users = mutableStateListOf(
+                    UserUiItem(name = "Γεωργία"),
+                    UserUiItem(name = "Άννα"),
+                    UserUiItem(name = "Ιωάννα"),
+                    UserUiItem(name = "Δήμητρα"),
+                    UserUiItem(name = "Ελένη")
                 ),
                 rooms = mutableStateListOf(
                     RoomUiItem(
+                        id = 1,
                         name = "101",
-                        cleaner = CleanerUiItem(name = "Γεωργία"),
+                        user = UserUiItem(name = "Γεωργία"),
                         isAdmin = true,
                     ),
                     RoomUiItem(
+                        id = 2,
                         name = "101",
-                        cleaner = CleanerUiItem(name = "Άννα"),
+                        user = UserUiItem(name = "Άννα"),
                         isAdmin = true,
                         status = mutableStateOf(RoomCleaningStatus.General()),
                     ),
                     RoomUiItem(
+                        id = 3,
                         name = "101",
-                        cleaner = CleanerUiItem(name = "Δήμητρα"),
+                        user = UserUiItem(name = "Δήμητρα"),
                         isAdmin = true,
                         status = mutableStateOf(RoomCleaningStatus.Regular()),
                     ),
                     RoomUiItem(
+                        id = 4,
                         name = "101",
-                        cleaner = CleanerUiItem(name = "Ελένη"),
+                        user = UserUiItem(name = "Ελένη"),
                         isAdmin = true,
                         status = mutableStateOf(RoomCleaningStatus.Cleaned()),
                     )
                 ),
-                onCleanerClicked = {},
+                onUserClicked = {},
                 onSubmitFormClicked = {},
-                onCloseAlertDialog = {},
-                onAddNewCleanerClicked = {},
-                onAddNewRoomClicked = {}
+                onCloseDialogForm = {},
+                onAddNewUserClicked = {},
+                onAddNewRoomClicked = {},
+                onRoomClicked = {}
             ))}
     )
 }

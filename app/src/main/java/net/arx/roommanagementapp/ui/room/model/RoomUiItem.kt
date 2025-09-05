@@ -10,19 +10,20 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextDecoration
 import net.arx.roommanagementapp.R
-import net.arx.roommanagementapp.ui.cleaner.model.CleanerUiItem
 import net.arx.roommanagementapp.ui.theme.ColorRoomCleanedStatus
 import net.arx.roommanagementapp.ui.theme.ColorRoomGeneralStatus
 import net.arx.roommanagementapp.ui.theme.ColorRoomRegularStatus
+import net.arx.roommanagementapp.ui.user.model.UserUiItem
 
 data class RoomUiItem(
-    val name: String,
-    val isAdmin: Boolean,
-    val cleaner: CleanerUiItem = CleanerUiItem(),
+    val id: Long = 0,
+    val name: String = "",
+    val isAdmin: Boolean = false,
+    val user: UserUiItem = UserUiItem(),
     val statusIcon: ImageVector = Icons.Outlined.CheckCircle,
     val status: MutableState<RoomCleaningStatus> = mutableStateOf(RoomCleaningStatus.Cleaned())
 ) {
-    val isCleaned: Boolean
+    private val isCleaned: Boolean
         get() {
             return status.value.tasks
                 .filter { it.isRequired }
@@ -38,22 +39,26 @@ data class RoomUiItem(
 
 sealed class RoomCleaningStatus(
     @DrawableRes val icon: Int,
+    @StringRes val title: Int,
     val color: Color,
     val tasks: List<CleaningTask>
 ) {
     class General : RoomCleaningStatus(
+        title = R.string.room_general_status,
         icon = R.drawable.ic_room_cleaning_status,
         color = ColorRoomGeneralStatus,
         tasks = CleaningTask.allTasks(requiredCount = 5)
     )
 
     class Regular : RoomCleaningStatus(
+        title = R.string.room_regular_status,
         icon = R.drawable.ic_room_cleaning_status,
         color = ColorRoomRegularStatus,
         tasks = CleaningTask.allTasks(requiredCount = 3)
     )
 
     class Cleaned : RoomCleaningStatus(
+        title = R.string.room_clean_status,
         icon = R.drawable.ic_room_cleaning_status,
         color = ColorRoomCleanedStatus,
         tasks = CleaningTask.allTasks(requiredCount = 5, allDone = true)

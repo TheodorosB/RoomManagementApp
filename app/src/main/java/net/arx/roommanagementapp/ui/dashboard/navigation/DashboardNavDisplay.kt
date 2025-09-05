@@ -15,7 +15,7 @@ import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.ui.NavDisplay
 import net.arx.roommanagementapp.ui.admin.composable.AdminScreen
 import net.arx.roommanagementapp.ui.admin.composable.RoomManagementToolBar
-import net.arx.roommanagementapp.ui.cleaner.composable.CleanerScreen
+import net.arx.roommanagementapp.ui.user.composable.UserScreen
 import net.arx.roommanagementapp.ui.dashboard.composable.PinDialog
 import net.arx.roommanagementapp.ui.dashboard.model.DashboardNavEntries
 import net.arx.roommanagementapp.ui.dashboard.viewmodel.DashboardViewModel
@@ -54,15 +54,18 @@ fun DashboardNavDisplay(
                     DashboardNavEntries.Admin -> NavEntry(
                         key = key,
                         content = {
-                            AdminScreen()
+                            AdminScreen(
+                                date = uiState.value.date.value
+                            )
                         }
                     )
 
                     DashboardNavEntries.Cleaner -> NavEntry(
                         key = key,
                         content = {
-                            CleanerScreen(
-                                user = uiState.value.loggedInUser.value
+                            UserScreen(
+                                user = uiState.value.loggedInUser.value,
+                                date = uiState.value.date.value
                             )
                         }
                     )

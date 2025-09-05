@@ -5,8 +5,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -19,6 +21,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -33,6 +36,7 @@ import net.arx.roommanagementapp.ui.room.model.RoomUiItem
 @Composable
 fun RoomsRow(
     rooms: List<RoomUiItem>,
+    onRoomClicked: (Long) -> Unit,
     onAddNewRoomClicked: () -> Unit
 ) {
     LazyVerticalGrid(
@@ -43,10 +47,11 @@ fun RoomsRow(
         horizontalArrangement = Arrangement.spacedBy(space = 8.dp, alignment = Alignment.Start),
         verticalArrangement = Arrangement.spacedBy(space = 8.dp, alignment = Alignment.Top)
     ) {
-        items(rooms, key = { it.name }) { room ->
+        items(rooms, key = { it.id }) { room ->
             RoomItem(
                 roomUiItem = room,
-                alignment = Alignment.Bottom
+                onRoomClicked = onRoomClicked,
+                arrangement = Arrangement.SpaceBetween
             )
         }
         item {
@@ -60,8 +65,9 @@ fun RoomsRow(
 @Composable
 fun RoomItem(
     roomUiItem: RoomUiItem,
-    alignment: Alignment.Vertical,
-    modifier: Modifier = Modifier
+    arrangement: Arrangement.Vertical,
+    modifier: Modifier = Modifier,
+    onRoomClicked: (Long) -> Unit = {}
 ) {
     Column(
         modifier = modifier
@@ -69,21 +75,30 @@ fun RoomItem(
             .aspectRatio(1f)
             .clip(shape = RoundedCornerShape(40.dp))
             .background(Color.White)
-            .padding(all = 14.dp),
+            .clickable(enabled = roomUiItem.isAdmin) {
+                onRoomClicked(roomUiItem.id)
+            }
+            .padding(horizontal = 14.dp, vertical = 7.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(space = 8.dp, alignment = alignment)
+        verticalArrangement = arrangement
     ) {
         if(roomUiItem.statusIsVisible) {
             Icon(
+                modifier = Modifier
+                    .fillMaxWidth(0.3f)
+                    .aspectRatio(1f),
                 imageVector = roomUiItem.statusIcon,
                 contentDescription = null,
                 tint = roomUiItem.statusColor
             )
             AutoSizeText(
-                text = roomUiItem.cleaner.name,
+                modifier = Modifier.alpha(0.6f),
+                text = roomUiItem.user.name,
                 textAlign = TextAlign.Center,
-                maxFontSize = 14.sp
+                maxFontSize = 40.sp
             )
+        } else {
+            Spacer(modifier = Modifier.height(10.dp))
         }
 
         Row (

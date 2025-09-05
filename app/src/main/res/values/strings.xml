@@ -26,7 +26,10 @@
     <string name="dialog_form_cleaner_password_field">Κωδικός</string>
 
     <!-- Room Dialog Form -->
+    <string name="dialog_form_room_edit_title">Επεξεργασία Δωματίου</string>
     <string name="dialog_form_room_field">Αριθμός Δωματίου</string>
+    <string name="dialog_form_select_status">Επιλέξτε κατάσταση</string>
+    <string name="dialog_form_select_user">Επιλέξτε καθαριστή</string>
     <string name="room_general_status">Γενικός</string>
     <string name="room_regular_status">Ήπιος</string>
     <string name="room_clean_status">Καθαρό</string>

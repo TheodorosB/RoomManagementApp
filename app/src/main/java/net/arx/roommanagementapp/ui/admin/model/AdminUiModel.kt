@@ -8,26 +8,31 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.text.input.KeyboardType
 import net.arx.roommanagementapp.R
-import net.arx.roommanagementapp.ui.cleaner.model.CleanerUiItem
+import net.arx.roommanagementapp.ui.dashboard.model.DateUiItem
+import net.arx.roommanagementapp.ui.room.model.RoomCleaningStatus
 import net.arx.roommanagementapp.ui.room.model.RoomUiItem
+import net.arx.roommanagementapp.ui.user.model.UserUiItem
 
 data class AdminUiState(
-    val cleaners: SnapshotStateList<CleanerUiItem> = mutableStateListOf(),
+    val date: MutableState<DateUiItem> = mutableStateOf(DateUiItem()),
+    val users: SnapshotStateList<UserUiItem> = mutableStateListOf(),
     val rooms: SnapshotStateList<RoomUiItem> = mutableStateListOf(),
-    val onAddNewCleanerClicked: () -> Unit,
+    val onAddNewUserClicked: () -> Unit,
     val onSubmitFormClicked: () -> Unit,
-    val onCleanerClicked: () -> Unit,
+    val onUserClicked: () -> Unit,
+    val onRoomClicked: (Long) -> Unit,
     val onAddNewRoomClicked: () -> Unit,
     val openDialogForm: MutableState<Boolean?> = mutableStateOf(null),
-    val formUiItem: MutableState<DialogFormUiItem> = mutableStateOf(DialogFormUiItem.Cleaner()),
-    val onCloseAlertDialog: () -> Unit,
+    val formUiItem: MutableState<DialogFormUiItem> = mutableStateOf(DialogFormUiItem.User()),
+    val onCloseDialogForm: () -> Unit,
 )
 
 sealed class DialogFormUiItem(
-    val fields: List<FieldUiItem>,
+    val fields: List<FieldUiItem> = emptyList(),
+    val dropDownMenus: List<DropDownMenu<*>> = emptyList(),
     @StringRes val title: MutableState<Int> = mutableIntStateOf(R.string.empty_string),
 ) {
-    class Cleaner : DialogFormUiItem(
+    class User : DialogFormUiItem(
         fields = listOf(
             FieldUiItem.UsernameField(),
             FieldUiItem.PasswordField()
@@ -37,6 +42,15 @@ sealed class DialogFormUiItem(
     class Room : DialogFormUiItem(
         fields = listOf(
             FieldUiItem.RoomField()
+        )
+    )
+
+    class Task(
+        val roomId: Long
+    ) : DialogFormUiItem(
+        dropDownMenus = listOf(
+            DropDownMenu.StatusMenu(),
+            DropDownMenu.UserMenu()
         )
     )
 
@@ -71,5 +85,43 @@ sealed class FieldUiItem(
 
     fun resetField() {
         this.text.value = ""
+    }
+}
+
+sealed class DropDownMenu<T>(
+    @StringRes val label: Int,
+    val isExpanded: MutableState<Boolean> = mutableStateOf(false),
+    val options: MutableList<T>,
+    val selectedOption: MutableState<T>,
+) {
+    class StatusMenu() : DropDownMenu<RoomCleaningStatus>(
+        label = R.string.dialog_form_select_status,
+        options = mutableListOf(
+            RoomCleaningStatus.General(),
+            RoomCleaningStatus.Regular(),
+            RoomCleaningStatus.Cleaned()
+        ),
+        selectedOption = mutableStateOf(RoomCleaningStatus.General())
+    )
+
+    class UserMenu(
+    ) : DropDownMenu<UserUiItem>(
+        label = R.string.dialog_form_select_user,
+        options = mutableListOf(),
+        selectedOption = mutableStateOf(UserUiItem())
+    )
+
+    fun updatedSelectedStatus(status: RoomCleaningStatus) {
+        selectedOption.value = status as T
+        toggleExpanded()
+    }
+
+    fun updatedSelectedUser(user: UserUiItem) {
+        selectedOption.value = user as T
+        toggleExpanded()
+    }
+
+    fun toggleExpanded() {
+        isExpanded.value = !isExpanded.value
     }
 }

@@ -1,4 +1,4 @@
-package net.arx.roommanagementapp.ui.cleaner.composable
+package net.arx.roommanagementapp.ui.user.composable
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -27,14 +27,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import net.arx.roommanagementapp.R
 import net.arx.roommanagementapp.ui.base.compose.ifable
-import net.arx.roommanagementapp.ui.cleaner.model.CleanerUiItem
 import net.arx.roommanagementapp.ui.theme.ColorBaseBackground
+import net.arx.roommanagementapp.ui.user.model.UserUiItem
 
 @Composable
-fun CleanersRow(
-    cleaners: List<CleanerUiItem>,
-    onCleanerClicked: () -> Unit,
-    onAddNewCleanerClicked: () -> Unit,
+fun UsersRow(
+    users: List<UserUiItem>,
+    onUserClicked: () -> Unit,
+    onAddNewUserClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyRow(
@@ -45,27 +45,27 @@ fun CleanersRow(
         horizontalArrangement = Arrangement.spacedBy(space = 10.dp, alignment = Alignment.Start),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        items(items = cleaners, key = { it.name }) { cleaner ->
-            CleanerItem(
+        items(items = users, key = { it.id }) { user ->
+            UserItem(
                 modifier = Modifier.fillMaxWidth(0.2f),
-                cleaner = cleaner,
-                onCleanerClicked = onCleanerClicked
+                user = user,
+                onUserClicked = onUserClicked
             )
         }
         item {
-            AddNewCleanerItem(
+            AddNewUserItem(
                 modifier = Modifier.fillMaxWidth(0.2f),
-                onAddNewCleanerClicked = onAddNewCleanerClicked
+                onAddNewUserClicked = onAddNewUserClicked
             )
         }
     }
 }
 
 @Composable
-fun CleanerItem(
-    cleaner: CleanerUiItem,
+fun UserItem(
+    user: UserUiItem,
     modifier: Modifier = Modifier,
-    onCleanerClicked: () -> Unit = {}
+    onUserClicked: () -> Unit = {}
 ) {
     Row(
         modifier = modifier
@@ -79,10 +79,10 @@ fun CleanerItem(
                 shape = RoundedCornerShape(25.dp)
             )
             .clip(shape = RoundedCornerShape(25.dp))
-            .background(cleaner.backgroundColor)
-            .ifable(condition = cleaner.isClickable) {
+            .background(user.backgroundColor)
+            .ifable(condition = user.isClickable) {
                 clickable {
-                    onCleanerClicked()
+                    onUserClicked()
                 }
             }
             .padding(all = 12.dp),
@@ -91,20 +91,20 @@ fun CleanerItem(
     ) {
         Icon(
             modifier = Modifier.size(60.dp),
-            imageVector = cleaner.icon,
+            imageVector = user.icon,
             contentDescription = null
         )
         Text(
-            text = cleaner.name,
+            text = user.name,
             fontSize = 30.sp,
         )
     }
 }
 
 @Composable
-fun AddNewCleanerItem(
+fun AddNewUserItem(
     modifier: Modifier = Modifier,
-    onAddNewCleanerClicked: () -> Unit
+    onAddNewUserClicked: () -> Unit
 ) {
     Row(
         modifier = modifier
@@ -120,7 +120,7 @@ fun AddNewCleanerItem(
             .clip(shape = RoundedCornerShape(25.dp))
             .background(ColorBaseBackground)
             .clickable {
-                onAddNewCleanerClicked()
+                onAddNewUserClicked()
             }
             .padding(all = 12.dp),
         horizontalArrangement = Arrangement.spacedBy(space = 6.dp, alignment = Alignment.CenterHorizontally),
