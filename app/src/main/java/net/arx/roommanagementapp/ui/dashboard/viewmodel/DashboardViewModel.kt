@@ -26,7 +26,8 @@ class DashboardViewModel @Inject constructor(
             openUserPinForm = { onOpenUserPinForm() },
             onPinDialogDismiss = { onLoginDialogDismiss() },
             onPinComplete = { onPinComplete() },
-            onNavigateToLobby = { onNavigateToLobby() }
+            onNavigateToLobby = { onNavigateToLobby() },
+            onNavigateToRoom = { onNavigateToRoom(it) }
         )
     )
     val uiState: StateFlow<DashboardUiState> = _uiState.asStateFlow()
@@ -80,12 +81,26 @@ class DashboardViewModel @Inject constructor(
         }
     }
 
-    private fun onNavigateToUser() {
-        _uiState.value.backstackEntries.add(DashboardNavEntries.User)
+    private fun onNavigateToRoom(roomId: Long) {
+        val isAdmin = _uiState.value.loggedInUser.value.isAdmin
+        _uiState.value.selectedRoomId.value = roomId
+        if(isAdmin) {
+            onNavigateToRoomDetails()
+        } else {
+            onNavigateToRoomTasks()
+        }
     }
 
     private fun onNavigateToLobby() {
         _uiState.value.backstackEntries.add(DashboardNavEntries.Lobby)
+    }
+
+    private fun onNavigateToRoomTasks() {
+        _uiState.value.backstackEntries.add(DashboardNavEntries.RoomTasks)
+    }
+
+    private fun onNavigateToRoomDetails() {
+        _uiState.value.backstackEntries.add(DashboardNavEntries.RoomDetails)
     }
 
 }

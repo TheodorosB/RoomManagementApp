@@ -35,11 +35,11 @@
     <string name="room_clean_status">Καθαρό</string>
 
     <!-- Cleaning Tasks -->
-    <string name="cleaning_tasks_mopping_title">Σφουγγάρισμα</string>"
-    <string name="cleaning_tasks_sweeping_title">Σκούπισμα</string>"
-    <string name="cleaning_tasks_disposables_title">Αναλώσιμα</string>"
-    <string name="cleaning_tasks_bedding_title">Σεντόνια</string>"
-    <string name="cleaning_tasks_garbages_title">Σκουπίδια</string>"
+    <string name="task_mopping_title">Σφουγγάρισμα</string>"
+    <string name="task_sweeping_title">Σκούπισμα</string>"
+    <string name="task_disposables_title">Αναλώσιμα</string>"
+    <string name="task_beddings_title">Σεντόνια</string>"
+    <string name="task_garbages_title">Σκουπίδια</string>"
 
     <string name="empty_string" />
 </resources>

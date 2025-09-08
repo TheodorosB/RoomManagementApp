@@ -20,14 +20,14 @@ import net.arx.roommanagementapp.ui.admin.viewmodel.LobbyViewModel
 import net.arx.roommanagementapp.ui.user.composable.UsersRow
 import net.arx.roommanagementapp.ui.dashboard.model.DateUiItem
 import net.arx.roommanagementapp.ui.room.composable.RoomsRow
-import net.arx.roommanagementapp.ui.room.model.RoomCleaningStatus
 import net.arx.roommanagementapp.ui.room.model.RoomUiItem
 import net.arx.roommanagementapp.ui.user.model.UserUiItem
 
 @Composable
 fun LobbyScreen(
     user: UserUiItem,
-    date: DateUiItem
+    date: DateUiItem,
+    onNavigateToRoom: (Long) -> Unit
 ) {
 
     val viewModel: LobbyViewModel = hiltViewModel()
@@ -42,13 +42,15 @@ fun LobbyScreen(
     }
 
     LobbyContent(
-        uiState = uiState
+        uiState = uiState,
+        onNavigateToRoom = onNavigateToRoom
     )
 }
 
 @Composable
 fun LobbyContent(
     uiState: State<LobbyUiState>,
+    onNavigateToRoom: (Long) -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -66,7 +68,7 @@ fun LobbyContent(
         RoomsRow(
             rooms = uiState.value.rooms,
             isAdmin = uiState.value.loggedInUser.value.isAdmin,
-            onRoomClicked = uiState.value.onRoomClicked,
+            onRoomClicked = onNavigateToRoom,
             onAddNewRoomClicked = uiState.value.onAddNewRoomClicked
         )
     }
@@ -108,29 +110,26 @@ private fun AdminContentPreview() {
                         name = "101",
                         user = UserUiItem(name = "Άννα"),
                         isAdmin = true,
-                        status = mutableStateOf(RoomCleaningStatus.General()),
                     ),
                     RoomUiItem(
                         id = 3,
                         name = "101",
                         user = UserUiItem(name = "Δήμητρα"),
                         isAdmin = true,
-                        status = mutableStateOf(RoomCleaningStatus.Regular()),
                     ),
                     RoomUiItem(
                         id = 4,
                         name = "101",
                         user = UserUiItem(name = "Ελένη"),
                         isAdmin = true,
-                        status = mutableStateOf(RoomCleaningStatus.Cleaned()),
                     )
                 ),
                 onUserClicked = {},
                 onSubmitFormClicked = {},
                 onCloseDialogForm = {},
                 onAddNewUserClicked = {},
-                onAddNewRoomClicked = {},
-                onRoomClicked = {}
-            ))}
+                onAddNewRoomClicked = {}
+            ))},
+        onNavigateToRoom = {}
     )
 }

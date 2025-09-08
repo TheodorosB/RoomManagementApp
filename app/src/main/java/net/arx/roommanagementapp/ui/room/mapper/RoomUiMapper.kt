@@ -1,11 +1,12 @@
 package net.arx.roommanagementapp.ui.room.mapper
 
 import androidx.compose.runtime.mutableStateOf
-import net.arx.roommanagementapp.framework.db.entity.CleaningTask
-import net.arx.roommanagementapp.framework.db.entity.CleaningType
+import net.arx.roommanagementapp.framework.db.entity.RoomStatusEntity
 import net.arx.roommanagementapp.framework.db.entity.RoomEntity
-import net.arx.roommanagementapp.ui.room.model.RoomCleaningStatus
+import net.arx.roommanagementapp.framework.db.entity.TaskEntity
+import net.arx.roommanagementapp.framework.db.entity.TaskTypeEntity
 import net.arx.roommanagementapp.ui.room.model.RoomUiItem
+import net.arx.roommanagementapp.ui.room.model.TaskUiItem
 import net.arx.roommanagementapp.ui.user.model.UserUiItem
 import javax.inject.Inject
 
@@ -13,52 +14,73 @@ class RoomUiMapper @Inject constructor() {
 
     operator fun invoke(
         roomEntities: List<RoomEntity>,
-        tasks: List<CleaningTask>,
+        statuses: List<RoomStatusEntity>,
         users: List<UserUiItem> = emptyList(),
         isAdmin: Boolean
     ): List<RoomUiItem> {
 
         return roomEntities.map { roomEntity ->
-            val roomTask = tasks.firstOrNull { it.roomId == roomEntity.roomId }
-
-            val roomStatusType = when(roomTask?.cleaningType) {
-                CleaningType.GENERAL -> RoomCleaningStatus.General()
-                CleaningType.REGULAR -> RoomCleaningStatus.Regular()
-                else -> RoomCleaningStatus.Cleaned()
-            }
+            val roomTask = statuses.firstOrNull { it.roomId == roomEntity.id }
 
             val user = users.firstOrNull { it.id == roomTask?.userId } ?: UserUiItem()
 
+            val tasks = mapTasks(tasks = roomTask?.tasks)
+
             RoomUiItem(
-                id = roomEntity.roomId,
+                id = roomEntity.id,
                 name = roomEntity.name,
                 isAdmin = isAdmin,
                 user = user,
-                status = mutableStateOf(roomStatusType)
+                tasks = tasks
             )
         }
     }
 
-    fun mapRoomsByTasks(
-        roomEntities: List<RoomEntity>,
-        tasks: List<CleaningTask>,
+    operator fun invoke(
+        roomEntity: RoomEntity,
+        statusEntity: RoomStatusEntity,
         isAdmin: Boolean
-    ): List<RoomUiItem> {
-        return tasks.map { task ->
-            val room = roomEntities.firstOrNull { it.roomId == task.roomId }
+    ): RoomUiItem {
 
-            val roomStatusType = when(task.cleaningType) {
-                CleaningType.GENERAL -> RoomCleaningStatus.General()
-                CleaningType.REGULAR -> RoomCleaningStatus.Regular()
-                else -> RoomCleaningStatus.Cleaned()
+        val tasks = mapTasks(tasks = statusEntity.tasks)
+
+        return RoomUiItem(
+            id = roomEntity.id,
+            name = roomEntity.name,
+            isAdmin = isAdmin,
+            tasks = tasks
+        )
+    }
+
+    private fun mapTasks(tasks: List<TaskEntity>?): List<TaskUiItem> {
+        return tasks?.map {
+            when(it.type) {
+                TaskTypeEntity.MOPPING -> TaskUiItem.Mopping(
+                    isDone = mutableStateOf(it.isDone)
+                )
+
+                TaskTypeEntity.SWEEPING -> TaskUiItem.Sweeping(
+                    isDone = mutableStateOf(it.isDone)
+                )
+
+                TaskTypeEntity.GARBAGES -> TaskUiItem.Garbages(
+                    isDone = mutableStateOf(it.isDone)
+                )
+
+                TaskTypeEntity.DISPOSABLES -> TaskUiItem.Disposables(
+                    isDone = mutableStateOf(it.isDone)
+                )
+
+                TaskTypeEntity.BEDDINGS -> TaskUiItem.Beddings(
+                    isDone = mutableStateOf(it.isDone)
+                )
             }
-
-            RoomUiItem(
-                id = room?.roomId ?: 0,
-                name = room?.name ?: "",
-                isAdmin = isAdmin,
-                status = mutableStateOf(roomStatusType)
-            )
-        }
+        } ?: listOf(
+            TaskUiItem.Mopping(),
+            TaskUiItem.Sweeping(),
+            TaskUiItem.Garbages(),
+            TaskUiItem.Disposables(),
+            TaskUiItem.Beddings()
+        )
     }
 }

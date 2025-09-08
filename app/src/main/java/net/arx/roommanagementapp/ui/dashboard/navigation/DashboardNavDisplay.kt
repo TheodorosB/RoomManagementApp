@@ -15,7 +15,7 @@ import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.ui.NavDisplay
 import net.arx.roommanagementapp.ui.admin.composable.LobbyScreen
 import net.arx.roommanagementapp.ui.admin.composable.RoomManagementToolBar
-import net.arx.roommanagementapp.ui.user.composable.UserScreen
+import net.arx.roommanagementapp.ui.user.composable.RoomTasksScreen
 import net.arx.roommanagementapp.ui.dashboard.composable.PinDialog
 import net.arx.roommanagementapp.ui.dashboard.model.DashboardNavEntries
 import net.arx.roommanagementapp.ui.dashboard.viewmodel.DashboardViewModel
@@ -58,18 +58,27 @@ fun DashboardNavDisplay(
                         content = {
                             LobbyScreen(
                                 user = uiState.value.loggedInUser.value,
-                                date = uiState.value.date.value
+                                date = uiState.value.date.value,
+                                onNavigateToRoom = uiState.value.onNavigateToRoom
                             )
                         }
                     )
 
-                    DashboardNavEntries.User -> NavEntry(
+                    DashboardNavEntries.RoomTasks -> NavEntry(
                         key = key,
                         content = {
-                            UserScreen(
+                            RoomTasksScreen(
                                 user = uiState.value.loggedInUser.value,
-                                date = uiState.value.date.value
+                                date = uiState.value.date.value,
+                                roomId = uiState.value.selectedRoomId.value
                             )
+                        }
+                    )
+
+                    DashboardNavEntries.RoomDetails -> NavEntry(
+                        key = key,
+                        content = {
+
                         }
                     )
                 }

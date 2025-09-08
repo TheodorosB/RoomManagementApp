@@ -6,24 +6,31 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 
 @Entity(
-    tableName = "cleaning_tasks",
+    tableName = "room_statuses",
     foreignKeys = [
-        ForeignKey(entity = RoomEntity::class, parentColumns = ["roomId"], childColumns = ["roomId"]),
+        ForeignKey(entity = RoomEntity::class, parentColumns = ["id"], childColumns = ["roomId"]),
         ForeignKey(entity = UserEntity::class, parentColumns = ["id"], childColumns = ["userId"])
     ],
     indices = [Index(value = ["roomId", "dayStart", "dayEnd"], unique = true)]
 )
-data class CleaningTask(
-    @PrimaryKey(autoGenerate = true) val taskId: Long = 0,
+data class RoomStatusEntity(
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val dayStart: Long,
     val dayEnd: Long,
     val roomId: Long,
-    val userId: Long,
-    val cleaningType: CleaningType
+    val userId: Long = 2,
+    val tasks: List<TaskEntity>
 )
 
-enum class CleaningType {
-    GENERAL,
-    REGULAR,
-    CLEANED
+data class TaskEntity(
+    val type: TaskTypeEntity,
+    val isDone: Boolean = true
+)
+
+enum class TaskTypeEntity {
+    MOPPING,
+    SWEEPING,
+    GARBAGES,
+    DISPOSABLES,
+    BEDDINGS
 }

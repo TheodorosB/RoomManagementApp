@@ -113,8 +113,8 @@ fun RoomItem(
                 modifier = Modifier
                     .weight(0.3f)
                     .aspectRatio(1f),
-                painter = painterResource(roomUiItem.status.value.icon),
-                tint = roomUiItem.status.value.color,
+                painter = painterResource(roomUiItem.roomIcon),
+                tint = roomUiItem.roomIconColor,
                 contentDescription = null
             )
             AutoSizeText(

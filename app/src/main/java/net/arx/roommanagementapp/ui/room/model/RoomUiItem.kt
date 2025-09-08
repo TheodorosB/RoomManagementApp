@@ -20,79 +20,85 @@ data class RoomUiItem(
     val name: String = "",
     val isAdmin: Boolean = false,
     val user: UserUiItem = UserUiItem(),
+    @DrawableRes val roomIcon: Int = R.drawable.ic_room_cleaning_status,
     val statusIcon: ImageVector = Icons.Outlined.CheckCircle,
-    val status: MutableState<RoomCleaningStatus> = mutableStateOf(RoomCleaningStatus.Cleaned())
+    val tasks: List<TaskUiItem> = listOf(
+        TaskUiItem.Mopping(),
+        TaskUiItem.Sweeping(),
+        TaskUiItem.Garbages(),
+        TaskUiItem.Disposables(),
+        TaskUiItem.Beddings()
+    )
 ) {
     private val isCleaned: Boolean
-        get() {
-            return status.value.tasks
-                .filter { it.isRequired }
-                .all { it.isDone.value } && status.value !is RoomCleaningStatus.Cleaned
-        }
+        get() = tasks.all { it.isDone.value }
 
     val statusIsVisible: Boolean
-        get() = status.value !is RoomCleaningStatus.Cleaned && isAdmin
+        get() = isCleaned && isAdmin
 
     val statusColor: Color
         get() = if(isCleaned) Color.Green else Color.Gray.copy(alpha = 0.2f)
+
+    val roomIconColor: Color
+        get() {
+            val completedTasks = tasks.filter { it.isDone.value }
+            return when(completedTasks.size) {
+                0 -> ColorRoomGeneralStatus
+                5 -> ColorRoomCleanedStatus
+                else -> ColorRoomRegularStatus
+            }
+        }
 }
 
-sealed class RoomCleaningStatus(
-    @DrawableRes val icon: Int,
+sealed class TaskUiItem(
     @StringRes val title: Int,
     val color: Color,
-    val tasks: List<CleaningTask>
+    val isDone: MutableState<Boolean>
 ) {
-    class General : RoomCleaningStatus(
-        title = R.string.room_general_status,
-        icon = R.drawable.ic_room_cleaning_status,
-        color = ColorRoomGeneralStatus,
-        tasks = CleaningTask.allTasks(requiredCount = 5)
-    )
-
-    class Regular : RoomCleaningStatus(
-        title = R.string.room_regular_status,
-        icon = R.drawable.ic_room_cleaning_status,
-        color = ColorRoomRegularStatus,
-        tasks = CleaningTask.allTasks(requiredCount = 3)
-    )
-
-    class Cleaned : RoomCleaningStatus(
-        title = R.string.room_clean_status,
-        icon = R.drawable.ic_room_cleaning_status,
-        color = ColorRoomCleanedStatus,
-        tasks = CleaningTask.allTasks(requiredCount = 5, allDone = true)
-    )
-}
-
-data class CleaningTask(
-    @StringRes val name: Int,
-    val isDone: MutableState<Boolean> = mutableStateOf(false),
-    val isRequired: Boolean = true
-) {
-
     val textDecoration: TextDecoration
-        get() = if(isDone.value) TextDecoration.LineThrough else TextDecoration.None
+        get() = if (isDone.value) TextDecoration.LineThrough else TextDecoration.None
 
     fun onTaskClicked() {
         isDone.value = !isDone.value
     }
-    companion object {
-        fun allTasks(requiredCount: Int, allDone: Boolean = false): List<CleaningTask> {
-            val baseTasks = listOf(
-                CleaningTask(R.string.cleaning_tasks_sweeping_title),
-                CleaningTask(R.string.cleaning_tasks_garbages_title),
-                CleaningTask(R.string.cleaning_tasks_mopping_title),
-                CleaningTask(R.string.cleaning_tasks_disposables_title),
-                CleaningTask(R.string.cleaning_tasks_bedding_title),
-            )
 
-            return baseTasks.mapIndexed { index, task ->
-                task.copy(
-                    isRequired = index < requiredCount,
-                    isDone = mutableStateOf(allDone && index < requiredCount)
-                )
-            }
-        }
-    }
+    class Mopping(
+        isDone: MutableState<Boolean> = mutableStateOf(true)
+    ) : TaskUiItem(
+        title = R.string.task_mopping_title,
+        color = ColorRoomGeneralStatus,
+        isDone = isDone
+    )
+
+    class Sweeping(
+        isDone: MutableState<Boolean> = mutableStateOf(true)
+    ) : TaskUiItem(
+        title = R.string.task_sweeping_title,
+        color = ColorRoomRegularStatus,
+        isDone = isDone
+    )
+
+    class Garbages(
+        isDone: MutableState<Boolean> = mutableStateOf(true)
+    ) : TaskUiItem(
+        title = R.string.task_garbages_title,
+        color = ColorRoomCleanedStatus,
+        isDone = isDone
+    )
+
+    class Disposables(
+        isDone: MutableState<Boolean> = mutableStateOf(true)
+    ) : TaskUiItem(
+        title = R.string.task_disposables_title,
+        color = ColorRoomCleanedStatus,
+        isDone = isDone
+    )
+
+    class Beddings(
+        isDone: MutableState<Boolean> = mutableStateOf(true)
+    ) : TaskUiItem(
+        title = R.string.task_beddings_title,
+        color = ColorRoomCleanedStatus,
+        isDone = isDone
+    )
 }

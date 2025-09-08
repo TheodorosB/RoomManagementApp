@@ -13,6 +13,10 @@ class RoomDataSourceImpl @Inject constructor(
         return roomDao.insertRoom(room = RoomEntity(name = room.name))
     }
 
+    override suspend fun getRoom(id: Long): RoomEntity {
+        return roomDao.getRoom(id = id)
+    }
+
     override suspend fun getAllRooms(): List<RoomEntity> {
         return roomDao.getAllRooms()
     }

@@ -1,11 +1,26 @@
 package net.arx.roommanagementapp.util.converters
 
 import androidx.room.TypeConverter
-import net.arx.roommanagementapp.framework.db.entity.CleaningType
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import net.arx.roommanagementapp.framework.db.entity.TaskEntity
+import net.arx.roommanagementapp.framework.db.entity.TaskTypeEntity
 import net.arx.roommanagementapp.framework.db.entity.UserRole
 
 class Converters {
 
+    private val gson = Gson()
+
+    @TypeConverter
+    fun fromTaskList(tasks: List<TaskEntity>): String {
+        return gson.toJson(tasks)
+    }
+
+    @TypeConverter
+    fun toTaskList(data: String): List<TaskEntity> {
+        val listType = object : TypeToken<List<TaskEntity>>() {}.type
+        return gson.fromJson(data, listType)
+    }
     @TypeConverter
     fun fromUserRole(role: UserRole): String {
         return role.name
@@ -17,12 +32,8 @@ class Converters {
     }
 
     @TypeConverter
-    fun fromCleaningType(task: CleaningType): String {
-        return task.name
-    }
+    fun fromTaskType(value: TaskTypeEntity): String = value.name
 
     @TypeConverter
-    fun toCleaningTask(value: String): CleaningType {
-        return CleaningType.valueOf(value)
-    }
+    fun toTaskType(value: String): TaskTypeEntity = TaskTypeEntity.valueOf(value)
 }

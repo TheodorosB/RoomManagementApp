@@ -13,7 +13,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import net.arx.roommanagementapp.framework.db.AppDatabase
-import net.arx.roommanagementapp.framework.db.dao.CleaningTaskDao
+import net.arx.roommanagementapp.framework.db.dao.RoomStatusDao
 import net.arx.roommanagementapp.framework.db.dao.RoomDao
 import net.arx.roommanagementapp.framework.db.dao.UserDao
 import net.arx.roommanagementapp.framework.db.entity.UserEntity
@@ -62,5 +62,5 @@ object DatabaseModule {
     fun provideRoomDao(db: AppDatabase): RoomDao = db.roomDao()
 
     @Provides
-    fun provideCleaningTaskDao(db: AppDatabase): CleaningTaskDao = db.cleaningTaskDao()
+    fun provideCleaningTaskDao(db: AppDatabase): RoomStatusDao = db.cleaningTaskDao()
 }

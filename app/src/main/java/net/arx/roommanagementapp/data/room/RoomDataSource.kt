@@ -6,5 +6,7 @@ interface RoomDataSource {
 
     suspend fun insertRoom(room: RoomEntity): Long
 
+    suspend fun getRoom(id : Long): RoomEntity
+
     suspend fun getAllRooms(): List<RoomEntity>
 }

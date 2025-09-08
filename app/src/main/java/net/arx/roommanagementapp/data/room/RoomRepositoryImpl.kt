@@ -13,6 +13,10 @@ class RoomRepositoryImpl @Inject constructor(
         return roomDataSource.insertRoom(room = room)
     }
 
+    override suspend fun getRoom(id: Long): RoomEntity {
+        return roomDataSource.getRoom(id = id)
+    }
+
     override suspend fun getAllRooms(): List<RoomEntity> {
         return roomDataSource.getAllRooms()
     }

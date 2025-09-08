@@ -13,9 +13,9 @@ import net.arx.roommanagementapp.ui.room.model.RoomUiItem
 import net.arx.roommanagementapp.ui.theme.ColorBaseBackground
 import net.arx.roommanagementapp.ui.theme.ColorDarkBaseBackground
 
-data class UserUiState(
+data class RoomTasksUiState(
     val user: MutableState<UserUiItem> = mutableStateOf(UserUiItem()),
-    val rooms: SnapshotStateList<RoomUiItem> = mutableStateListOf()
+    val room: MutableState<RoomUiItem> = mutableStateOf(RoomUiItem())
 )
 
 data class UserUiItem(
