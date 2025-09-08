@@ -1,5 +1,6 @@
 package net.arx.roommanagementapp.ui.dashboard.model
 
+import android.widget.Button
 import androidx.annotation.DrawableRes
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableIntStateOf
@@ -10,27 +11,32 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import net.arx.roommanagementapp.R
 import net.arx.roommanagementapp.ui.user.model.UserUiItem
 import net.arx.roommanagementapp.util.ext.dayBounds
-import net.arx.roommanagementapp.util.ext.formatDate
 import java.util.Calendar
 import kotlin.text.filter
 
 data class DashboardUiState(
     val date: MutableState<DateUiItem> = mutableStateOf(DateUiItem()),
     val navScreens: List<DashboardNavEntries> = listOf(
-        DashboardNavEntries.Admin,
-        DashboardNavEntries.Cleaner
+        DashboardNavEntries.Lobby,
+        DashboardNavEntries.User
     ),
     val backstackEntries: SnapshotStateList<DashboardNavEntries> = mutableStateListOf(
-        DashboardNavEntries.Admin
+        DashboardNavEntries.Lobby
     ),
     val loggedInUser: MutableState<UserUiItem> = mutableStateOf(UserUiItem()),
+    val onBackButtonClicked: () -> Unit,
     val openAdminPinForm: () -> Unit,
-    val openCleanerPinForm: () -> Unit,
+    val openUserPinForm: () -> Unit,
     val pinFormUiItem: PinFormUiItem = PinFormUiItem(),
     val openPinDialog: MutableState<Boolean> = mutableStateOf(false),
+    val onNavigateToLobby: () -> Unit,
     val onPinDialogDismiss: () -> Unit,
     val onPinComplete: () -> Unit,
 ) {
+
+    val hasBackButton: Boolean
+        get() = backstackEntries.lastOrNull()?.hasBackButton ?: false
+
     private val calendar = Calendar.getInstance()
 
     fun onPreviousDateClicked() {
@@ -87,8 +93,14 @@ data class PinCodeUiItem(
     val isFilled: Boolean = false
 )
 
-sealed class DashboardNavEntries() {
-    object Admin : DashboardNavEntries()
-    object Cleaner : DashboardNavEntries()
+sealed class DashboardNavEntries(
+    val hasBackButton: Boolean
+) {
+    object Lobby : DashboardNavEntries(
+        hasBackButton = false
+    )
+    object User : DashboardNavEntries(
+        hasBackButton = true
+    )
 }
 

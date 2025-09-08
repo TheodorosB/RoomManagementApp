@@ -30,7 +30,7 @@ class UserViewModel @Inject constructor(
         launch {
             val roomEntities = getAllRoomsUseCase()
             val userTasks = getTasksByUserUseCase(
-                id = user.id,
+                id = user.id ?: 0,
                 dayStart = date.dayStart.value,
                 dayEnd = date.dayEnd.value
             )

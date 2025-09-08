@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -23,9 +22,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import net.arx.roommanagementapp.R
+import net.arx.roommanagementapp.ui.base.compose.noRippleClickable
 import net.arx.roommanagementapp.ui.dashboard.model.DateUiItem
 import net.arx.roommanagementapp.ui.theme.ColorBaseGrey
 import net.arx.roommanagementapp.util.ext.formatDate
@@ -33,11 +35,13 @@ import net.arx.roommanagementapp.util.ext.formatDate
 @Composable
 fun RoomManagementToolBar(
     date: DateUiItem,
+    hasBackButton: Boolean,
     modifier: Modifier = Modifier,
     onPreviousDateClick: () -> Unit,
     onNextDateClick: () -> Unit,
     onOpenAdminPinFormClicked: () -> Unit,
-    onOpenCleanerPinFormClicked: () -> Unit,
+    onOpenUserPinFormClicked: () -> Unit,
+    onBackButtonClicked: () -> Unit,
     onHomeScreenClicked: () -> Unit,
 ) {
     Row(
@@ -48,7 +52,11 @@ fun RoomManagementToolBar(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.Top
     ) {
-        Spacer(modifier = Modifier.weight(0.3f))
+        BackButton(
+            modifier = Modifier.weight(0.3f),
+            hasBackButton = hasBackButton,
+            onBackButtonClicked = onBackButtonClicked
+        )
 
         RoomManagementDateRow(
             modifier = Modifier.weight(0.4f),
@@ -60,7 +68,7 @@ fun RoomManagementToolBar(
         RoomManagementActionsRow(
             modifier = Modifier.weight(0.3f),
             onOpenAdminPinFormClicked = onOpenAdminPinFormClicked,
-            onOpenCleanerPinFormClicked = onOpenCleanerPinFormClicked,
+            onOpenCleanerPinFormClicked = onOpenUserPinFormClicked,
             onHomeScreenClicked = onHomeScreenClicked
         )
     }
@@ -121,6 +129,33 @@ fun RoomManagementDateRow(
 }
 
 @Composable
+fun BackButton(
+    hasBackButton: Boolean,
+    onBackButtonClicked: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier
+            .padding(horizontal = 8.dp, vertical = 8.dp),
+        horizontalArrangement = Arrangement.Start,
+        verticalAlignment = Alignment.Top
+    ) {
+        if(hasBackButton) {
+            Icon(
+                modifier = Modifier
+                    .size(70.dp)
+                    .noRippleClickable {
+                        onBackButtonClicked()
+                    },
+                painter = painterResource(id = R.drawable.ic_back_button),
+                tint = Color.Black,
+                contentDescription = null
+            )
+        }
+    }
+}
+
+@Composable
 fun RoomManagementActionsRow(
     modifier: Modifier = Modifier,
     onOpenAdminPinFormClicked: () -> Unit,
@@ -135,7 +170,7 @@ fun RoomManagementActionsRow(
     ) {
         Icon(
             modifier = Modifier
-                .size(60.dp)
+                .size(70.dp)
                 .clickable {
                     onOpenAdminPinFormClicked()
                 },
@@ -144,7 +179,7 @@ fun RoomManagementActionsRow(
         )
         Icon(
             modifier = Modifier
-                .size(60.dp)
+                .size(70.dp)
                 .clickable {
                     onOpenCleanerPinFormClicked()
                 },
@@ -153,7 +188,7 @@ fun RoomManagementActionsRow(
         )
         Icon(
             modifier = Modifier
-                .size(60.dp)
+                .size(70.dp)
                 .clickable {
                     onHomeScreenClicked()
                 },

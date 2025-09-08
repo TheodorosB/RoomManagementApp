@@ -15,8 +15,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import net.arx.roommanagementapp.ui.admin.model.AdminUiState
-import net.arx.roommanagementapp.ui.admin.viewmodel.AdminViewModel
+import net.arx.roommanagementapp.ui.admin.model.LobbyUiState
+import net.arx.roommanagementapp.ui.admin.viewmodel.LobbyViewModel
 import net.arx.roommanagementapp.ui.user.composable.UsersRow
 import net.arx.roommanagementapp.ui.dashboard.model.DateUiItem
 import net.arx.roommanagementapp.ui.room.composable.RoomsRow
@@ -25,25 +25,30 @@ import net.arx.roommanagementapp.ui.room.model.RoomUiItem
 import net.arx.roommanagementapp.ui.user.model.UserUiItem
 
 @Composable
-fun AdminScreen(
+fun LobbyScreen(
+    user: UserUiItem,
     date: DateUiItem
 ) {
 
-    val viewModel: AdminViewModel = hiltViewModel()
+    val viewModel: LobbyViewModel = hiltViewModel()
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(key1 = date.dayStart.value, key2 = date.dayEnd.value) {
         viewModel.updateDate(date = date)
     }
 
-    AdminContent(
+    LaunchedEffect(key1 = user) {
+        viewModel.updateUser(user = user)
+    }
+
+    LobbyContent(
         uiState = uiState
     )
 }
 
 @Composable
-fun AdminContent(
-    uiState: State<AdminUiState>,
+fun LobbyContent(
+    uiState: State<LobbyUiState>,
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -53,12 +58,14 @@ fun AdminContent(
 
         UsersRow(
             users = uiState.value.users,
+            isAdmin = uiState.value.loggedInUser.value.isAdmin,
             onUserClicked = uiState.value.onUserClicked,
             onAddNewUserClicked = uiState.value.onAddNewUserClicked
         )
 
         RoomsRow(
             rooms = uiState.value.rooms,
+            isAdmin = uiState.value.loggedInUser.value.isAdmin,
             onRoomClicked = uiState.value.onRoomClicked,
             onAddNewRoomClicked = uiState.value.onAddNewRoomClicked
         )
@@ -79,9 +86,9 @@ fun AdminContent(
 )
 @Composable
 private fun AdminContentPreview() {
-    AdminContent(
+    LobbyContent(
         uiState = remember { mutableStateOf(
-            AdminUiState(
+            LobbyUiState(
                 users = mutableStateListOf(
                     UserUiItem(name = "Γεωργία"),
                     UserUiItem(name = "Άννα"),

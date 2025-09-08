@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import net.arx.roommanagementapp.R
-import net.arx.roommanagementapp.ui.admin.model.AdminUiState
+import net.arx.roommanagementapp.ui.admin.model.LobbyUiState
 import net.arx.roommanagementapp.ui.admin.model.DialogFormUiItem
 import net.arx.roommanagementapp.ui.admin.model.DropDownMenu
 import net.arx.roommanagementapp.ui.admin.model.FieldUiItem
@@ -23,10 +23,11 @@ import net.arx.roommanagementapp.usecase.task.InsertTaskUseCase
 import net.arx.roommanagementapp.usecase.user.GetAllUsersUseCase
 import net.arx.roommanagementapp.usecase.user.InsertUserUseCase
 import javax.inject.Inject
+import kotlin.properties.Delegates
 
 
 @HiltViewModel
-class AdminViewModel @Inject constructor(
+class LobbyViewModel @Inject constructor(
     private val userUiMapper: UserUiMapper,
     private val roomUiMapper: RoomUiMapper,
     private val taskUiMapper: TaskUiMapper,
@@ -40,7 +41,7 @@ class AdminViewModel @Inject constructor(
     ): BaseViewModel() {
 
     private val _uiState = MutableStateFlow(
-        AdminUiState(
+        LobbyUiState(
             onUserClicked = { onUserClicked() },
             onAddNewUserClicked = { onAddNewUserClicked() },
             onRoomClicked = { onRoomClicked(it) },
@@ -49,19 +50,33 @@ class AdminViewModel @Inject constructor(
             onSubmitFormClicked = { onSubmitFormClicked() }
         )
     )
-    val uiState: StateFlow<AdminUiState> = _uiState.asStateFlow()
+    val uiState: StateFlow<LobbyUiState> = _uiState.asStateFlow()
 
-    init {
+    var fetchDataByUser by Delegates.observable(_uiState.value.loggedInUser.value){ property, oldValue, newValue ->
+        if(newValue.id != null) {
+            init()
+        }
+    }
+
+    fun init() {
         launch {
             refreshUsers()
+            refreshRooms()
         }
     }
 
     fun updateDate(date: DateUiItem) {
         _uiState.value.date.value = date
-        launch {
-            refreshRooms()
+        if(_uiState.value.loggedInUser.value.id != null) {
+            launch {
+                refreshRooms()
+            }
         }
+    }
+
+    fun updateUser(user: UserUiItem) {
+        _uiState.value.loggedInUser.value = user
+        fetchDataByUser = user
     }
 
     private fun onUserClicked() {
@@ -105,7 +120,7 @@ class AdminViewModel @Inject constructor(
                         date = _uiState.value.date.value,
                         roomId = formUiItem.roomId,
                     )
-                    insertTaskUseCase(task = task,)
+                    insertTaskUseCase(task = task)
                     refreshRooms()
                 }
             }

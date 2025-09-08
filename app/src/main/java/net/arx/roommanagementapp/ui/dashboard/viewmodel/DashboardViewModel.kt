@@ -21,15 +21,19 @@ class DashboardViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow(
         DashboardUiState(
+            onBackButtonClicked = { onBackButtonClicked() },
             openAdminPinForm = { onOpenAdminPinForm() },
-            openCleanerPinForm = { onOpenCleanerPinForm() },
+            openUserPinForm = { onOpenUserPinForm() },
             onPinDialogDismiss = { onLoginDialogDismiss() },
-            onPinComplete = { onPinComplete() }
-
+            onPinComplete = { onPinComplete() },
+            onNavigateToLobby = { onNavigateToLobby() }
         )
     )
     val uiState: StateFlow<DashboardUiState> = _uiState.asStateFlow()
 
+    private fun onBackButtonClicked() {
+        _uiState.value.backstackEntries.removeLastOrNull()
+    }
     private fun onOpenAdminPinForm() {
         if(!_uiState.value.loggedInUser.value.isAdmin){
             _uiState.value.pinFormUiItem.title.value = R.string.pin_dialog_title_admin
@@ -37,7 +41,7 @@ class DashboardViewModel @Inject constructor(
         }
     }
 
-    private fun onOpenCleanerPinForm() {
+    private fun onOpenUserPinForm() {
         _uiState.value.pinFormUiItem.title.value = R.string.pin_dialog_title_user
         openLoginDialog()
     }
@@ -59,12 +63,12 @@ class DashboardViewModel @Inject constructor(
             when{
                 user?.role == UserRole.ADMIN && !_uiState.value.loggedInUser.value.isAdmin -> {
                     _uiState.value.loggedInUser.value = userUiMapper(userEntity = user)
-                    onNavigateToAdmin()
+                    onNavigateToLobby()
                     onLoginDialogDismiss()
                 }
-                user?.role == UserRole.CLEANER && _uiState.value.loggedInUser.value.id != user.id -> {
+                user?.role == UserRole.USER && _uiState.value.loggedInUser.value.id != user.id -> {
                     _uiState.value.loggedInUser.value = userUiMapper(userEntity = user)
-                    onNavigateToCleaner()
+                    onNavigateToLobby()
                     onLoginDialogDismiss()
                 }
                 user == null -> {
@@ -76,12 +80,12 @@ class DashboardViewModel @Inject constructor(
         }
     }
 
-    private fun onNavigateToAdmin() {
-        _uiState.value.backstackEntries.add(DashboardNavEntries.Admin)
+    private fun onNavigateToUser() {
+        _uiState.value.backstackEntries.add(DashboardNavEntries.User)
     }
 
-    private fun onNavigateToCleaner() {
-        _uiState.value.backstackEntries.add(DashboardNavEntries.Cleaner)
+    private fun onNavigateToLobby() {
+        _uiState.value.backstackEntries.add(DashboardNavEntries.Lobby)
     }
 
 }

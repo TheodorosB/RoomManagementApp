@@ -19,12 +19,12 @@ data class UserUiState(
 )
 
 data class UserUiItem(
-    val id: Long = 0,
+    val id: Long? = null,
     val name: String = "",
     val isClickable: Boolean = true,
     val isSelected: MutableState<Boolean> = mutableStateOf(false),
     val icon: ImageVector = Icons.Outlined.AccountCircle,
-    val role: UserRole = UserRole.ADMIN,
+    val role: UserRole = UserRole.USER,
 ) {
     val backgroundColor: Color
         get() = if(isSelected.value) ColorDarkBaseBackground else ColorBaseBackground

@@ -32,6 +32,7 @@ import net.arx.roommanagementapp.ui.user.model.UserUiItem
 
 @Composable
 fun UsersRow(
+    isAdmin: Boolean,
     users: List<UserUiItem>,
     onUserClicked: () -> Unit,
     onAddNewUserClicked: () -> Unit,
@@ -45,18 +46,20 @@ fun UsersRow(
         horizontalArrangement = Arrangement.spacedBy(space = 10.dp, alignment = Alignment.Start),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        items(items = users, key = { it.id }) { user ->
+        items(items = users, key = { it.id ?: 0}) { user ->
             UserItem(
                 modifier = Modifier.fillMaxWidth(0.2f),
                 user = user,
                 onUserClicked = onUserClicked
             )
         }
-        item {
-            AddNewUserItem(
-                modifier = Modifier.fillMaxWidth(0.2f),
-                onAddNewUserClicked = onAddNewUserClicked
-            )
+        if(isAdmin) {
+            item {
+                AddNewUserItem(
+                    modifier = Modifier.fillMaxWidth(0.2f),
+                    onAddNewUserClicked = onAddNewUserClicked
+                )
+            }
         }
     }
 }

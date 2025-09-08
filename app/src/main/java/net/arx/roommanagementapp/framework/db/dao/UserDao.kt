@@ -14,6 +14,6 @@ interface UserDao {
     @Query("SELECT * FROM users WHERE password = :password LIMIT 1")
     suspend fun login(password: String): UserEntity?
 
-    @Query("SELECT * FROM users WHERE role = 'CLEANER'")
+    @Query("SELECT * FROM users WHERE role = 'USER'")
     suspend fun getAllCleaners(): List<UserEntity>
 }

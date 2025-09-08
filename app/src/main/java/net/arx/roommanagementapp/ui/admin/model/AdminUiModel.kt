@@ -13,8 +13,9 @@ import net.arx.roommanagementapp.ui.room.model.RoomCleaningStatus
 import net.arx.roommanagementapp.ui.room.model.RoomUiItem
 import net.arx.roommanagementapp.ui.user.model.UserUiItem
 
-data class AdminUiState(
+data class LobbyUiState(
     val date: MutableState<DateUiItem> = mutableStateOf(DateUiItem()),
+    val loggedInUser: MutableState<UserUiItem> = mutableStateOf(UserUiItem()),
     val users: SnapshotStateList<UserUiItem> = mutableStateListOf(),
     val rooms: SnapshotStateList<RoomUiItem> = mutableStateListOf(),
     val onAddNewUserClicked: () -> Unit,

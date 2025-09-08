@@ -36,6 +36,7 @@ import net.arx.roommanagementapp.ui.room.model.RoomUiItem
 @Composable
 fun RoomsRow(
     rooms: List<RoomUiItem>,
+    isAdmin: Boolean,
     onRoomClicked: (Long) -> Unit,
     onAddNewRoomClicked: () -> Unit
 ) {
@@ -54,10 +55,12 @@ fun RoomsRow(
                 arrangement = Arrangement.SpaceBetween
             )
         }
-        item {
-            AddNewRoomItem(
-                onAddNewRoomClicked = onAddNewRoomClicked
-            )
+        if(isAdmin) {
+            item {
+                AddNewRoomItem(
+                    onAddNewRoomClicked = onAddNewRoomClicked
+                )
+            }
         }
     }
 }

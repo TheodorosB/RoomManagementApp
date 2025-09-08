@@ -11,7 +11,7 @@ class UserEntityMapper @Inject constructor(
         return UserEntity(
             username = username,
             password = password,
-            role = UserRole.CLEANER
+            role = UserRole.USER
         )
 
     }

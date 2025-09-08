@@ -13,7 +13,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.ui.NavDisplay
-import net.arx.roommanagementapp.ui.admin.composable.AdminScreen
+import net.arx.roommanagementapp.ui.admin.composable.LobbyScreen
 import net.arx.roommanagementapp.ui.admin.composable.RoomManagementToolBar
 import net.arx.roommanagementapp.ui.user.composable.UserScreen
 import net.arx.roommanagementapp.ui.dashboard.composable.PinDialog
@@ -37,11 +37,13 @@ fun DashboardNavDisplay(
     ) {
         RoomManagementToolBar(
             date = uiState.value.date.value,
+            hasBackButton = uiState.value.hasBackButton,
+            onBackButtonClicked = uiState.value.onBackButtonClicked,
             onPreviousDateClick = { uiState.value.onPreviousDateClicked() },
             onNextDateClick = { uiState.value.onNextDateClicked() },
             onOpenAdminPinFormClicked = uiState.value.openAdminPinForm,
-            onOpenCleanerPinFormClicked = uiState.value.openCleanerPinForm,
-            onHomeScreenClicked = {},
+            onOpenUserPinFormClicked = uiState.value.openUserPinForm,
+            onHomeScreenClicked = uiState.value.onNavigateToLobby
         )
 
         NavDisplay(
@@ -51,16 +53,17 @@ fun DashboardNavDisplay(
             contentAlignment = Alignment.Center,
             entryProvider = { key ->
                 when (key) {
-                    DashboardNavEntries.Admin -> NavEntry(
+                    DashboardNavEntries.Lobby -> NavEntry(
                         key = key,
                         content = {
-                            AdminScreen(
+                            LobbyScreen(
+                                user = uiState.value.loggedInUser.value,
                                 date = uiState.value.date.value
                             )
                         }
                     )
 
-                    DashboardNavEntries.Cleaner -> NavEntry(
+                    DashboardNavEntries.User -> NavEntry(
                         key = key,
                         content = {
                             UserScreen(

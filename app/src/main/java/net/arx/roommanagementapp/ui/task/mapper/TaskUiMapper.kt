@@ -38,7 +38,7 @@ class TaskUiMapper @Inject constructor() {
             dayStart = date.dayStart.value,
             dayEnd = date.dayEnd.value,
             roomId = roomId,
-            userId = user.id,
+            userId = user.id ?: 0,
             cleaningType = cleaningType
         )
     }
