@@ -34,12 +34,16 @@
     <string name="room_regular_status">Ήπιος</string>
     <string name="room_clean_status">Καθαρό</string>
 
-    <!-- Cleaning Tasks -->
+    <!-- Room Tasks -->
     <string name="task_mopping_title">Σφουγγάρισμα</string>"
     <string name="task_sweeping_title">Σκούπισμα</string>"
     <string name="task_disposables_title">Αναλώσιμα</string>"
     <string name="task_beddings_title">Σεντόνια</string>"
     <string name="task_garbages_title">Σκουπίδια</string>"
+    
+    <!-- Room Details -->
+    <string name="room_details_user_selection_title">Επιλογή Χρήστη</string>
+    <string name="room_details_task_selection_title">Επιλογή Εργασιών</string>
 
     <string name="empty_string" />
 </resources>

@@ -8,5 +8,7 @@ interface UserRepository {
 
     suspend fun login(password: String): UserEntity?
 
+    suspend fun getUser(id: Long): UserEntity?
+
     suspend fun getAllCleaners(): List<UserEntity>
 }

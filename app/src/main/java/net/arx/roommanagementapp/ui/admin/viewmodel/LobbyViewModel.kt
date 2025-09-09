@@ -16,7 +16,6 @@ import net.arx.roommanagementapp.ui.user.model.UserUiItem
 import net.arx.roommanagementapp.usecase.room.GetAllRoomsUseCase
 import net.arx.roommanagementapp.usecase.room.InsertRoomUseCase
 import net.arx.roommanagementapp.usecase.status.GetRoomStatusesUseCase
-import net.arx.roommanagementapp.usecase.status.InsertRoomStatusUseCase
 import net.arx.roommanagementapp.usecase.user.GetAllUsersUseCase
 import net.arx.roommanagementapp.usecase.user.InsertUserUseCase
 import javax.inject.Inject
@@ -29,7 +28,6 @@ class LobbyViewModel @Inject constructor(
     private val roomUiMapper: RoomUiMapper,
     private val insertRoomUseCase: InsertRoomUseCase,
     private val insertUserUseCase: InsertUserUseCase,
-    private val insertRoomStatusUseCase: InsertRoomStatusUseCase,
     private val getAllRoomsUseCase: GetAllRoomsUseCase,
     private val getAllUsersUseCase: GetAllUsersUseCase,
     private val getRoomStatusesUseCase: GetRoomStatusesUseCase,
@@ -38,7 +36,6 @@ class LobbyViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow(
         LobbyUiState(
-            onUserClicked = { onUserClicked() },
             onAddNewUserClicked = { onAddNewUserClicked() },
             onAddNewRoomClicked = { onAddNewRoomClicked() },
             onCloseDialogForm = { closeDialogForm() },
@@ -74,10 +71,6 @@ class LobbyViewModel @Inject constructor(
         fetchDataByUser = user
     }
 
-    private fun onUserClicked() {
-        //TODO Mark Specific User Rooms ??
-    }
-
     private fun onAddNewUserClicked() {
         _uiState.value.formUiItem.value = DialogFormUiItem.User()
         _uiState.value.formUiItem.value.title.value = R.string.add_cleaner_title
@@ -102,45 +95,10 @@ class LobbyViewModel @Inject constructor(
                     refreshRooms()
                 }
             }
-            /*is DialogFormUiItem.Task -> {
-                launch {
-                    val user = formUiItem.dropDownMenus.firstOrNull { it is DropDownMenu.UserMenu }?.selectedOption?.value
-                    val status = formUiItem.dropDownMenus.firstOrNull { it is DropDownMenu.StatusMenu }?.selectedOption?.value
-
-                    if(user == null || status == null) return@launch
-
-                    val task = taskUiMapper(
-                        user = user as UserUiItem,
-                        status = status,
-                        date = _uiState.value.date.value,
-                        roomId = formUiItem.roomId,
-                    )
-                    insertRoomStatusUseCase(task = task)
-                    refreshRooms()
-                }
-            }*/
         }
         _uiState.value.formUiItem.value.resetForm()
         closeDialogForm()
     }
-
-    /*private fun onRoomClicked(id : Long) {
-        val users = _uiState.value.users
-        _uiState.value.formUiItem.value = DialogFormUiItem.Task(roomId = id)
-        _uiState.value.formUiItem.value.title.value = R.string.dialog_form_room_edit_title
-        _uiState.value.formUiItem.value.dropDownMenus.filterIsInstance<DropDownMenu.StatusMenu>().firstOrNull().apply {
-            this?.selectedOption?.value = _uiState.value.rooms.firstOrNull { it.id == id }?.status?.value ?: RoomCleaningStatus.General()
-        }
-        _uiState.value.formUiItem.value.dropDownMenus.filterIsInstance<DropDownMenu.UserMenu>().firstOrNull().apply {
-            this?.options
-                ?.apply {
-                    clear()
-                    addAll(users)
-                }
-            this?.selectedOption?.value = _uiState.value.rooms.firstOrNull { it.id == id }?.user ?: UserUiItem()
-        }
-        _uiState.value.openDialogForm.value = true
-    }*/
 
     private fun onAddNewRoomClicked() {
         _uiState.value.formUiItem.value = DialogFormUiItem.Room()
@@ -159,22 +117,25 @@ class LobbyViewModel @Inject constructor(
             dayStart = _uiState.value.date.value.dayStart.value,
             dayEnd = _uiState.value.date.value.dayEnd.value
         )
+        val isAdmin = _uiState.value.loggedInUser.value.isAdmin
         _uiState.value.rooms.clear()
         _uiState.value.rooms.addAll(
             roomUiMapper(
                 roomEntities = roomEntities,
                 statuses = roomStatuses,
                 users = _uiState.value.users,
-                isAdmin = true
+                isAdmin = isAdmin,
+                hasStatus = true
             )
         )
+        val assignedUsers = _uiState.value.rooms.map { it.user.id }
+        _uiState.value.users.forEach { it.isSelected.value = it.id in assignedUsers }
     }
 
     private suspend fun refreshUsers() {
         val userEntities = getAllUsersUseCase()
-        val users = userUiMapper(userEntities)
+        val users = userUiMapper(users = userEntities)
         _uiState.value.users.clear()
         _uiState.value.users.addAll(users)
     }
-
 }

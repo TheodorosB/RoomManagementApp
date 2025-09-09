@@ -17,6 +17,10 @@ class UserDataSourceImpl @Inject constructor(
         return userDao.login(password = password)
     }
 
+    override suspend fun getUser(id: Long): UserEntity? {
+        return userDao.getUser(id = id)
+    }
+
     override suspend fun getAllCleaners(): List<UserEntity> {
         return userDao.getAllCleaners()
     }

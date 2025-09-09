@@ -34,7 +34,6 @@ import net.arx.roommanagementapp.ui.user.model.UserUiItem
 fun UsersRow(
     isAdmin: Boolean,
     users: List<UserUiItem>,
-    onUserClicked: () -> Unit,
     onAddNewUserClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -49,8 +48,7 @@ fun UsersRow(
         items(items = users, key = { it.id ?: 0}) { user ->
             UserItem(
                 modifier = Modifier.fillMaxWidth(0.2f),
-                user = user,
-                onUserClicked = onUserClicked
+                user = user
             )
         }
         if(isAdmin) {
@@ -68,7 +66,7 @@ fun UsersRow(
 fun UserItem(
     user: UserUiItem,
     modifier: Modifier = Modifier,
-    onUserClicked: () -> Unit = {}
+    onUserClicked: (Long?) -> Unit = {}
 ) {
     Row(
         modifier = modifier
@@ -85,7 +83,7 @@ fun UserItem(
             .background(user.backgroundColor)
             .ifable(condition = user.isClickable) {
                 clickable {
-                    onUserClicked()
+                    onUserClicked(user.id)
                 }
             }
             .padding(all = 12.dp),

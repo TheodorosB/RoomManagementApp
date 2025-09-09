@@ -15,10 +15,11 @@ import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.ui.NavDisplay
 import net.arx.roommanagementapp.ui.admin.composable.LobbyScreen
 import net.arx.roommanagementapp.ui.admin.composable.RoomManagementToolBar
-import net.arx.roommanagementapp.ui.user.composable.RoomTasksScreen
+import net.arx.roommanagementapp.ui.room.composable.RoomTasksScreen
 import net.arx.roommanagementapp.ui.dashboard.composable.PinDialog
 import net.arx.roommanagementapp.ui.dashboard.model.DashboardNavEntries
 import net.arx.roommanagementapp.ui.dashboard.viewmodel.DashboardViewModel
+import net.arx.roommanagementapp.ui.room.composable.RoomManagementScreen
 import net.arx.roommanagementapp.ui.theme.ColorBaseBackground
 
 @Composable
@@ -68,7 +69,6 @@ fun DashboardNavDisplay(
                         key = key,
                         content = {
                             RoomTasksScreen(
-                                user = uiState.value.loggedInUser.value,
                                 date = uiState.value.date.value,
                                 roomId = uiState.value.selectedRoomId.value
                             )
@@ -78,7 +78,10 @@ fun DashboardNavDisplay(
                     DashboardNavEntries.RoomDetails -> NavEntry(
                         key = key,
                         content = {
-
+                            RoomManagementScreen(
+                                roomId = uiState.value.selectedRoomId.value,
+                                date = uiState.value.date.value,
+                            )
                         }
                     )
                 }

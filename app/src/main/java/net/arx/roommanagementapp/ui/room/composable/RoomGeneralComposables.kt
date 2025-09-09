@@ -48,8 +48,9 @@ fun RoomsRow(
         horizontalArrangement = Arrangement.spacedBy(space = 8.dp, alignment = Alignment.Start),
         verticalArrangement = Arrangement.spacedBy(space = 8.dp, alignment = Alignment.Top)
     ) {
-        items(rooms, key = { it.id }) { room ->
+        items(items = rooms, key = { it.id }) { room ->
             RoomItem(
+                modifier = Modifier.aspectRatio(1f),
                 roomUiItem = room,
                 onRoomClicked = onRoomClicked,
                 arrangement = Arrangement.SpaceBetween
@@ -75,17 +76,16 @@ fun RoomItem(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .aspectRatio(1f)
             .clip(shape = RoundedCornerShape(40.dp))
             .background(Color.White)
-            .clickable(enabled = roomUiItem.isAdmin) {
+            .clickable(enabled = roomUiItem.isClickable) {
                 onRoomClicked(roomUiItem.id)
             }
             .padding(horizontal = 14.dp, vertical = 7.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = arrangement
     ) {
-        if(roomUiItem.statusIsVisible) {
+        if(roomUiItem.hasStatus) {
             Icon(
                 modifier = Modifier
                     .fillMaxWidth(0.3f)
@@ -111,7 +111,7 @@ fun RoomItem(
         ) {
             Icon(
                 modifier = Modifier
-                    .weight(0.3f)
+                    .weight(0.2f)
                     .aspectRatio(1f),
                 painter = painterResource(roomUiItem.roomIcon),
                 tint = roomUiItem.roomIconColor,

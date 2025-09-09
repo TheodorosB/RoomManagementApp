@@ -1,4 +1,4 @@
-package net.arx.roommanagementapp.ui.user.composable
+package net.arx.roommanagementapp.ui.room.composable
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -32,38 +32,35 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import net.arx.roommanagementapp.R
 import net.arx.roommanagementapp.ui.dashboard.model.DateUiItem
-import net.arx.roommanagementapp.ui.room.composable.RoomItem
 import net.arx.roommanagementapp.ui.room.model.RoomUiItem
 import net.arx.roommanagementapp.ui.room.model.TaskUiItem
+import net.arx.roommanagementapp.ui.user.composable.UserItem
 import net.arx.roommanagementapp.ui.user.model.RoomTasksUiState
-import net.arx.roommanagementapp.ui.user.model.UserUiItem
 import net.arx.roommanagementapp.ui.user.viewmodel.RoomTasksViewModel
 
 @Composable
-fun RoomTasksScreen(
+internal fun RoomTasksScreen(
     roomId: Long?,
-    user: UserUiItem,
     date: DateUiItem
 ) {
 
     val viewModel: RoomTasksViewModel = hiltViewModel()
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(key1 = user, key2 = date.dayStart.value, key3 = roomId) {
+    LaunchedEffect(key1 = roomId, key2 = date.dayStart.value) {
         viewModel.loadUserData(
-            user = user,
             date = date,
             roomId = roomId
         )
     }
 
-    UserContent(
+    RoomTasksContent(
         uiState = uiState,
     )
 }
 
 @Composable
-fun UserContent(
+private fun RoomTasksContent(
     uiState: State<RoomTasksUiState>
 ) {
     Column(
@@ -83,14 +80,16 @@ fun UserContent(
         )
 
         UserRoomItem(
-            room = uiState.value.room.value
+            room = uiState.value.room.value,
+            onUpdateStatus = uiState.value.onUpdateStatus
         )
     }
 }
 
 @Composable
-fun UserRoomItem(
-    room: RoomUiItem
+private fun UserRoomItem(
+    room: RoomUiItem,
+    onUpdateStatus: () -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -100,7 +99,9 @@ fun UserRoomItem(
         verticalAlignment = Alignment.CenterVertically
     ) {
         RoomItem(
-            modifier = Modifier.fillMaxWidth(0.15f),
+            modifier = Modifier
+                .fillMaxWidth(0.15f)
+                .aspectRatio(1f),
             roomUiItem = room,
             arrangement = Arrangement.spacedBy(space = 8.dp, alignment = Alignment.CenterVertically)
         )
@@ -122,7 +123,8 @@ fun UserRoomItem(
 
             items(items = room.tasks, key = { it.title }) { task ->
                 TaskItem(
-                    task = task
+                    task = task,
+                    onUpdateStatus = onUpdateStatus
                 )
             }
         }
@@ -141,8 +143,9 @@ fun UserRoomItem(
 }
 
 @Composable
-fun TaskItem(
-    task: TaskUiItem
+internal fun TaskItem(
+    task: TaskUiItem,
+    onUpdateStatus: () -> Unit = {},
 ) {
     Column(
         modifier = Modifier
@@ -152,6 +155,7 @@ fun TaskItem(
             .background(Color.White)
             .clickable {
                 task.onTaskClicked()
+                onUpdateStatus()
             }
             .padding(all = 2.dp),
         horizontalAlignment = Alignment.CenterHorizontally,

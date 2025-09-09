@@ -1,8 +1,8 @@
 package net.arx.roommanagementapp.ui.room.mapper
 
 import androidx.compose.runtime.mutableStateOf
-import net.arx.roommanagementapp.framework.db.entity.RoomStatusEntity
 import net.arx.roommanagementapp.framework.db.entity.RoomEntity
+import net.arx.roommanagementapp.framework.db.entity.RoomStatusEntity
 import net.arx.roommanagementapp.framework.db.entity.TaskEntity
 import net.arx.roommanagementapp.framework.db.entity.TaskTypeEntity
 import net.arx.roommanagementapp.ui.room.model.RoomUiItem
@@ -16,7 +16,8 @@ class RoomUiMapper @Inject constructor() {
         roomEntities: List<RoomEntity>,
         statuses: List<RoomStatusEntity>,
         users: List<UserUiItem> = emptyList(),
-        isAdmin: Boolean
+        isAdmin: Boolean,
+        hasStatus: Boolean
     ): List<RoomUiItem> {
 
         return roomEntities.map { roomEntity ->
@@ -31,22 +32,25 @@ class RoomUiMapper @Inject constructor() {
                 name = roomEntity.name,
                 isAdmin = isAdmin,
                 user = user,
-                tasks = tasks
+                tasks = tasks,
+                isLobby = hasStatus
             )
         }
     }
 
     operator fun invoke(
         roomEntity: RoomEntity,
-        statusEntity: RoomStatusEntity,
+        statusEntity: RoomStatusEntity?,
         isAdmin: Boolean
     ): RoomUiItem {
 
-        val tasks = mapTasks(tasks = statusEntity.tasks)
+        val tasks = mapTasks(tasks = statusEntity?.tasks)
+        val user = UserUiItem(id = statusEntity?.userId)
 
         return RoomUiItem(
             id = roomEntity.id,
             name = roomEntity.name,
+            user = user,
             isAdmin = isAdmin,
             tasks = tasks
         )

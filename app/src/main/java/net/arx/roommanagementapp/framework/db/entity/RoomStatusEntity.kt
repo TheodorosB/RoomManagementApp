@@ -18,7 +18,7 @@ data class RoomStatusEntity(
     val dayStart: Long,
     val dayEnd: Long,
     val roomId: Long,
-    val userId: Long,
+    val userId: Long? = null,
     val tasks: List<TaskEntity>
 )
 

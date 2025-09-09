@@ -12,14 +12,20 @@ class InsertRoomStatusUseCase @Inject constructor(
     private val taskEntityMapper: TaskEntityMapper
 ): UseCase {
 
-    suspend operator fun invoke(status: TaskUiItem) {
-        /*try {
-            val roomStatusEntity = taskEntityMapper(task = task)
+    suspend operator fun invoke(
+        userId: Long?,
+        roomId: Long,
+        dayStart: Long,
+        dayEnd: Long,
+        tasks: List<TaskUiItem>
+    ) {
+        try {
+            val roomStatusEntity = taskEntityMapper(dayStart = dayStart, dayEnd = dayEnd, roomId = roomId, userId = userId, tasks = tasks)
             val taskId = taskRepository.insertRoomStatus(task = roomStatusEntity)
             Timber.tag(InsertRoomStatusUseCase::class.simpleName.toString())
                 .d("Task with id: $taskId inserted successfully")
         } catch (ex: Exception) {
             Timber.tag(InsertRoomStatusUseCase::class.simpleName.toString()).e(ex)
-        }*/
+        }
     }
 }

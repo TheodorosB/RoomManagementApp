@@ -8,15 +8,21 @@ import javax.inject.Inject
 
 class TaskEntityMapper @Inject constructor() {
 
-    /*operator fun invoke(status: RoomStatusUiItem): RoomStatusEntity {
+    operator fun invoke(
+        dayStart: Long,
+        dayEnd: Long,
+        roomId: Long,
+        userId: Long?,
+        tasks: List<TaskUiItem>
+    ): RoomStatusEntity {
         return RoomStatusEntity(
-            dayStart = status.dayStart,
-            dayEnd = status.dayEnd,
-            roomId = status.roomId,
-            userId = status.userId,
-            tasks = mapStatusType(status.tasks)
+            dayStart = dayStart,
+            dayEnd = dayEnd,
+            roomId = roomId,
+            userId = userId,
+            tasks = mapStatusType(tasks)
         )
-    }*/
+    }
 
     fun mapStatusType(tasks: List<TaskUiItem>): List<TaskEntity> {
         return tasks.map { task ->

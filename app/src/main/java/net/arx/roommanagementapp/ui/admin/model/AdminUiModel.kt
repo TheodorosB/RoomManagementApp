@@ -19,7 +19,6 @@ data class LobbyUiState(
     val rooms: SnapshotStateList<RoomUiItem> = mutableStateListOf(),
     val onAddNewUserClicked: () -> Unit,
     val onSubmitFormClicked: () -> Unit,
-    val onUserClicked: () -> Unit,
     val onAddNewRoomClicked: () -> Unit,
     val openDialogForm: MutableState<Boolean?> = mutableStateOf(null),
     val formUiItem: MutableState<DialogFormUiItem> = mutableStateOf(DialogFormUiItem.User()),

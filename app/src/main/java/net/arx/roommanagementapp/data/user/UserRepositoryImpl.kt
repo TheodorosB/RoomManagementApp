@@ -15,6 +15,10 @@ class UserRepositoryImpl @Inject constructor(
         return userDataSource.login(password = password)
     }
 
+    override suspend fun getUser(id: Long): UserEntity? {
+        return userDataSource.getUser(id = id)
+    }
+
     override suspend fun getAllCleaners(): List<UserEntity> {
         return userDataSource.getAllCleaners()
     }

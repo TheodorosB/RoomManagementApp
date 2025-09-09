@@ -61,7 +61,6 @@ fun LobbyContent(
         UsersRow(
             users = uiState.value.users,
             isAdmin = uiState.value.loggedInUser.value.isAdmin,
-            onUserClicked = uiState.value.onUserClicked,
             onAddNewUserClicked = uiState.value.onAddNewUserClicked
         )
 
@@ -124,7 +123,6 @@ private fun AdminContentPreview() {
                         isAdmin = true,
                     )
                 ),
-                onUserClicked = {},
                 onSubmitFormClicked = {},
                 onCloseDialogForm = {},
                 onAddNewUserClicked = {},
