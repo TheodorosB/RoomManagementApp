@@ -12,7 +12,7 @@ import net.arx.roommanagementapp.ui.room.model.RoomUiItem
 import net.arx.roommanagementapp.ui.theme.ColorBaseBackground
 import net.arx.roommanagementapp.ui.theme.ColorDarkBaseBackground
 
-data class RoomTasksUiState(
+data class UserRoomUiState(
     val date: MutableState<DateUiItem> = mutableStateOf(DateUiItem()),
     val user: MutableState<UserUiItem> = mutableStateOf(UserUiItem()),
     val room: MutableState<RoomUiItem> = mutableStateOf(RoomUiItem()),

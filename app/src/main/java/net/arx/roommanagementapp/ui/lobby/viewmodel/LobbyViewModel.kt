@@ -1,13 +1,13 @@
-package net.arx.roommanagementapp.ui.admin.viewmodel
+package net.arx.roommanagementapp.ui.lobby.viewmodel
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import net.arx.roommanagementapp.R
-import net.arx.roommanagementapp.ui.admin.model.DialogFormUiItem
-import net.arx.roommanagementapp.ui.admin.model.FieldUiItem
-import net.arx.roommanagementapp.ui.admin.model.LobbyUiState
+import net.arx.roommanagementapp.ui.lobby.model.DialogFormUiItem
+import net.arx.roommanagementapp.ui.lobby.model.FieldUiItem
+import net.arx.roommanagementapp.ui.lobby.model.LobbyUiState
 import net.arx.roommanagementapp.ui.base.BaseViewModel
 import net.arx.roommanagementapp.ui.dashboard.model.DateUiItem
 import net.arx.roommanagementapp.ui.room.mapper.RoomUiMapper
@@ -20,7 +20,6 @@ import net.arx.roommanagementapp.usecase.user.GetAllUsersUseCase
 import net.arx.roommanagementapp.usecase.user.InsertUserUseCase
 import javax.inject.Inject
 import kotlin.properties.Delegates
-
 
 @HiltViewModel
 class LobbyViewModel @Inject constructor(

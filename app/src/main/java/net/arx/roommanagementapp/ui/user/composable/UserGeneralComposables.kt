@@ -46,7 +46,7 @@ fun UsersRow(
         verticalAlignment = Alignment.CenterVertically
     ) {
         items(items = users, key = { it.id ?: 0}) { user ->
-            UserItem(
+            UserIcon(
                 modifier = Modifier.fillMaxWidth(0.2f),
                 user = user
             )
@@ -63,7 +63,7 @@ fun UsersRow(
 }
 
 @Composable
-fun UserItem(
+fun UserIcon(
     user: UserUiItem,
     modifier: Modifier = Modifier,
     onUserClicked: (Long?) -> Unit = {}

@@ -1,12 +1,12 @@
-package net.arx.roommanagementapp.ui.room.viewmodel
+package net.arx.roommanagementapp.ui.admin.viewmodel
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import net.arx.roommanagementapp.ui.admin.model.AdminRoomUiState
 import net.arx.roommanagementapp.ui.base.BaseViewModel
 import net.arx.roommanagementapp.ui.dashboard.model.DateUiItem
 import net.arx.roommanagementapp.ui.room.mapper.RoomUiMapper
-import net.arx.roommanagementapp.ui.room.model.RoomManagementUiState
 import net.arx.roommanagementapp.ui.user.mapper.UserUiMapper
 import net.arx.roommanagementapp.ui.user.model.UserUiItem
 import net.arx.roommanagementapp.usecase.room.GetRoomUseCase
@@ -16,7 +16,7 @@ import net.arx.roommanagementapp.usecase.user.GetAllUsersUseCase
 import javax.inject.Inject
 
 @HiltViewModel
-class RoomManagementViewModel @Inject constructor(
+class AdminRoomViewModel @Inject constructor(
     private val userUiMapper: UserUiMapper,
     private val roomUiMapper: RoomUiMapper,
     private val getRoomUseCase: GetRoomUseCase,
@@ -26,7 +26,7 @@ class RoomManagementViewModel @Inject constructor(
 ): BaseViewModel() {
 
     private val _uiState = MutableStateFlow(
-        RoomManagementUiState(
+        AdminRoomUiState(
             onUserClicked = { onUserClicked(id = it) },
             onUpdateStatus = { updateRoomStatus() }
         )

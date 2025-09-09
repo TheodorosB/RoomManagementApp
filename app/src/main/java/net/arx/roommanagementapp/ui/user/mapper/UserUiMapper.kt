@@ -8,10 +8,7 @@ import javax.inject.Inject
 
 class UserUiMapper @Inject constructor() {
 
-    operator fun invoke(
-        users: List<UserEntity>,
-        isClickable: Boolean = false
-    ): List<UserUiItem> {
+    operator fun invoke(users: List<UserEntity>, isClickable: Boolean = false): List<UserUiItem> {
 
         return users.map { user ->
             invoke(
@@ -21,10 +18,7 @@ class UserUiMapper @Inject constructor() {
         }
     }
 
-    operator fun invoke(
-        userEntity: UserEntity?,
-        isClickable: Boolean = false
-    ): UserUiItem {
+    operator fun invoke(userEntity: UserEntity?, isClickable: Boolean = false): UserUiItem {
 
         return UserUiItem(
             id = userEntity?.id ?: 0,

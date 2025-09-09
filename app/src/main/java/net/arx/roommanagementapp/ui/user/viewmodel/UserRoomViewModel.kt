@@ -8,7 +8,7 @@ import net.arx.roommanagementapp.ui.base.BaseViewModel
 import net.arx.roommanagementapp.ui.dashboard.model.DateUiItem
 import net.arx.roommanagementapp.ui.room.mapper.RoomUiMapper
 import net.arx.roommanagementapp.ui.user.mapper.UserUiMapper
-import net.arx.roommanagementapp.ui.user.model.RoomTasksUiState
+import net.arx.roommanagementapp.ui.user.model.UserRoomUiState
 import net.arx.roommanagementapp.usecase.room.GetRoomUseCase
 import net.arx.roommanagementapp.usecase.status.GetRoomStatusUseCase
 import net.arx.roommanagementapp.usecase.status.InsertRoomStatusUseCase
@@ -16,7 +16,7 @@ import net.arx.roommanagementapp.usecase.user.GetUserUseCase
 import javax.inject.Inject
 
 @HiltViewModel
-class RoomTasksViewModel @Inject constructor(
+class UserRoomViewModel @Inject constructor(
     private val roomUiMapper: RoomUiMapper,
     private val userUiMapper: UserUiMapper,
     private val getUserUseCase: GetUserUseCase,
@@ -25,15 +25,12 @@ class RoomTasksViewModel @Inject constructor(
     private val getRoomStatusUseCase: GetRoomStatusUseCase
 ): BaseViewModel() {
 
-    private val _uiState = MutableStateFlow(RoomTasksUiState(
+    private val _uiState = MutableStateFlow(UserRoomUiState(
         onUpdateStatus = { updateRoomStatus() }
     ))
-    val uiState: StateFlow<RoomTasksUiState> = _uiState.asStateFlow()
+    val uiState: StateFlow<UserRoomUiState> = _uiState.asStateFlow()
 
-    fun loadUserData(
-        roomId: Long?,
-        date: DateUiItem
-    ) {
+    fun loadUserData(roomId: Long?, date: DateUiItem) {
         _uiState.value.date.value = date
         roomId?.let {
             launch {
@@ -46,10 +43,7 @@ class RoomTasksViewModel @Inject constructor(
         }
     }
 
-    private suspend fun fetchRoomDetails(
-        roomId: Long,
-        date: DateUiItem
-    ) {
+    private suspend fun fetchRoomDetails(roomId: Long, date: DateUiItem) {
         val roomEntity = getRoomUseCase(id = roomId)
         val roomStatusEntity = getRoomStatusUseCase(
             id = roomId,

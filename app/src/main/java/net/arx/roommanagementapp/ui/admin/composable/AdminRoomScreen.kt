@@ -1,4 +1,4 @@
-package net.arx.roommanagementapp.ui.room.composable
+package net.arx.roommanagementapp.ui.admin.composable
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,32 +21,34 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import net.arx.roommanagementapp.R
 import net.arx.roommanagementapp.ui.dashboard.model.DateUiItem
-import net.arx.roommanagementapp.ui.room.model.RoomManagementUiState
+import net.arx.roommanagementapp.ui.room.composable.RoomItem
+import net.arx.roommanagementapp.ui.admin.model.AdminRoomUiState
 import net.arx.roommanagementapp.ui.room.model.TaskUiItem
-import net.arx.roommanagementapp.ui.room.viewmodel.RoomManagementViewModel
-import net.arx.roommanagementapp.ui.user.composable.UserItem
+import net.arx.roommanagementapp.ui.admin.viewmodel.AdminRoomViewModel
+import net.arx.roommanagementapp.ui.user.composable.TaskItem
+import net.arx.roommanagementapp.ui.user.composable.UserIcon
 import net.arx.roommanagementapp.ui.user.model.UserUiItem
 
 @Composable
-internal fun RoomManagementScreen(
+internal fun AdminRoomScreen(
     roomId: Long?,
     date: DateUiItem
 ) {
-    val viewModel: RoomManagementViewModel = hiltViewModel()
+    val viewModel: AdminRoomViewModel = hiltViewModel()
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(key1 = roomId, key2 = date.dayStart.value, key3 = date.dayEnd.value) {
         viewModel.updateRoomDetails(roomId = roomId, date = date)
     }
 
-    RoomManagementContent(
+    AdminRoomContent(
         uiState = uiState
     )
 }
 
 @Composable
-private fun RoomManagementContent(
-    uiState: State<RoomManagementUiState>
+private fun AdminRoomContent(
+    uiState: State<AdminRoomUiState>
 ) {
     Column(
         modifier = Modifier
@@ -62,12 +64,12 @@ private fun RoomManagementContent(
             arrangement = Arrangement.spacedBy(space = 8.dp, alignment = Alignment.CenterVertically)
         )
 
-        RoomManagementUsersGrid(
+        AdminRoomUsersGrid(
             users = uiState.value.users,
             onUserClicked = uiState.value.onUserClicked
         )
 
-        RoomManagementTasksGrid(
+        AdminRoomTasksGrid(
             tasks = uiState.value.room.value.tasks,
             onUpdateStatus = uiState.value.onUpdateStatus
         )
@@ -75,7 +77,7 @@ private fun RoomManagementContent(
 }
 
 @Composable
-private fun RoomManagementUsersGrid(
+private fun AdminRoomUsersGrid(
     users: List<UserUiItem>,
     onUserClicked: (Long?) -> Unit
 ) {
@@ -93,7 +95,7 @@ private fun RoomManagementUsersGrid(
     ) {
 
         items(items = users, key = { it.id ?: 0 }) { user ->
-            UserItem(
+            UserIcon(
                 user = user,
                 onUserClicked = onUserClicked
             )
@@ -102,7 +104,7 @@ private fun RoomManagementUsersGrid(
 }
 
 @Composable
-private fun RoomManagementTasksGrid(
+private fun AdminRoomTasksGrid(
     tasks: List<TaskUiItem>,
     onUpdateStatus: () -> Unit
 ) {

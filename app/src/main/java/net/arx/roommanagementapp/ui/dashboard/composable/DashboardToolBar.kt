@@ -1,4 +1,4 @@
-package net.arx.roommanagementapp.ui.admin.composable
+package net.arx.roommanagementapp.ui.dashboard.composable
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -33,7 +33,7 @@ import net.arx.roommanagementapp.ui.theme.ColorBaseGrey
 import net.arx.roommanagementapp.util.ext.formatDate
 
 @Composable
-fun RoomManagementToolBar(
+fun DashboardToolBar(
     date: DateUiItem,
     hasBackButton: Boolean,
     modifier: Modifier = Modifier,
@@ -52,20 +52,20 @@ fun RoomManagementToolBar(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.Top
     ) {
-        BackButton(
+        DashboardBackButton(
             modifier = Modifier.weight(0.3f),
             hasBackButton = hasBackButton,
             onBackButtonClicked = onBackButtonClicked
         )
 
-        RoomManagementDateRow(
+        DashboardDateRow(
             modifier = Modifier.weight(0.4f),
             date = date.dayStart.value.formatDate(),
             onNextDateClick = onNextDateClick,
             onPreviousDateClick = onPreviousDateClick
         )
 
-        RoomManagementActionsRow(
+        DashboardActionsRow(
             modifier = Modifier.weight(0.3f),
             onOpenAdminPinFormClicked = onOpenAdminPinFormClicked,
             onOpenCleanerPinFormClicked = onOpenUserPinFormClicked,
@@ -75,7 +75,7 @@ fun RoomManagementToolBar(
 }
 
 @Composable
-fun RoomManagementDateRow(
+fun DashboardDateRow(
     date: String,
     onPreviousDateClick: () -> Unit,
     onNextDateClick: () -> Unit,
@@ -129,7 +129,7 @@ fun RoomManagementDateRow(
 }
 
 @Composable
-fun BackButton(
+fun DashboardBackButton(
     hasBackButton: Boolean,
     onBackButtonClicked: () -> Unit,
     modifier: Modifier = Modifier
@@ -156,7 +156,7 @@ fun BackButton(
 }
 
 @Composable
-fun RoomManagementActionsRow(
+fun DashboardActionsRow(
     modifier: Modifier = Modifier,
     onOpenAdminPinFormClicked: () -> Unit,
     onOpenCleanerPinFormClicked: () -> Unit,

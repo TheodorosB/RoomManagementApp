@@ -1,4 +1,4 @@
-package net.arx.roommanagementapp.ui.admin.composable
+package net.arx.roommanagementapp.ui.lobby.composable
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,8 +15,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import net.arx.roommanagementapp.ui.admin.model.LobbyUiState
-import net.arx.roommanagementapp.ui.admin.viewmodel.LobbyViewModel
+import net.arx.roommanagementapp.ui.composable.dialog.FormDialog
+import net.arx.roommanagementapp.ui.lobby.model.LobbyUiState
+import net.arx.roommanagementapp.ui.lobby.viewmodel.LobbyViewModel
 import net.arx.roommanagementapp.ui.user.composable.UsersRow
 import net.arx.roommanagementapp.ui.dashboard.model.DateUiItem
 import net.arx.roommanagementapp.ui.room.composable.RoomsRow

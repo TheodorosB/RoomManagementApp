@@ -1,4 +1,4 @@
-package net.arx.roommanagementapp.ui.room.composable
+package net.arx.roommanagementapp.ui.user.composable
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -32,19 +32,19 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import net.arx.roommanagementapp.R
 import net.arx.roommanagementapp.ui.dashboard.model.DateUiItem
+import net.arx.roommanagementapp.ui.room.composable.RoomItem
 import net.arx.roommanagementapp.ui.room.model.RoomUiItem
 import net.arx.roommanagementapp.ui.room.model.TaskUiItem
-import net.arx.roommanagementapp.ui.user.composable.UserItem
-import net.arx.roommanagementapp.ui.user.model.RoomTasksUiState
-import net.arx.roommanagementapp.ui.user.viewmodel.RoomTasksViewModel
+import net.arx.roommanagementapp.ui.user.model.UserRoomUiState
+import net.arx.roommanagementapp.ui.user.viewmodel.UserRoomViewModel
 
 @Composable
-internal fun RoomTasksScreen(
+internal fun UserRoomScreen(
     roomId: Long?,
     date: DateUiItem
 ) {
 
-    val viewModel: RoomTasksViewModel = hiltViewModel()
+    val viewModel: UserRoomViewModel = hiltViewModel()
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(key1 = roomId, key2 = date.dayStart.value) {
@@ -54,14 +54,14 @@ internal fun RoomTasksScreen(
         )
     }
 
-    RoomTasksContent(
+    UserRoomContent(
         uiState = uiState,
     )
 }
 
 @Composable
-private fun RoomTasksContent(
-    uiState: State<RoomTasksUiState>
+private fun UserRoomContent(
+    uiState: State<UserRoomUiState>
 ) {
     Column(
         modifier = Modifier
@@ -69,7 +69,7 @@ private fun RoomTasksContent(
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.spacedBy(space = 8.dp, alignment = Alignment.Top)
     ) {
-        UserItem(
+        UserIcon(
             user = uiState.value.user.value
         )
 
@@ -79,7 +79,7 @@ private fun RoomTasksContent(
             fontSize = 25.sp
         )
 
-        UserRoomItem(
+        UserRoomRow(
             room = uiState.value.room.value,
             onUpdateStatus = uiState.value.onUpdateStatus
         )
@@ -87,7 +87,7 @@ private fun RoomTasksContent(
 }
 
 @Composable
-private fun UserRoomItem(
+private fun UserRoomRow(
     room: RoomUiItem,
     onUpdateStatus: () -> Unit
 ) {

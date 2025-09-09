@@ -1,4 +1,4 @@
-package net.arx.roommanagementapp.ui.admin.model
+package net.arx.roommanagementapp.ui.lobby.model
 
 import androidx.annotation.StringRes
 import androidx.compose.runtime.MutableState

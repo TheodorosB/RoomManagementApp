@@ -1,4 +1,4 @@
-package net.arx.roommanagementapp.ui.dashboard.composable
+package net.arx.roommanagementapp.ui.composable.dialog
 
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
@@ -46,7 +46,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import net.arx.roommanagementapp.R
-import net.arx.roommanagementapp.ui.admin.composable.DialogFormButton
 import net.arx.roommanagementapp.ui.dashboard.model.PinFormUiItem
 
 @Composable

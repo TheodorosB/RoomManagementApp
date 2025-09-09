@@ -85,9 +85,9 @@ class DashboardViewModel @Inject constructor(
         val isAdmin = _uiState.value.loggedInUser.value.isAdmin
         _uiState.value.selectedRoomId.value = roomId
         if(isAdmin) {
-            onNavigateToRoomDetails()
+            onNavigateToAdminRoom()
         } else {
-            onNavigateToRoomTasks()
+            onNavigateToUserRoom()
         }
     }
 
@@ -95,12 +95,12 @@ class DashboardViewModel @Inject constructor(
         _uiState.value.backstackEntries.add(DashboardNavEntries.Lobby)
     }
 
-    private fun onNavigateToRoomTasks() {
-        _uiState.value.backstackEntries.add(DashboardNavEntries.RoomTasks)
+    private fun onNavigateToUserRoom() {
+        _uiState.value.backstackEntries.add(DashboardNavEntries.UserRoom)
     }
 
-    private fun onNavigateToRoomDetails() {
-        _uiState.value.backstackEntries.add(DashboardNavEntries.RoomDetails)
+    private fun onNavigateToAdminRoom() {
+        _uiState.value.backstackEntries.add(DashboardNavEntries.AdminRoom)
     }
 
 }

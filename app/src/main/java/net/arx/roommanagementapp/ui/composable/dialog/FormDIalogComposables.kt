@@ -1,4 +1,4 @@
-package net.arx.roommanagementapp.ui.admin.composable
+package net.arx.roommanagementapp.ui.composable.dialog
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -32,8 +32,8 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import net.arx.roommanagementapp.R
-import net.arx.roommanagementapp.ui.admin.model.DialogFormUiItem
-import net.arx.roommanagementapp.ui.admin.model.FieldUiItem
+import net.arx.roommanagementapp.ui.lobby.model.DialogFormUiItem
+import net.arx.roommanagementapp.ui.lobby.model.FieldUiItem
 
 @Composable
 internal fun FormDialog(

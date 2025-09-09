@@ -17,7 +17,7 @@ data class DashboardUiState(
     val date: MutableState<DateUiItem> = mutableStateOf(DateUiItem()),
     val navScreens: List<DashboardNavEntries> = listOf(
         DashboardNavEntries.Lobby,
-        DashboardNavEntries.RoomDetails
+        DashboardNavEntries.AdminRoom
     ),
     val backstackEntries: SnapshotStateList<DashboardNavEntries> = mutableStateListOf(
         DashboardNavEntries.Lobby
@@ -100,11 +100,11 @@ sealed class DashboardNavEntries(
     object Lobby : DashboardNavEntries(
         hasBackButton = false
     )
-    object RoomDetails : DashboardNavEntries(
+    object AdminRoom : DashboardNavEntries(
         hasBackButton = true
     )
 
-    object RoomTasks : DashboardNavEntries(
+    object UserRoom : DashboardNavEntries(
         hasBackButton = true
     )
 }
