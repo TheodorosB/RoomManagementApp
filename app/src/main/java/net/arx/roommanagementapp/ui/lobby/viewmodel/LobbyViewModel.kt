@@ -15,9 +15,12 @@ import net.arx.roommanagementapp.ui.user.mapper.UserUiMapper
 import net.arx.roommanagementapp.ui.user.model.UserUiItem
 import net.arx.roommanagementapp.usecase.room.GetAllRoomsUseCase
 import net.arx.roommanagementapp.usecase.room.InsertRoomUseCase
+import net.arx.roommanagementapp.usecase.room.RoomExistsUseCase
 import net.arx.roommanagementapp.usecase.status.GetRoomStatusesUseCase
 import net.arx.roommanagementapp.usecase.user.GetAllUsersUseCase
 import net.arx.roommanagementapp.usecase.user.InsertUserUseCase
+import net.arx.roommanagementapp.usecase.user.PasswordExistsUseCase
+import net.arx.roommanagementapp.usecase.user.UsernameExistsUseCase
 import javax.inject.Inject
 import kotlin.properties.Delegates
 
@@ -26,9 +29,12 @@ class LobbyViewModel @Inject constructor(
     private val userUiMapper: UserUiMapper,
     private val roomUiMapper: RoomUiMapper,
     private val insertRoomUseCase: InsertRoomUseCase,
+    private val roomExistsUseCase: RoomExistsUseCase,
     private val insertUserUseCase: InsertUserUseCase,
     private val getAllRoomsUseCase: GetAllRoomsUseCase,
     private val getAllUsersUseCase: GetAllUsersUseCase,
+    private val passwordExistsUseCase: PasswordExistsUseCase,
+    private val usernameExistsUseCase: UsernameExistsUseCase,
     private val getRoomStatusesUseCase: GetRoomStatusesUseCase,
 
     ): BaseViewModel() {
@@ -38,7 +44,8 @@ class LobbyViewModel @Inject constructor(
             onAddNewUserClicked = { onAddNewUserClicked() },
             onAddNewRoomClicked = { onAddNewRoomClicked() },
             onCloseDialogForm = { closeDialogForm() },
-            onSubmitFormClicked = { onSubmitFormClicked() }
+            onSubmitFormClicked = { onSubmitFormClicked() },
+            onValidateText = { onValidateText(it) }
         )
     )
     val uiState: StateFlow<LobbyUiState> = _uiState.asStateFlow()
@@ -70,6 +77,28 @@ class LobbyViewModel @Inject constructor(
         _uiState.value.formUiItem.value = DialogFormUiItem.User()
         _uiState.value.formUiItem.value.title.value = R.string.add_cleaner_title
         _uiState.value.openDialogForm.value = true
+    }
+
+    private fun onValidateText(field: FieldUiItem) {
+        val text = field.text.value
+        launch {
+            when (field) {
+                is FieldUiItem.RoomField -> {
+                    val alreadyExists = roomExistsUseCase(name = text)
+                    _uiState.value.formUiItem.value.fields.firstOrNull { it is FieldUiItem.RoomField }?.alreadyExists?.value = alreadyExists
+                }
+
+                is FieldUiItem.UsernameField -> {
+                    val alreadyExists = usernameExistsUseCase(username = text)
+                    _uiState.value.formUiItem.value.fields.firstOrNull { it is FieldUiItem.UsernameField }?.alreadyExists?.value = alreadyExists
+                }
+
+                is FieldUiItem.PasswordField -> {
+                    val alreadyExists = passwordExistsUseCase(password = text)
+                    _uiState.value.formUiItem.value.fields.firstOrNull { it is FieldUiItem.PasswordField }?.alreadyExists?.value = alreadyExists
+                }
+            }
+        }
     }
 
     private fun onSubmitFormClicked() {

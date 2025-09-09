@@ -47,7 +47,7 @@ fun DashboardToolBar(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .aspectRatio(8f)
+            .aspectRatio(11f)
             .padding(horizontal = 14.dp),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.Top

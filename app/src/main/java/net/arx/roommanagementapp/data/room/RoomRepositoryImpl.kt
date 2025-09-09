@@ -6,19 +6,23 @@ import net.arx.roommanagementapp.framework.room.RoomDataSourceImpl
 import javax.inject.Inject
 
 class RoomRepositoryImpl @Inject constructor(
-    private val roomDataSource: RoomDataSourceImpl
+    private val dataSource: RoomDataSourceImpl
 ): RoomRepository {
 
     override suspend fun insertRoom(room: RoomEntity): Long {
-        return roomDataSource.insertRoom(room = room)
+        return dataSource.insertRoom(room = room)
+    }
+
+    override suspend fun roomExists(name: String): RoomEntity? {
+        return dataSource.roomExists(name = name)
     }
 
     override suspend fun getRoom(id: Long): RoomEntity {
-        return roomDataSource.getRoom(id = id)
+        return dataSource.getRoom(id = id)
     }
 
     override suspend fun getAllRooms(): List<RoomEntity> {
-        return roomDataSource.getAllRooms()
+        return dataSource.getAllRooms()
     }
 
 }

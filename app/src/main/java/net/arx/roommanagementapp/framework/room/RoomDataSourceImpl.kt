@@ -13,6 +13,10 @@ class RoomDataSourceImpl @Inject constructor(
         return roomDao.insertRoom(room = RoomEntity(name = room.name))
     }
 
+    override suspend fun roomExists(name: String): RoomEntity? {
+        return roomDao.roomExists(name = name)
+    }
+
     override suspend fun getRoom(id: Long): RoomEntity {
         return roomDao.getRoom(id = id)
     }

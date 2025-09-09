@@ -38,6 +38,7 @@ import net.arx.roommanagementapp.ui.lobby.model.FieldUiItem
 @Composable
 internal fun FormDialog(
     formUiItem: DialogFormUiItem,
+    onValidateText: (FieldUiItem) -> Unit,
     onDismissRequest: () -> Unit,
     onAddCleanerClicked: () -> Unit
 ) {
@@ -77,7 +78,8 @@ internal fun FormDialog(
                 verticalArrangement = Arrangement.spacedBy(space = 8.dp, alignment = Alignment.CenterVertically)
             ) {
                 FormDialogFields(
-                    fields = formUiItem.fields
+                    fields = formUiItem.fields,
+                    onValidateText = onValidateText
                 )
             }
         },
@@ -90,7 +92,8 @@ internal fun FormDialog(
         confirmButton = {
             DialogFormButton(
                 text = stringResource(R.string.dialog_form_confirm_button),
-                onClick = onAddCleanerClicked
+                onClick = onAddCleanerClicked,
+                isEnabled = !formUiItem.hasError
             )
         }
     )
@@ -99,6 +102,7 @@ internal fun FormDialog(
 @Composable
 private fun FormDialogFields(
     fields: List<FieldUiItem>,
+    onValidateText: (FieldUiItem) -> Unit
 ) {
     LazyColumn(
         modifier = Modifier
@@ -115,13 +119,17 @@ private fun FormDialogFields(
                     .fillMaxWidth()
                     .aspectRatio(6f),
                 value = field.text.value,
-                onValueChange = { field.onUpdateName(it) },
+                onValueChange = {
+                    field.updateText(it)
+                    onValidateText(field)
+                },
                 label = {
                     Text(
                         text = stringResource(field.label),
                         fontSize = 16.sp
                     )
                 },
+                isError = field.alreadyExists.value,
                 textStyle = TextStyle(
                     fontSize = 24.sp,
                     fontWeight = FontWeight.SemiBold
@@ -134,7 +142,7 @@ private fun FormDialogFields(
                     focusedContainerColor = Color.White,
                     unfocusedContainerColor = Color.White,
                     disabledContainerColor = Color.White,
-                    errorContainerColor = Color.White
+                    errorContainerColor = Color.White,
                 )
             )
         }
@@ -144,6 +152,7 @@ private fun FormDialogFields(
 @Composable
 internal fun DialogFormButton(
     text: String,
+    isEnabled: Boolean = true,
     onClick: () -> Unit
 ) {
     Button(
@@ -152,7 +161,8 @@ internal fun DialogFormButton(
             .padding(all = 4.dp),
         onClick = {
             onClick()
-        }
+        },
+        enabled = isEnabled
     ) {
         Text(
             text = text,

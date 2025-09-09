@@ -77,6 +77,7 @@ fun LobbyContent(
         FormDialog(
             formUiItem = uiState.value.formUiItem.value,
             onDismissRequest = uiState.value.onCloseDialogForm,
+            onValidateText = uiState.value.onValidateText,
             onAddCleanerClicked = uiState.value.onSubmitFormClicked
         )
     }
@@ -127,7 +128,8 @@ private fun AdminContentPreview() {
                 onSubmitFormClicked = {},
                 onCloseDialogForm = {},
                 onAddNewUserClicked = {},
-                onAddNewRoomClicked = {}
+                onAddNewRoomClicked = {},
+                onValidateText = {}
             ))},
         onNavigateToRoom = {}
     )

@@ -13,6 +13,14 @@ class UserDataSourceImpl @Inject constructor(
         return userDao.insertUser(userEntity = userEntity)
     }
 
+    override suspend fun usernameExists(username: String): UserEntity? {
+        return userDao.usernameExists(username = username)
+    }
+
+    override suspend fun passwordExists(password: String): UserEntity? {
+        return userDao.passwordExists(password = password)
+    }
+
     override suspend fun login(password: String): UserEntity? {
         return userDao.login(password = password)
     }
