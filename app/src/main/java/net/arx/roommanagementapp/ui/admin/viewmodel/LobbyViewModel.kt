@@ -44,7 +44,7 @@ class LobbyViewModel @Inject constructor(
     )
     val uiState: StateFlow<LobbyUiState> = _uiState.asStateFlow()
 
-    var fetchDataByUser by Delegates.observable(_uiState.value.loggedInUser.value){ property, oldValue, newValue ->
+    var fetchData by Delegates.observable(_uiState.value.loggedInUser.value){ property, oldValue, newValue ->
         if(newValue.id != null) {
             init()
         }
@@ -59,16 +59,12 @@ class LobbyViewModel @Inject constructor(
 
     fun updateDate(date: DateUiItem) {
         _uiState.value.date.value = date
-        if(_uiState.value.loggedInUser.value.id != null) {
-            launch {
-                refreshRooms()
-            }
-        }
+        fetchData = _uiState.value.loggedInUser.value
     }
 
     fun updateUser(user: UserUiItem) {
         _uiState.value.loggedInUser.value = user
-        fetchDataByUser = user
+        fetchData = user
     }
 
     private fun onAddNewUserClicked() {
@@ -86,13 +82,13 @@ class LobbyViewModel @Inject constructor(
                         username = formUiItem.fields.firstOrNull { it is FieldUiItem.UsernameField }?.text?.value,
                         password = formUiItem.fields.firstOrNull { it is FieldUiItem.PasswordField }?.text?.value
                     )
-                    refreshUsers()
+                    fetchData = _uiState.value.loggedInUser.value
                 }
             }
             is DialogFormUiItem.Room -> {
                 launch {
                     insertRoomUseCase(roomName = formUiItem.fields.firstOrNull { it is FieldUiItem.RoomField }?.text?.value)
-                    refreshRooms()
+                    fetchData = _uiState.value.loggedInUser.value
                 }
             }
         }
