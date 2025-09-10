@@ -155,7 +155,7 @@ fun AddNewRoomItem(
             tint = Color.Black
         )
         Text(
-            text = stringResource(R.string.add_room_title),
+            text = stringResource(R.string.lobby_button_add_room_title),
             fontSize = 25.sp,
             textAlign = TextAlign.Center
         )

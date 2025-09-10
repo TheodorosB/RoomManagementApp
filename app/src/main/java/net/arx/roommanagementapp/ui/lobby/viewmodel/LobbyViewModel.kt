@@ -12,14 +12,12 @@ import net.arx.roommanagementapp.ui.base.BaseViewModel
 import net.arx.roommanagementapp.ui.dashboard.model.DateUiItem
 import net.arx.roommanagementapp.ui.room.mapper.RoomUiMapper
 import net.arx.roommanagementapp.ui.user.mapper.UserUiMapper
-import net.arx.roommanagementapp.ui.user.model.UserUiItem
 import net.arx.roommanagementapp.usecase.room.GetAllRoomsUseCase
 import net.arx.roommanagementapp.usecase.room.InsertRoomUseCase
 import net.arx.roommanagementapp.usecase.room.RoomExistsUseCase
 import net.arx.roommanagementapp.usecase.status.GetRoomStatusesUseCase
 import net.arx.roommanagementapp.usecase.user.GetAllUsersUseCase
 import net.arx.roommanagementapp.usecase.user.InsertUserUseCase
-import net.arx.roommanagementapp.usecase.user.PasswordExistsUseCase
 import net.arx.roommanagementapp.usecase.user.UsernameExistsUseCase
 import javax.inject.Inject
 import kotlin.properties.Delegates
@@ -33,11 +31,9 @@ class LobbyViewModel @Inject constructor(
     private val insertUserUseCase: InsertUserUseCase,
     private val getAllRoomsUseCase: GetAllRoomsUseCase,
     private val getAllUsersUseCase: GetAllUsersUseCase,
-    private val passwordExistsUseCase: PasswordExistsUseCase,
     private val usernameExistsUseCase: UsernameExistsUseCase,
-    private val getRoomStatusesUseCase: GetRoomStatusesUseCase,
-
-    ): BaseViewModel() {
+    private val getRoomStatusesUseCase: GetRoomStatusesUseCase
+): BaseViewModel() {
 
     private val _uiState = MutableStateFlow(
         LobbyUiState(
@@ -50,10 +46,8 @@ class LobbyViewModel @Inject constructor(
     )
     val uiState: StateFlow<LobbyUiState> = _uiState.asStateFlow()
 
-    var fetchData by Delegates.observable(_uiState.value.loggedInUser.value){ property, oldValue, newValue ->
-        if(newValue.id != null) {
-            init()
-        }
+    var fetchData by Delegates.observable(_uiState.value.isAdmin.value){ property, oldValue, newValue ->
+        init()
     }
 
     fun init() {
@@ -63,19 +57,15 @@ class LobbyViewModel @Inject constructor(
         }
     }
 
-    fun updateDate(date: DateUiItem) {
+    fun refreshData(date: DateUiItem, isAdmin: Boolean) {
         _uiState.value.date.value = date
-        fetchData = _uiState.value.loggedInUser.value
-    }
-
-    fun updateUser(user: UserUiItem) {
-        _uiState.value.loggedInUser.value = user
-        fetchData = user
+        _uiState.value.isAdmin.value = isAdmin
+        fetchData = isAdmin
     }
 
     private fun onAddNewUserClicked() {
         _uiState.value.formUiItem.value = DialogFormUiItem.User()
-        _uiState.value.formUiItem.value.title.value = R.string.add_cleaner_title
+        _uiState.value.formUiItem.value.title.value = R.string.lobby_button_add_cleaner_title
         _uiState.value.openDialogForm.value = true
     }
 
@@ -92,11 +82,6 @@ class LobbyViewModel @Inject constructor(
                     val alreadyExists = usernameExistsUseCase(username = text)
                     _uiState.value.formUiItem.value.fields.firstOrNull { it is FieldUiItem.UsernameField }?.alreadyExists?.value = alreadyExists
                 }
-
-                is FieldUiItem.PasswordField -> {
-                    val alreadyExists = passwordExistsUseCase(password = text)
-                    _uiState.value.formUiItem.value.fields.firstOrNull { it is FieldUiItem.PasswordField }?.alreadyExists?.value = alreadyExists
-                }
             }
         }
     }
@@ -106,17 +91,14 @@ class LobbyViewModel @Inject constructor(
         when(formUiItem) {
             is DialogFormUiItem.User -> {
                 launch {
-                    insertUserUseCase(
-                        username = formUiItem.fields.firstOrNull { it is FieldUiItem.UsernameField }?.text?.value,
-                        password = formUiItem.fields.firstOrNull { it is FieldUiItem.PasswordField }?.text?.value
-                    )
-                    fetchData = _uiState.value.loggedInUser.value
+                    insertUserUseCase(username = formUiItem.fields.firstOrNull { it is FieldUiItem.UsernameField }?.text?.value)
+                    fetchData = _uiState.value.isAdmin.value
                 }
             }
             is DialogFormUiItem.Room -> {
                 launch {
                     insertRoomUseCase(roomName = formUiItem.fields.firstOrNull { it is FieldUiItem.RoomField }?.text?.value)
-                    fetchData = _uiState.value.loggedInUser.value
+                    fetchData = _uiState.value.isAdmin.value
                 }
             }
         }
@@ -126,7 +108,7 @@ class LobbyViewModel @Inject constructor(
 
     private fun onAddNewRoomClicked() {
         _uiState.value.formUiItem.value = DialogFormUiItem.Room()
-        _uiState.value.formUiItem.value.title.value = R.string.add_room_title
+        _uiState.value.formUiItem.value.title.value = R.string.lobby_button_add_room_title
         _uiState.value.openDialogForm.value = true
     }
 
@@ -141,7 +123,7 @@ class LobbyViewModel @Inject constructor(
             dayStart = _uiState.value.date.value.dayStart.value,
             dayEnd = _uiState.value.date.value.dayEnd.value
         )
-        val isAdmin = _uiState.value.loggedInUser.value.isAdmin
+        val isAdmin = _uiState.value.isAdmin.value
         _uiState.value.rooms.clear()
         _uiState.value.rooms.addAll(
             roomUiMapper(

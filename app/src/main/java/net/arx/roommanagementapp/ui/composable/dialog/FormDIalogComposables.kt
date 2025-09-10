@@ -85,13 +85,13 @@ internal fun FormDialog(
         },
         dismissButton = {
             DialogFormButton(
-                text = stringResource(R.string.dialog_form_cancel_button),
+                text = stringResource(R.string.form_dialog_cancel_button),
                 onClick = onDismissRequest
             )
         },
         confirmButton = {
             DialogFormButton(
-                text = stringResource(R.string.dialog_form_confirm_button),
+                text = stringResource(R.string.form_dialog_confirm_button),
                 onClick = onAddCleanerClicked,
                 isEnabled = !formUiItem.hasError
             )

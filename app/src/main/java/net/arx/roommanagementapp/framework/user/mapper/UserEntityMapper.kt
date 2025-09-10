@@ -7,11 +7,15 @@ import javax.inject.Inject
 class UserEntityMapper @Inject constructor(
 
 ){
-    operator fun invoke(username: String, password: String): UserEntity {
+    operator fun invoke(
+        username: String,
+        password: String?,
+        userRole: UserRole?
+    ): UserEntity {
         return UserEntity(
             username = username,
-            password = password,
-            role = UserRole.USER
+            password = password ?: "",
+            role = userRole ?: UserRole.USER
         )
 
     }

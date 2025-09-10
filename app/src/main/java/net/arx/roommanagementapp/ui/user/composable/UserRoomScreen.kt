@@ -75,7 +75,7 @@ private fun UserRoomContent(
 
         Text(
             modifier = Modifier.alpha(0.5f),
-            text = stringResource(id = R.string.cleaner_screen_tasks),
+            text = stringResource(id = R.string.user_room_tasks_title),
             fontSize = 25.sp
         )
 

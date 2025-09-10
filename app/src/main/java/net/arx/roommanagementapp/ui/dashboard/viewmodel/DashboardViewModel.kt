@@ -10,41 +10,54 @@ import net.arx.roommanagementapp.ui.base.BaseViewModel
 import net.arx.roommanagementapp.ui.dashboard.model.DashboardNavEntries
 import net.arx.roommanagementapp.ui.dashboard.model.DashboardUiState
 import net.arx.roommanagementapp.ui.user.mapper.UserUiMapper
+import net.arx.roommanagementapp.ui.user.model.UserUiItem
+import net.arx.roommanagementapp.usecase.user.GetUserUseCase
+import net.arx.roommanagementapp.usecase.user.InsertUserUseCase
 import net.arx.roommanagementapp.usecase.user.LoginUserUseCase
 import javax.inject.Inject
 
 @HiltViewModel
 class DashboardViewModel @Inject constructor(
-    private val userUiMapper: UserUiMapper,
-    private val loginUserUseCase: LoginUserUseCase
+    private val getUserUseCase: GetUserUseCase,
+    private val loginUserUseCase: LoginUserUseCase,
+    private val insertUserUseCase: InsertUserUseCase
 ): BaseViewModel() {
 
     private val _uiState = MutableStateFlow(
         DashboardUiState(
             onBackButtonClicked = { onBackButtonClicked() },
             openAdminPinForm = { onOpenAdminPinForm() },
-            openUserPinForm = { onOpenUserPinForm() },
             onPinDialogDismiss = { onLoginDialogDismiss() },
             onPinComplete = { onPinComplete() },
-            onNavigateToLobby = { onNavigateToLobby() },
             onNavigateToRoom = { onNavigateToRoom(it) }
         )
     )
     val uiState: StateFlow<DashboardUiState> = _uiState.asStateFlow()
 
-    private fun onBackButtonClicked() {
-        _uiState.value.backstackEntries.removeLastOrNull()
-    }
-    private fun onOpenAdminPinForm() {
-        if(!_uiState.value.loggedInUser.value.isAdmin){
-            _uiState.value.pinFormUiItem.title.value = R.string.pin_dialog_title_admin
-            openLoginDialog()
+    init {
+        launch {
+            val userEntity = getUserUseCase(id = 1)
+            if(userEntity == null) {
+                insertUserUseCase(
+                    username = ADMIN_USERNAME,
+                    password = ADMIN_PASSWORD,
+                    userRole = UserRole.ADMIN
+                )
+            }
         }
     }
 
-    private fun onOpenUserPinForm() {
-        _uiState.value.pinFormUiItem.title.value = R.string.pin_dialog_title_user
-        openLoginDialog()
+    private fun onBackButtonClicked() {
+        if(_uiState.value.isAdmin.value) {
+            _uiState.value.isAdmin.value = false
+        } else {
+            _uiState.value.backstackEntries.removeLastOrNull()
+        }
+    }
+    private fun onOpenAdminPinForm() {
+        if(!_uiState.value.isAdmin.value){
+            openLoginDialog()
+        }
     }
 
     private fun openLoginDialog() {
@@ -62,13 +75,8 @@ class DashboardViewModel @Inject constructor(
             val user = loginUserUseCase(password = passwordInput)
 
             when{
-                user?.role == UserRole.ADMIN && !_uiState.value.loggedInUser.value.isAdmin -> {
-                    _uiState.value.loggedInUser.value = userUiMapper(userEntity = user)
-                    onNavigateToLobby()
-                    onLoginDialogDismiss()
-                }
-                user?.role == UserRole.USER && _uiState.value.loggedInUser.value.id != user.id -> {
-                    _uiState.value.loggedInUser.value = userUiMapper(userEntity = user)
+                user?.role == UserRole.ADMIN -> {
+                    _uiState.value.isAdmin.value = true
                     onNavigateToLobby()
                     onLoginDialogDismiss()
                 }
@@ -82,7 +90,7 @@ class DashboardViewModel @Inject constructor(
     }
 
     private fun onNavigateToRoom(roomId: Long) {
-        val isAdmin = _uiState.value.loggedInUser.value.isAdmin
+        val isAdmin = _uiState.value.isAdmin.value
         _uiState.value.selectedRoomId.value = roomId
         if(isAdmin) {
             onNavigateToAdminRoom()
@@ -101,6 +109,11 @@ class DashboardViewModel @Inject constructor(
 
     private fun onNavigateToAdminRoom() {
         _uiState.value.backstackEntries.add(DashboardNavEntries.AdminRoom)
+    }
+
+    companion object {
+        const val ADMIN_USERNAME = "Admin"
+        const val ADMIN_PASSWORD = "0000"
     }
 
 }

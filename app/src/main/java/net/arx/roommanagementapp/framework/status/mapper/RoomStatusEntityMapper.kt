@@ -6,7 +6,7 @@ import net.arx.roommanagementapp.framework.db.entity.TaskTypeEntity
 import net.arx.roommanagementapp.ui.room.model.TaskUiItem
 import javax.inject.Inject
 
-class TaskEntityMapper @Inject constructor() {
+class RoomStatusEntityMapper @Inject constructor() {
 
     operator fun invoke(
         dayStart: Long,

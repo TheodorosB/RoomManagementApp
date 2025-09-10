@@ -14,7 +14,7 @@ import net.arx.roommanagementapp.ui.user.model.UserUiItem
 
 data class LobbyUiState(
     val date: MutableState<DateUiItem> = mutableStateOf(DateUiItem()),
-    val loggedInUser: MutableState<UserUiItem> = mutableStateOf(UserUiItem()),
+    val isAdmin: MutableState<Boolean> = mutableStateOf(false),
     val users: SnapshotStateList<UserUiItem> = mutableStateListOf(),
     val rooms: SnapshotStateList<RoomUiItem> = mutableStateListOf(),
     val onAddNewUserClicked: () -> Unit,
@@ -41,8 +41,7 @@ sealed class DialogFormUiItem(
 
     class User : DialogFormUiItem(
         fields = listOf(
-            FieldUiItem.UsernameField(),
-            FieldUiItem.PasswordField()
+            FieldUiItem.UsernameField()
         )
     )
 
@@ -66,24 +65,15 @@ sealed class FieldUiItem(
 
     abstract fun validate(): Boolean
     class UsernameField: FieldUiItem(
-        label = R.string.dialog_form_cleaner_field
+        label = R.string.form_dialog_cleaner_field_label
     ) {
         override fun validate(): Boolean {
             return text.value.isNotBlank() && !alreadyExists.value
         }
     }
 
-    class PasswordField: FieldUiItem(
-        label = R.string.dialog_form_cleaner_password_field,
-        keyboardType = KeyboardType.NumberPassword
-    ) {
-        override fun validate(): Boolean {
-            return text.value.isNotBlank() && text.value.length == 4 && !alreadyExists.value
-        }
-    }
-
     class RoomField: FieldUiItem(
-        label = R.string.dialog_form_room_field
+        label = R.string.form_dialog_room_field_label
     ) {
         override fun validate(): Boolean {
             return text.value.isNotBlank() && !alreadyExists.value

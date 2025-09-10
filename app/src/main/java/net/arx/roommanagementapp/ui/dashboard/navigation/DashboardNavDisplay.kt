@@ -42,9 +42,7 @@ fun DashboardNavDisplay(
             onBackButtonClicked = uiState.value.onBackButtonClicked,
             onPreviousDateClick = { uiState.value.onPreviousDateClicked() },
             onNextDateClick = { uiState.value.onNextDateClicked() },
-            onOpenAdminPinFormClicked = uiState.value.openAdminPinForm,
-            onOpenUserPinFormClicked = uiState.value.openUserPinForm,
-            onHomeScreenClicked = uiState.value.onNavigateToLobby
+            onOpenAdminPinFormClicked = uiState.value.openAdminPinForm
         )
 
         NavDisplay(
@@ -58,8 +56,8 @@ fun DashboardNavDisplay(
                         key = key,
                         content = {
                             LobbyScreen(
-                                user = uiState.value.loggedInUser.value,
-                                date = uiState.value.date.value,
+                                date = uiState.value.date,
+                                isAdmin = uiState.value.isAdmin,
                                 onNavigateToRoom = uiState.value.onNavigateToRoom
                             )
                         }

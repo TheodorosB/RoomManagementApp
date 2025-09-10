@@ -13,13 +13,6 @@ fun Modifier.ifable(condition: Boolean, then: Modifier.() -> Modifier): Modifier
         this
     }
 
-fun Modifier.ifelseable(condition: Boolean, ifable: Modifier.() -> Modifier, elseable: Modifier.() -> Modifier): Modifier =
-    if (condition) {
-        then(ifable())
-    } else {
-        then(elseable())
-    }
-
 inline fun Modifier.noRippleClickable(crossinline onClick: () -> Unit): Modifier = composed {
     clickable(indication = null,
         interactionSource = remember { MutableInteractionSource() }) {

@@ -26,20 +26,16 @@ import net.arx.roommanagementapp.ui.user.model.UserUiItem
 
 @Composable
 fun LobbyScreen(
-    user: UserUiItem,
-    date: DateUiItem,
+    date: State<DateUiItem>,
+    isAdmin: State<Boolean>,
     onNavigateToRoom: (Long) -> Unit
 ) {
 
     val viewModel: LobbyViewModel = hiltViewModel()
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(key1 = date.dayStart.value, key2 = date.dayEnd.value) {
-        viewModel.updateDate(date = date)
-    }
-
-    LaunchedEffect(key1 = user) {
-        viewModel.updateUser(user = user)
+    LaunchedEffect(key1 = date.value.dayStart.value, key2 = isAdmin.value) {
+        viewModel.refreshData(date = date.value, isAdmin = isAdmin.value)
     }
 
     LobbyContent(
@@ -61,13 +57,13 @@ fun LobbyContent(
 
         UsersRow(
             users = uiState.value.users,
-            isAdmin = uiState.value.loggedInUser.value.isAdmin,
+            isAdmin = uiState.value.isAdmin.value,
             onAddNewUserClicked = uiState.value.onAddNewUserClicked
         )
 
         RoomsRow(
             rooms = uiState.value.rooms,
-            isAdmin = uiState.value.loggedInUser.value.isAdmin,
+            isAdmin = uiState.value.isAdmin.value,
             onRoomClicked = onNavigateToRoom,
             onAddNewRoomClicked = uiState.value.onAddNewRoomClicked
         )
@@ -88,7 +84,7 @@ fun LobbyContent(
     device = "spec:width=1280dp,height=800dp,dpi=240"
 )
 @Composable
-private fun AdminContentPreview() {
+private fun LobbyContentPreview() {
     LobbyContent(
         uiState = remember { mutableStateOf(
             LobbyUiState(

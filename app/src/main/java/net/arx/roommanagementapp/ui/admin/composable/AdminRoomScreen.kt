@@ -83,7 +83,7 @@ private fun AdminRoomUsersGrid(
 ) {
     Text(
         modifier = Modifier.alpha(0.5f),
-        text = stringResource(id = R.string.room_details_user_selection_title),
+        text = stringResource(id = R.string.admin_room_user_selection_title),
         fontSize = 30.sp
     )
 
@@ -110,7 +110,7 @@ private fun AdminRoomTasksGrid(
 ) {
     Text(
         modifier = Modifier.alpha(0.5f),
-        text = stringResource(id = R.string.room_details_task_selection_title),
+        text = stringResource(id = R.string.admin_room_task_selection_title),
         fontSize = 30.sp
     )
 

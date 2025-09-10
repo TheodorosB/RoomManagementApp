@@ -133,7 +133,7 @@ fun AddNewUserItem(
             contentDescription = null
         )
         Text(
-            text = stringResource(R.string.add_cleaner_title),
+            text = stringResource(R.string.lobby_button_add_cleaner_title),
             fontSize = 30.sp,
         )
     }

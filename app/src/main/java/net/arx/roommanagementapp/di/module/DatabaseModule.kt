@@ -28,30 +28,13 @@ object DatabaseModule {
     @Provides
     @Singleton
     fun provideDatabase(
-        @ApplicationContext context: Context,
-        userDaoProvider: Provider<UserDao>
+        @ApplicationContext context: Context
     ): AppDatabase {
         return Room.databaseBuilder(
             context,
             AppDatabase::class.java,
             "room_management_db"
         )
-        .addCallback(object : RoomDatabase.Callback() {
-            override fun onCreate(db: SupportSQLiteDatabase) {
-                super.onCreate(db)
-
-                CoroutineScope(Dispatchers.IO).launch {
-                    userDaoProvider.get().insertUser(
-                        UserEntity(
-                            id = 1,
-                            username = "Admin",
-                            password = "0000",
-                            role = UserRole.ADMIN
-                        )
-                    )
-                }
-            }
-        })
         .build()
     }
 

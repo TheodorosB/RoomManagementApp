@@ -40,9 +40,7 @@ fun DashboardToolBar(
     onPreviousDateClick: () -> Unit,
     onNextDateClick: () -> Unit,
     onOpenAdminPinFormClicked: () -> Unit,
-    onOpenUserPinFormClicked: () -> Unit,
     onBackButtonClicked: () -> Unit,
-    onHomeScreenClicked: () -> Unit,
 ) {
     Row(
         modifier = modifier
@@ -67,9 +65,7 @@ fun DashboardToolBar(
 
         DashboardActionsRow(
             modifier = Modifier.weight(0.3f),
-            onOpenAdminPinFormClicked = onOpenAdminPinFormClicked,
-            onOpenCleanerPinFormClicked = onOpenUserPinFormClicked,
-            onHomeScreenClicked = onHomeScreenClicked
+            onOpenAdminPinFormClicked = onOpenAdminPinFormClicked
         )
     }
 }
@@ -158,9 +154,7 @@ fun DashboardBackButton(
 @Composable
 fun DashboardActionsRow(
     modifier: Modifier = Modifier,
-    onOpenAdminPinFormClicked: () -> Unit,
-    onOpenCleanerPinFormClicked: () -> Unit,
-    onHomeScreenClicked: () -> Unit,
+    onOpenAdminPinFormClicked: () -> Unit
 ) {
     Row(
         modifier = modifier
@@ -175,24 +169,6 @@ fun DashboardActionsRow(
                     onOpenAdminPinFormClicked()
                 },
             imageVector = Icons.Outlined.DateRange,
-            contentDescription = null
-        )
-        Icon(
-            modifier = Modifier
-                .size(70.dp)
-                .clickable {
-                    onOpenCleanerPinFormClicked()
-                },
-            imageVector = Icons.Outlined.AccountCircle,
-            contentDescription = null
-        )
-        Icon(
-            modifier = Modifier
-                .size(70.dp)
-                .clickable {
-                    onHomeScreenClicked()
-                },
-            imageVector = Icons.Outlined.Home,
             contentDescription = null
         )
     }

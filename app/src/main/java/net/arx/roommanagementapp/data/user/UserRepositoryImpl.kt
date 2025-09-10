@@ -15,10 +15,6 @@ class UserRepositoryImpl @Inject constructor(
         return dataSource.usernameExists(username = username)
     }
 
-    override suspend fun passwordExists(password: String): UserEntity? {
-        return dataSource.passwordExists(password = password)
-    }
-
     override suspend fun login(password: String): UserEntity? {
         return dataSource.login(password = password)
     }

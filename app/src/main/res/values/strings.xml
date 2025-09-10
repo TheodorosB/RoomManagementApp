@@ -1,38 +1,20 @@
 <resources>
     <string name="app_name">Room Management App</string>
 
-    !-- Admin Screen -->
-    <string name="add_cleaner_title">Προσθήκη Καθαριστή</string>
-    <string name="add_room_title">Προσθήκη Δωματίου</string>
-    <string name="add_cleaner_dialog_label">Όνομα Καθαριστή</string>
-    
-    <!-- Cleaner Screen -->
-    <string name="cleaner_screen_tasks">Οι εργασίες που πρέπει να γίνουν σήμερα:</string>
+    <!-- Lobby Screen -->
+    <string name="lobby_button_add_cleaner_title">Προσθήκη Καθαριστή</string>
+    <string name="lobby_button_add_room_title">Προσθήκη Δωματίου</string>
 
-    <!-- Login Dialog -->
-    <string name="pin_dialog_title_user">Σύνδεση Χρήστη</string>
+    <!-- Pin Dialog -->
     <string name="pin_dialog_title_admin">Σύνδεση Διαχειριστή</string>
-    <string name="pin_dialog_description">Παρακαλώ εισάγετε κωδικό</string>
-    <string name="pin_dialog_connect_button">Σύνδεση</string>
     <string name="pin_dialog_wrong_password">Εισάγατε λανθασμένο κωδικό</string>
     <string name="pin_filled_digit">*</string>
 
-    <!-- Dialog -->
-    <string name="dialog_form_confirm_button">Προσθήκη</string>
-    <string name="dialog_form_cancel_button">Ακύρωση</string>
-
-    <!-- Cleaner Dialog Form -->
-    <string name="dialog_form_cleaner_field">Καθαριστής</string>
-    <string name="dialog_form_cleaner_password_field">Κωδικός</string>
-
-    <!-- Room Dialog Form -->
-    <string name="dialog_form_room_edit_title">Επεξεργασία Δωματίου</string>
-    <string name="dialog_form_room_field">Αριθμός Δωματίου</string>
-    <string name="dialog_form_select_status">Επιλέξτε κατάσταση</string>
-    <string name="dialog_form_select_user">Επιλέξτε καθαριστή</string>
-    <string name="room_general_status">Γενικός</string>
-    <string name="room_regular_status">Ήπιος</string>
-    <string name="room_clean_status">Καθαρό</string>
+    <!-- Form Dialog -->
+    <string name="form_dialog_cleaner_field_label">Καθαριστής</string>
+    <string name="form_dialog_room_field_label">Αριθμός Δωματίου</string>
+    <string name="form_dialog_confirm_button">Προσθήκη</string>
+    <string name="form_dialog_cancel_button">Ακύρωση</string>
 
     <!-- Room Tasks -->
     <string name="task_mopping_title">Σφουγγάρισμα</string>"
@@ -40,10 +22,13 @@
     <string name="task_disposables_title">Αναλώσιμα</string>"
     <string name="task_beddings_title">Σεντόνια</string>"
     <string name="task_garbages_title">Σκουπίδια</string>"
+
+    <!-- User Room -->
+    <string name="user_room_tasks_title">Οι εργασίες που πρέπει να γίνουν σήμερα:</string>
     
-    <!-- Room Details -->
-    <string name="room_details_user_selection_title">Επιλογή Χρήστη</string>
-    <string name="room_details_task_selection_title">Επιλογή Εργασιών</string>
+    <!-- Admin Room -->
+    <string name="admin_room_user_selection_title">Επιλογή Χρήστη</string>
+    <string name="admin_room_task_selection_title">Επιλογή Εργασιών</string>
 
     <string name="empty_string" />
 </resources>

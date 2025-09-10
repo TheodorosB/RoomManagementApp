@@ -77,7 +77,7 @@ private fun PinDialogContent(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = stringResource(id = pinForm.title.value),
+                    text = stringResource(id = pinForm.title),
                     fontSize = 22.sp
                 )
 
@@ -114,7 +114,7 @@ private fun PinDialogContent(
         },
         dismissButton = {
             DialogFormButton(
-                text = stringResource(R.string.dialog_form_cancel_button),
+                text = stringResource(R.string.form_dialog_cancel_button),
                 onClick = onDismissRequest
             )
         },
@@ -151,8 +151,7 @@ private fun PinField(
             keyboardType = KeyboardType.NumberPassword,
             imeAction = ImeAction.Done
         ),
-        cursorBrush = SolidColor(Color.Transparent),
-        decorationBox = {}
+        cursorBrush = SolidColor(Color.Transparent)
     )
 
     Row(
@@ -168,10 +167,7 @@ private fun PinField(
                     .size(60.dp)
                     .border(
                         width = 2.dp,
-                        color = when {
-                            pinForm.isError.value -> Color.Red
-                            else -> Color.Black
-                        },
+                        color = pinForm.borderColor,
                         shape = RoundedCornerShape(12.dp)
                     )
                     .clickable { focusRequester.requestFocus() },

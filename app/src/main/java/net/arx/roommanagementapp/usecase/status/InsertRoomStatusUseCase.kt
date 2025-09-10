@@ -1,7 +1,7 @@
 package net.arx.roommanagementapp.usecase.status
 
 import net.arx.roommanagementapp.data.task.RoomStatusRepositoryImpl
-import net.arx.roommanagementapp.framework.status.mapper.TaskEntityMapper
+import net.arx.roommanagementapp.framework.status.mapper.RoomStatusEntityMapper
 import net.arx.roommanagementapp.ui.room.model.TaskUiItem
 import net.arx.roommanagementapp.usecase.UseCase
 import timber.log.Timber
@@ -9,7 +9,7 @@ import javax.inject.Inject
 
 class InsertRoomStatusUseCase @Inject constructor(
     private val taskRepository: RoomStatusRepositoryImpl,
-    private val taskEntityMapper: TaskEntityMapper
+    private val roomStatusEntityMapper: RoomStatusEntityMapper
 ): UseCase {
 
     suspend operator fun invoke(
@@ -20,7 +20,7 @@ class InsertRoomStatusUseCase @Inject constructor(
         tasks: List<TaskUiItem>
     ) {
         try {
-            val roomStatusEntity = taskEntityMapper(dayStart = dayStart, dayEnd = dayEnd, roomId = roomId, userId = userId, tasks = tasks)
+            val roomStatusEntity = roomStatusEntityMapper(dayStart = dayStart, dayEnd = dayEnd, roomId = roomId, userId = userId, tasks = tasks)
             val taskId = taskRepository.insertRoomStatus(task = roomStatusEntity)
             Timber.tag(InsertRoomStatusUseCase::class.simpleName.toString())
                 .d("Task with id: $taskId inserted successfully")
