@@ -13,8 +13,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.outlined.AccountCircle
-import androidx.compose.material.icons.outlined.DateRange
-import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -168,7 +166,7 @@ fun DashboardActionsRow(
                 .clickable {
                     onOpenAdminPinFormClicked()
                 },
-            imageVector = Icons.Outlined.DateRange,
+            imageVector = Icons.Outlined.AccountCircle,
             contentDescription = null
         )
     }

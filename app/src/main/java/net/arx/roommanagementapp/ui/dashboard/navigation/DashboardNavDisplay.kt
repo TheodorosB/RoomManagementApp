@@ -13,14 +13,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.ui.NavDisplay
-import net.arx.roommanagementapp.ui.lobby.composable.LobbyScreen
-import net.arx.roommanagementapp.ui.dashboard.composable.DashboardToolBar
-import net.arx.roommanagementapp.ui.user.composable.UserRoomScreen
+import net.arx.roommanagementapp.ui.admin.composable.AdminRoomScreen
 import net.arx.roommanagementapp.ui.composable.dialog.PinDialog
+import net.arx.roommanagementapp.ui.dashboard.composable.DashboardToolBar
 import net.arx.roommanagementapp.ui.dashboard.model.DashboardNavEntries
 import net.arx.roommanagementapp.ui.dashboard.viewmodel.DashboardViewModel
-import net.arx.roommanagementapp.ui.admin.composable.AdminRoomScreen
+import net.arx.roommanagementapp.ui.lobby.composable.LobbyScreen
 import net.arx.roommanagementapp.ui.theme.ColorBaseBackground
+import net.arx.roommanagementapp.ui.user.composable.UserRoomScreen
 
 @Composable
 fun DashboardNavDisplay(
