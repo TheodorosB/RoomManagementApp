@@ -48,10 +48,14 @@ class DashboardViewModel @Inject constructor(
     }
 
     private fun onBackButtonClicked() {
-        if(_uiState.value.isAdmin.value) {
-            _uiState.value.isAdmin.value = false
-        } else {
-            _uiState.value.backstackEntries.removeLastOrNull()
+        val currentEntry = _uiState.value.backstackEntries.lastOrNull()
+        when(currentEntry) {
+            DashboardNavEntries.Lobby -> {
+                _uiState.value.isAdmin.value = false
+            }
+            else -> {
+                _uiState.value.backstackEntries.removeLastOrNull()
+            }
         }
     }
     private fun onOpenAdminPinForm() {
