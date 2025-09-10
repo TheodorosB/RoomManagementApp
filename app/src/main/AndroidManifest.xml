@@ -15,6 +15,7 @@
         <activity
             android:name=".ui.app.AppActivity"
             android:exported="true"
+            android:screenOrientation="landscape"
             android:label="@string/app_name"
             android:theme="@style/Theme.RoomManagementApp">
             <intent-filter>
