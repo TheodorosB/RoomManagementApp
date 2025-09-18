@@ -43,10 +43,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import net.arx.roommanagementapp.R
 import net.arx.roommanagementapp.ui.dashboard.model.PinFormUiItem
+import net.arx.roommanagementapp.ui.theme.SpacingCustom_12dp
+import net.arx.roommanagementapp.ui.theme.SpacingCustom_14dp
+import net.arx.roommanagementapp.ui.theme.SpacingCustom_24dp
+import net.arx.roommanagementapp.ui.theme.SpacingCustom_60dp
+import net.arx.roommanagementapp.ui.theme.SpacingDefault_16dp
+import net.arx.roommanagementapp.ui.theme.SpacingEighth_2dp
+import net.arx.roommanagementapp.ui.theme.SpacingSingle_1dp
 
 @Composable
 internal fun PinDialog(
@@ -59,7 +64,6 @@ internal fun PinDialog(
         onDismissRequest = onDismissRequest,
         onPasswordComplete = onPasswordComplete
     )
-
 }
 @Composable
 private fun PinDialogContent(
@@ -78,16 +82,14 @@ private fun PinDialogContent(
             ) {
                 Text(
                     text = stringResource(id = pinForm.title),
-                    fontSize = 22.sp
+                    style = MaterialTheme.typography.bodySmall
                 )
 
                 Icon(
                     modifier = Modifier
                         .fillMaxWidth(0.1f)
                         .aspectRatio(1f)
-                        .clickable {
-                            onDismissRequest()
-                        },
+                        .clickable { onDismissRequest() },
                     painter = painterResource(R.drawable.ic_room_management_close),
                     contentDescription = null
                 )
@@ -97,7 +99,7 @@ private fun PinDialogContent(
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(space = 16.dp, alignment = Alignment.CenterVertically)) {
+                verticalArrangement = Arrangement.spacedBy(space = SpacingDefault_16dp, alignment = Alignment.CenterVertically)) {
 
                 PinField(
                     pinForm = pinForm,
@@ -106,8 +108,8 @@ private fun PinDialogContent(
                 if (pinForm.isError.value) {
                     Text(
                         text = stringResource(R.string.pin_dialog_wrong_password),
-                        color = Color.Red,
-                        fontSize = 14.sp
+                        style = MaterialTheme.typography.labelSmall,
+                        color = Color.Red
                     )
                 }
             }
@@ -146,7 +148,7 @@ private fun PinField(
         modifier = modifier
             .focusRequester(focusRequester)
             .onFocusChanged { isFocused = it.isFocused }
-            .size(1.dp),
+            .size(SpacingSingle_1dp),
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.NumberPassword,
             imeAction = ImeAction.Done
@@ -157,18 +159,18 @@ private fun PinField(
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(space = 14.dp, alignment = Alignment.CenterHorizontally)
+        horizontalArrangement = Arrangement.spacedBy(space = SpacingCustom_14dp, alignment = Alignment.CenterHorizontally)
     ) {
         pinForm.pinCode.forEachIndexed { index, item ->
             val showCursor = isFocused && pinForm.text.value.length == index
 
             Box(
                 modifier = Modifier
-                    .size(60.dp)
+                    .size(SpacingCustom_60dp)
                     .border(
-                        width = 2.dp,
+                        width = SpacingEighth_2dp,
                         color = pinForm.borderColor,
-                        shape = RoundedCornerShape(12.dp)
+                        shape = RoundedCornerShape(SpacingCustom_12dp)
                     )
                     .clickable { focusRequester.requestFocus() },
                 contentAlignment = Alignment.Center
@@ -177,7 +179,7 @@ private fun PinField(
                     item.isFilled -> {
                         Text(
                             text = stringResource(id = R.string.pin_filled_digit),
-                            fontSize = 24.sp
+                            style = MaterialTheme.typography.bodyMedium
                         )
                     }
                     showCursor -> {
@@ -198,12 +200,12 @@ private fun BlinkingCursor() {
             animationSpec = infiniteRepeatable(
                 animation = tween(500, easing = LinearEasing),
                 repeatMode = RepeatMode.Reverse
-            ), label = ""
+            )
         )
     Box(
         Modifier
-            .width(2.dp)
-            .height(24.dp)
+            .width(SpacingEighth_2dp)
+            .height(SpacingCustom_24dp)
             .alpha(alpha)
             .background(MaterialTheme.colorScheme.primary)
     )

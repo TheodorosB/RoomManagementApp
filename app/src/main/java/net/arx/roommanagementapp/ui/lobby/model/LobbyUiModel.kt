@@ -17,7 +17,7 @@ data class LobbyUiState(
     val isAdmin: MutableState<Boolean> = mutableStateOf(false),
     val users: SnapshotStateList<UserUiItem> = mutableStateListOf(),
     val rooms: SnapshotStateList<RoomUiItem> = mutableStateListOf(),
-    val onAddNewUserClicked: () -> Unit,
+    val onAddNewUserClicked: (Long?) -> Unit,
     val onSubmitFormClicked: () -> Unit,
     val onAddNewRoomClicked: () -> Unit,
     val onValidateText: (FieldUiItem) -> Unit,

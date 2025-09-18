@@ -7,30 +7,29 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowLeft
-import androidx.compose.material.icons.filled.KeyboardArrowRight
-import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import net.arx.roommanagementapp.R
 import net.arx.roommanagementapp.ui.dashboard.model.DateUiItem
 import net.arx.roommanagementapp.ui.theme.ColorBaseGrey
+import net.arx.roommanagementapp.ui.theme.SpacingCustom_14dp
+import net.arx.roommanagementapp.ui.theme.SpacingCustom_20dp
+import net.arx.roommanagementapp.ui.theme.SpacingCustom_40dp
+import net.arx.roommanagementapp.ui.theme.SpacingHalf_8dp
 import net.arx.roommanagementapp.ui.util.ext.formatDate
 
 @Composable
-fun DashboardToolBar(
+internal fun DashboardToolBar(
     date: DateUiItem,
     hasBackButton: Boolean,
     modifier: Modifier = Modifier,
@@ -43,32 +42,38 @@ fun DashboardToolBar(
         modifier = modifier
             .fillMaxWidth()
             .aspectRatio(11f)
-            .padding(horizontal = 14.dp),
+            .padding(horizontal = SpacingCustom_14dp),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.Top
     ) {
-        DashboardBackButton(
+
+        ToolbarActionButton(
             modifier = Modifier.weight(0.3f),
-            hasBackButton = hasBackButton,
-            onBackButtonClicked = onBackButtonClicked
+            painter = painterResource(id = R.drawable.ic_back_button),
+            hasButton = hasBackButton,
+            arrangement = Arrangement.Start,
+            onButtonClicked = onBackButtonClicked
         )
 
-        DashboardDateRow(
+        ToolbarDateRow(
             modifier = Modifier.weight(0.4f),
             date = date.dayStart.value.formatDate(),
             onNextDateClick = onNextDateClick,
             onPreviousDateClick = onPreviousDateClick
         )
 
-        DashboardActionsRow(
+        ToolbarActionButton(
             modifier = Modifier.weight(0.3f),
-            onOpenAdminPinFormClicked = onOpenAdminPinFormClicked
+            hasButton = true,
+            arrangement = Arrangement.End,
+            painter = painterResource(id = R.drawable.ic_admin_profile),
+            onButtonClicked = onOpenAdminPinFormClicked
         )
     }
 }
 
 @Composable
-fun DashboardDateRow(
+private fun ToolbarDateRow(
     date: String,
     onPreviousDateClick: () -> Unit,
     onNextDateClick: () -> Unit,
@@ -78,95 +83,80 @@ fun DashboardDateRow(
         modifier = modifier
             .aspectRatio(4.5f)
             .shadow(
-                elevation = 8.dp,
+                elevation = SpacingHalf_8dp,
                 shape = RoundedCornerShape(
-                    bottomStart = 40.dp,
-                    bottomEnd = 40.dp
+                    bottomStart = SpacingCustom_40dp,
+                    bottomEnd = SpacingCustom_40dp
                 )
             )
             .background(Color.White)
-            .padding(horizontal = 20.dp),
+            .padding(horizontal = SpacingCustom_20dp),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Icon(
-            modifier = Modifier
-                .weight(0.15f)
-                .aspectRatio(1f)
-                .clickable {
-                    onPreviousDateClick()
-                },
-            tint = ColorBaseGrey,
-            imageVector = Icons.Filled.KeyboardArrowLeft,
-            contentDescription = null
+
+        ToolbarDateIcon(
+            modifier = Modifier.weight(0.15f),
+            painter = painterResource(id = R.drawable.ic_left_arrow),
+            onButtonClicked = onPreviousDateClick
         )
+
         Text(
-            modifier = Modifier
-                .weight(1f),
+            modifier = Modifier.weight(1f),
             text = date,
             textAlign = TextAlign.Center,
-            fontSize = 20.sp
+            style = MaterialTheme.typography.bodySmall
         )
-        Icon(
-            modifier = Modifier
-                .weight(0.15f)
-                .aspectRatio(1f)
-                .clickable {
-                    onNextDateClick()
-                },
-            imageVector = Icons.Filled.KeyboardArrowRight,
-            tint = ColorBaseGrey,
-            contentDescription = null,
+
+        ToolbarDateIcon(
+            modifier = Modifier.weight(0.15f),
+            painter = painterResource(id = R.drawable.ic_right_arrow),
+            onButtonClicked = onNextDateClick
         )
     }
 }
 
 @Composable
-fun DashboardBackButton(
-    hasBackButton: Boolean,
-    onBackButtonClicked: () -> Unit,
-    modifier: Modifier = Modifier
+private fun ToolbarDateIcon(
+    modifier: Modifier = Modifier,
+    painter: Painter,
+    onButtonClicked: () -> Unit
+) {
+    Icon(
+        modifier = modifier
+            .aspectRatio(1f)
+            .clickable { onButtonClicked() },
+        tint = ColorBaseGrey,
+        painter = painter,
+        contentDescription = null
+    )
+}
+
+@Composable
+private fun ToolbarActionButton(
+    modifier: Modifier = Modifier,
+    painter: Painter,
+    hasButton: Boolean,
+    arrangement: Arrangement.Horizontal,
+    onButtonClicked: () -> Unit
 ) {
     Row(
-        modifier = modifier
-            .padding(horizontal = 8.dp, vertical = 8.dp),
-        horizontalArrangement = Arrangement.Start,
-        verticalAlignment = Alignment.Top
+        modifier = modifier,
+        horizontalArrangement = arrangement
     ) {
-        if(hasBackButton) {
+        if (hasButton) {
             Icon(
                 modifier = Modifier
-                    .size(70.dp)
+                    .padding(all = SpacingHalf_8dp)
+                    .fillMaxWidth(0.2f)
+                    .aspectRatio(1f)
                     .clickable {
-                        onBackButtonClicked()
+                        onButtonClicked()
                     },
-                painter = painterResource(id = R.drawable.ic_back_button),
+                painter = painter,
                 tint = Color.Black,
                 contentDescription = null
             )
         }
-    }
-}
-
-@Composable
-fun DashboardActionsRow(
-    modifier: Modifier = Modifier,
-    onOpenAdminPinFormClicked: () -> Unit
-) {
-    Row(
-        modifier = modifier
-            .padding(top = 8.dp),
-        horizontalArrangement = Arrangement.spacedBy(space = 8.dp, alignment = Alignment.End),
-        verticalAlignment = Alignment.Top
-    ) {
-        Icon(
-            modifier = Modifier
-                .size(70.dp)
-                .clickable {
-                    onOpenAdminPinFormClicked()
-                },
-            imageVector = Icons.Outlined.AccountCircle,
-            contentDescription = null
-        )
     }
 }

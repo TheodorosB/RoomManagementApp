@@ -14,9 +14,8 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.AddCircle
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,14 +26,21 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import net.arx.roommanagementapp.R
 import net.arx.roommanagementapp.ui.composable.text.AutoSizeText
 import net.arx.roommanagementapp.ui.room.model.RoomUiItem
+import net.arx.roommanagementapp.ui.theme.SpacingCustom_10dp
+import net.arx.roommanagementapp.ui.theme.SpacingCustom_14dp
+import net.arx.roommanagementapp.ui.theme.SpacingCustom_18dp
+import net.arx.roommanagementapp.ui.theme.SpacingCustom_36dp
+import net.arx.roommanagementapp.ui.theme.SpacingCustom_6dp
+import net.arx.roommanagementapp.ui.theme.SpacingDefault_16dp
+import net.arx.roommanagementapp.ui.theme.SpacingHalf_8dp
+import net.arx.roommanagementapp.ui.theme.SpacingQuarter_4dp
 
 @Composable
-fun RoomsRow(
+internal fun RoomsRow(
     rooms: List<RoomUiItem>,
     isAdmin: Boolean,
     onRoomClicked: (Long) -> Unit,
@@ -43,10 +49,10 @@ fun RoomsRow(
     LazyVerticalGrid(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 20.dp),
+            .padding(horizontal = SpacingCustom_18dp),
         columns = GridCells.Fixed(5),
-        horizontalArrangement = Arrangement.spacedBy(space = 8.dp, alignment = Alignment.Start),
-        verticalArrangement = Arrangement.spacedBy(space = 8.dp, alignment = Alignment.Top)
+        horizontalArrangement = Arrangement.spacedBy(space = SpacingHalf_8dp, alignment = Alignment.Start),
+        verticalArrangement = Arrangement.spacedBy(space = SpacingHalf_8dp, alignment = Alignment.Top)
     ) {
         items(items = rooms, key = { it.id }) { room ->
             RoomItem(
@@ -67,7 +73,7 @@ fun RoomsRow(
 }
 
 @Composable
-fun RoomItem(
+internal fun RoomItem(
     roomUiItem: RoomUiItem,
     arrangement: Arrangement.Vertical,
     modifier: Modifier = Modifier,
@@ -76,12 +82,12 @@ fun RoomItem(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .clip(shape = RoundedCornerShape(40.dp))
+            .clip(shape = RoundedCornerShape(SpacingCustom_36dp))
             .background(Color.White)
             .clickable(enabled = roomUiItem.isClickable) {
                 onRoomClicked(roomUiItem.id)
             }
-            .padding(horizontal = 14.dp, vertical = 7.dp),
+            .padding(horizontal = SpacingCustom_14dp, vertical = SpacingCustom_6dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = arrangement
     ) {
@@ -101,12 +107,12 @@ fun RoomItem(
                 maxFontSize = 40.sp
             )
         } else {
-            Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(SpacingCustom_10dp))
         }
 
         Row (
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(space = 4.dp, alignment = Alignment.CenterHorizontally),
+            horizontalArrangement = Arrangement.spacedBy(space = SpacingQuarter_4dp, alignment = Alignment.CenterHorizontally),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
@@ -130,33 +136,31 @@ fun RoomItem(
 
 
 @Composable
-fun AddNewRoomItem(
+private fun AddNewRoomItem(
     onAddNewRoomClicked: () -> Unit
 ) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .aspectRatio(1f)
-            .clip(shape = RoundedCornerShape(40.dp))
-            .clickable {
-                onAddNewRoomClicked()
-            }
+            .clip(shape = RoundedCornerShape(SpacingCustom_36dp))
+            .clickable { onAddNewRoomClicked() }
             .background(Color.White)
-            .padding(horizontal = 8.dp, vertical = 4.dp),
+            .padding(horizontal = SpacingHalf_8dp, vertical = SpacingQuarter_4dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(space = 16.dp, alignment = Alignment.CenterVertically)
+        verticalArrangement = Arrangement.spacedBy(space = SpacingDefault_16dp, alignment = Alignment.CenterVertically)
     ) {
         Icon(
             modifier = Modifier
                 .fillMaxWidth(0.2f)
                 .aspectRatio(1f),
-            imageVector = Icons.Outlined.AddCircle,
+            painter = painterResource(id = R.drawable.ic_add_new_room),
             contentDescription = null,
             tint = Color.Black
         )
         Text(
             text = stringResource(R.string.lobby_button_add_room_title),
-            fontSize = 25.sp,
+            style = MaterialTheme.typography.bodyMedium,
             textAlign = TextAlign.Center
         )
     }

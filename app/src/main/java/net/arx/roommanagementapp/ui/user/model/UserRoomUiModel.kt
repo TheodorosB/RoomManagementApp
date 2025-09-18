@@ -1,11 +1,8 @@
 package net.arx.roommanagementapp.ui.user.model
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import net.arx.roommanagementapp.framework.db.entity.UserRole
 import net.arx.roommanagementapp.ui.dashboard.model.DateUiItem
 import net.arx.roommanagementapp.ui.room.model.RoomUiItem
@@ -24,7 +21,6 @@ data class UserUiItem(
     val name: String = "",
     val isClickable: Boolean = true,
     val isSelected: MutableState<Boolean> = mutableStateOf(false),
-    val icon: ImageVector = Icons.Outlined.AccountCircle,
     val role: UserRole = UserRole.USER,
 ) {
     val backgroundColor: Color

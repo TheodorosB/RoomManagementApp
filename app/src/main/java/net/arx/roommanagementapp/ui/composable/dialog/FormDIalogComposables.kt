@@ -16,6 +16,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -26,14 +27,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import net.arx.roommanagementapp.R
 import net.arx.roommanagementapp.ui.lobby.model.DialogFormUiItem
 import net.arx.roommanagementapp.ui.lobby.model.FieldUiItem
+import net.arx.roommanagementapp.ui.theme.SpacingCustom_10dp
+import net.arx.roommanagementapp.ui.theme.SpacingHalf_8dp
+import net.arx.roommanagementapp.ui.theme.SpacingQuarter_4dp
 
 @Composable
 internal fun FormDialog(
@@ -54,7 +54,7 @@ internal fun FormDialog(
             ) {
                 Text(
                     text = stringResource(id = formUiItem.title.value),
-                    fontSize = 20.sp
+                    style = MaterialTheme.typography.bodySmall
                 )
                 Icon(
                     modifier = Modifier
@@ -72,10 +72,10 @@ internal fun FormDialog(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clip(shape = RoundedCornerShape(10.dp))
-                    .padding(horizontal = 8.dp, vertical = 4.dp),
+                    .clip(shape = RoundedCornerShape(SpacingCustom_10dp))
+                    .padding(horizontal = SpacingHalf_8dp, vertical = SpacingQuarter_4dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(space = 8.dp, alignment = Alignment.CenterVertically)
+                verticalArrangement = Arrangement.spacedBy(space = SpacingHalf_8dp, alignment = Alignment.CenterVertically)
             ) {
                 FormDialogFields(
                     fields = formUiItem.fields,
@@ -108,10 +108,7 @@ private fun FormDialogFields(
         modifier = Modifier
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(
-            space = 8.dp,
-            alignment = Alignment.CenterVertically
-        )
+        verticalArrangement = Arrangement.spacedBy(space = SpacingHalf_8dp, alignment = Alignment.CenterVertically)
     ) {
         items(items = fields) { field ->
             TextField(
@@ -126,14 +123,11 @@ private fun FormDialogFields(
                 label = {
                     Text(
                         text = stringResource(field.label),
-                        fontSize = 16.sp
+                        style = MaterialTheme.typography.labelMedium
                     )
                 },
                 isError = field.alreadyExists.value,
-                textStyle = TextStyle(
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.SemiBold
-                ),
+                textStyle = MaterialTheme.typography.titleMedium,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = field.keyboardType,
                     imeAction = ImeAction.Done
@@ -158,7 +152,7 @@ internal fun DialogFormButton(
     Button(
         modifier = Modifier
             .width(intrinsicSize = IntrinsicSize.Min)
-            .padding(all = 4.dp),
+            .padding(all = SpacingQuarter_4dp),
         onClick = {
             onClick()
         },
@@ -166,7 +160,7 @@ internal fun DialogFormButton(
     ) {
         Text(
             text = text,
-            fontSize = 15.sp
+            style = MaterialTheme.typography.labelMedium
         )
     }
 }

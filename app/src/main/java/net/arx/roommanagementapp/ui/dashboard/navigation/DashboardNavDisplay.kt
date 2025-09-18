@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.NavEntry
@@ -20,21 +19,20 @@ import net.arx.roommanagementapp.ui.dashboard.model.DashboardNavEntries
 import net.arx.roommanagementapp.ui.dashboard.viewmodel.DashboardViewModel
 import net.arx.roommanagementapp.ui.lobby.composable.LobbyScreen
 import net.arx.roommanagementapp.ui.theme.ColorBaseBackground
+import net.arx.roommanagementapp.ui.theme.SpacingHalf_8dp
 import net.arx.roommanagementapp.ui.user.composable.UserRoomScreen
 
 @Composable
-fun DashboardNavDisplay(
-    modifier: Modifier = Modifier
-) {
+internal fun DashboardNavDisplay() {
     val viewModel: DashboardViewModel = hiltViewModel()
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
 
     Column(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxSize()
             .background(color = ColorBaseBackground),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(space = 8.dp, alignment = Alignment.Top)
+        verticalArrangement = Arrangement.spacedBy(space = SpacingHalf_8dp, alignment = Alignment.Top)
     ) {
         DashboardToolBar(
             date = uiState.value.date.value,
@@ -46,8 +44,7 @@ fun DashboardNavDisplay(
         )
 
         NavDisplay(
-            modifier = Modifier
-                .padding(horizontal = 8.dp),
+            modifier = Modifier.padding(horizontal = SpacingHalf_8dp),
             backStack = uiState.value.backstackEntries,
             contentAlignment = Alignment.Center,
             entryProvider = { key ->

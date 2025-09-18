@@ -16,18 +16,16 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import net.arx.roommanagementapp.R
@@ -35,6 +33,10 @@ import net.arx.roommanagementapp.ui.dashboard.model.DateUiItem
 import net.arx.roommanagementapp.ui.room.composable.RoomItem
 import net.arx.roommanagementapp.ui.room.model.RoomUiItem
 import net.arx.roommanagementapp.ui.room.model.TaskUiItem
+import net.arx.roommanagementapp.ui.theme.SpacingCustom_24dp
+import net.arx.roommanagementapp.ui.theme.SpacingEighth_2dp
+import net.arx.roommanagementapp.ui.theme.SpacingHalf_8dp
+import net.arx.roommanagementapp.ui.theme.SpacingQuarter_4dp
 import net.arx.roommanagementapp.ui.user.model.UserRoomUiState
 import net.arx.roommanagementapp.ui.user.viewmodel.UserRoomViewModel
 
@@ -55,33 +57,35 @@ internal fun UserRoomScreen(
     }
 
     UserRoomContent(
-        uiState = uiState,
+        uiState = uiState.value,
     )
 }
 
 @Composable
 private fun UserRoomContent(
-    uiState: State<UserRoomUiState>
+    uiState: UserRoomUiState
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.spacedBy(space = 8.dp, alignment = Alignment.Top)
+        verticalArrangement = Arrangement.spacedBy(space = SpacingHalf_8dp, alignment = Alignment.Top)
     ) {
-        UserIcon(
-            user = uiState.value.user.value
+        UserItem(
+            userId = uiState.user.value.id,
+            name = uiState.user.value.name,
+            backgroundColor = uiState.user.value.backgroundColor,
+            iconResId = R.drawable.ic_cleaner_profile
         )
 
         Text(
             modifier = Modifier.alpha(0.5f),
             text = stringResource(id = R.string.user_room_tasks_title),
-            fontSize = 25.sp
+            style = MaterialTheme.typography.bodyMedium
         )
 
         UserRoomRow(
-            room = uiState.value.room.value,
-            onUpdateStatus = uiState.value.onUpdateStatus
+            room = uiState.room.value,
+            onUpdateStatus = uiState.onUpdateStatus
         )
     }
 }
@@ -95,7 +99,7 @@ private fun UserRoomRow(
         modifier = Modifier
             .fillMaxWidth()
             .aspectRatio(6.5f),
-        horizontalArrangement = Arrangement.spacedBy(space = 4.dp, alignment = Alignment.Start),
+        horizontalArrangement = Arrangement.spacedBy(space = SpacingQuarter_4dp, alignment = Alignment.Start),
         verticalAlignment = Alignment.CenterVertically
     ) {
         RoomItem(
@@ -103,7 +107,7 @@ private fun UserRoomRow(
                 .fillMaxWidth(0.15f)
                 .aspectRatio(1f),
             roomUiItem = room,
-            arrangement = Arrangement.spacedBy(space = 8.dp, alignment = Alignment.CenterVertically)
+            arrangement = Arrangement.spacedBy(space = SpacingHalf_8dp, alignment = Alignment.CenterVertically)
         )
 
         Icon(
@@ -117,8 +121,8 @@ private fun UserRoomRow(
         LazyVerticalGrid(
             modifier = Modifier.fillMaxWidth(0.8f),
             columns = GridCells.Fixed(3),
-            horizontalArrangement = Arrangement.spacedBy(space = 8.dp, alignment = Alignment.Start),
-            verticalArrangement = Arrangement.spacedBy(space = 8.dp, alignment = Alignment.Top)
+            horizontalArrangement = Arrangement.spacedBy(space = SpacingHalf_8dp, alignment = Alignment.Start),
+            verticalArrangement = Arrangement.spacedBy(space = SpacingHalf_8dp, alignment = Alignment.Top)
         ) {
 
             items(items = room.tasks, key = { it.title }) { task ->
@@ -151,21 +155,21 @@ internal fun TaskItem(
         modifier = Modifier
             .fillMaxWidth()
             .aspectRatio(3f)
-            .clip(shape = RoundedCornerShape(25.dp))
+            .clip(shape = RoundedCornerShape(SpacingCustom_24dp))
             .background(Color.White)
             .clickable {
                 task.onTaskClicked()
                 onUpdateStatus()
             }
-            .padding(all = 2.dp),
+            .padding(all = SpacingEighth_2dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(space = 8.dp, alignment = Alignment.CenterVertically)
+        verticalArrangement = Arrangement.spacedBy(space = SpacingHalf_8dp, alignment = Alignment.CenterVertically)
     ) {
         Text(
             modifier = Modifier,
             text = stringResource(id = task.title),
             textDecoration = task.textDecoration,
-            fontSize = 25.sp
+            style = MaterialTheme.typography.bodyMedium
         )
     }
 }

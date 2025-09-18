@@ -1,5 +1,6 @@
 package net.arx.roommanagementapp.ui.user.composable
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -12,9 +13,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -22,39 +22,50 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import net.arx.roommanagementapp.R
 import net.arx.roommanagementapp.ui.theme.ColorBaseBackground
+import net.arx.roommanagementapp.ui.theme.SpacingCustom_10dp
+import net.arx.roommanagementapp.ui.theme.SpacingCustom_12dp
+import net.arx.roommanagementapp.ui.theme.SpacingCustom_24dp
+import net.arx.roommanagementapp.ui.theme.SpacingCustom_60dp
+import net.arx.roommanagementapp.ui.theme.SpacingCustom_6dp
+import net.arx.roommanagementapp.ui.theme.SpacingHalf_8dp
+import net.arx.roommanagementapp.ui.theme.SpacingQuarter_4dp
 import net.arx.roommanagementapp.ui.user.model.UserUiItem
 
 @Composable
-fun UsersRow(
+internal fun UsersRow(
     isAdmin: Boolean,
     users: List<UserUiItem>,
-    onAddNewUserClicked: () -> Unit,
+    onAddNewUserClicked: (Long?) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyRow(
         modifier = modifier
             .fillMaxWidth()
             .aspectRatio(9f)
-            .padding(horizontal = 8.dp),
-        horizontalArrangement = Arrangement.spacedBy(space = 10.dp, alignment = Alignment.Start),
+            .padding(horizontal = SpacingHalf_8dp),
+        horizontalArrangement = Arrangement.spacedBy(space = SpacingCustom_10dp, alignment = Alignment.Start),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        items(items = users, key = { it.id ?: 0}) { user ->
-            UserIcon(
+        items(items = users, key = { it.id ?: 0 }) { user ->
+            UserItem(
                 modifier = Modifier.fillMaxWidth(0.2f),
-                user = user
+                name = user.name,
+                userId = user.id,
+                backgroundColor = user.backgroundColor
             )
         }
         if(isAdmin) {
             item {
-                AddNewUserItem(
+                UserItem(
+                    name = stringResource(R.string.lobby_button_add_cleaner_title),
                     modifier = Modifier.fillMaxWidth(0.2f),
-                    onAddNewUserClicked = onAddNewUserClicked
+                    iconResId = R.drawable.ic_add_new_user,
+                    isClickable = true,
+                    onUserClicked = onAddNewUserClicked
                 )
             }
         }
@@ -62,76 +73,43 @@ fun UsersRow(
 }
 
 @Composable
-fun UserIcon(
-    user: UserUiItem,
+internal fun UserItem(
+    name: String,
     modifier: Modifier = Modifier,
+    userId: Long? = null,
+    isClickable: Boolean = false,
+    backgroundColor: Color = ColorBaseBackground,
+    @DrawableRes iconResId: Int = R.drawable.ic_cleaner_profile,
     onUserClicked: (Long?) -> Unit = {}
 ) {
     Row(
         modifier = modifier
             .shadow(
-                elevation = 5.dp,
-                shape = RoundedCornerShape(25.dp)
+                elevation = SpacingCustom_6dp,
+                shape = RoundedCornerShape(SpacingCustom_24dp)
             )
             .border(
-                width = 3.dp,
+                width = SpacingQuarter_4dp,
                 color = Color.White,
-                shape = RoundedCornerShape(25.dp)
+                shape = RoundedCornerShape(SpacingCustom_24dp)
             )
-            .clip(shape = RoundedCornerShape(25.dp))
-            .background(user.backgroundColor)
-            .clickable(enabled = user.isClickable) {
-                onUserClicked(user.id)
+            .clip(shape = RoundedCornerShape(SpacingCustom_24dp))
+            .background(backgroundColor)
+            .clickable(enabled = isClickable) {
+                onUserClicked(userId)
             }
-            .padding(all = 12.dp),
-        horizontalArrangement = Arrangement.spacedBy(space = 6.dp, alignment = Alignment.CenterHorizontally),
+            .padding(all = SpacingCustom_12dp),
+        horizontalArrangement = Arrangement.spacedBy(space = SpacingCustom_6dp, alignment = Alignment.CenterHorizontally),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
-            modifier = Modifier.size(60.dp),
-            imageVector = user.icon,
+            modifier = Modifier.size(SpacingCustom_60dp),
+            painter = painterResource(id = iconResId),
             contentDescription = null
         )
         Text(
-            text = user.name,
-            fontSize = 30.sp,
-        )
-    }
-}
-
-@Composable
-fun AddNewUserItem(
-    modifier: Modifier = Modifier,
-    onAddNewUserClicked: () -> Unit
-) {
-    Row(
-        modifier = modifier
-            .shadow(
-                elevation = 5.dp,
-                shape = RoundedCornerShape(25.dp)
-            )
-            .border(
-                width = 3.dp,
-                color = Color.White,
-                shape = RoundedCornerShape(25.dp)
-            )
-            .clip(shape = RoundedCornerShape(25.dp))
-            .background(ColorBaseBackground)
-            .clickable {
-                onAddNewUserClicked()
-            }
-            .padding(all = 12.dp),
-        horizontalArrangement = Arrangement.spacedBy(space = 6.dp, alignment = Alignment.CenterHorizontally),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Icon(
-            modifier = Modifier.size(60.dp),
-            imageVector = Icons.Outlined.Add,
-            contentDescription = null
-        )
-        Text(
-            text = stringResource(R.string.lobby_button_add_cleaner_title),
-            fontSize = 30.sp,
+            text = name,
+            style = MaterialTheme.typography.bodyLarge
         )
     }
 }
