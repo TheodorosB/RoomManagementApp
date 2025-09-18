@@ -1,4 +1,4 @@
-package net.arx.roommanagementapp.domain.room
+package net.arx.roommanagementapp.domain.room.repository
 
 import net.arx.roommanagementapp.framework.db.entity.RoomEntity
 

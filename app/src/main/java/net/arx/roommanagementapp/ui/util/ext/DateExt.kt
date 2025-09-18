@@ -1,4 +1,4 @@
-package net.arx.roommanagementapp.util.ext
+package net.arx.roommanagementapp.ui.util.ext
 
 import java.text.SimpleDateFormat
 import java.util.Calendar

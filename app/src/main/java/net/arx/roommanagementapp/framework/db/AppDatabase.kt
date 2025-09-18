@@ -9,7 +9,7 @@ import net.arx.roommanagementapp.framework.db.dao.UserDao
 import net.arx.roommanagementapp.framework.db.entity.RoomStatusEntity
 import net.arx.roommanagementapp.framework.db.entity.RoomEntity
 import net.arx.roommanagementapp.framework.db.entity.UserEntity
-import net.arx.roommanagementapp.util.converters.Converters
+import net.arx.roommanagementapp.framework.util.converters.Converters
 
 @Database(
     entities = [RoomEntity::class, UserEntity::class, RoomStatusEntity::class],

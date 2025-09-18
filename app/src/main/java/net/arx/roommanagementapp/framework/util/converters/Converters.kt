@@ -1,4 +1,4 @@
-package net.arx.roommanagementapp.util.converters
+package net.arx.roommanagementapp.framework.util.converters
 
 import androidx.room.TypeConverter
 import com.google.gson.Gson

@@ -1,4 +1,4 @@
-package net.arx.roommanagementapp.ui.base
+package net.arx.roommanagementapp.ui.core
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

@@ -1,6 +1,7 @@
-package net.arx.roommanagementapp.data.user
+package net.arx.roommanagementapp.data.user.repository
 
-import net.arx.roommanagementapp.domain.user.UserRepository
+import net.arx.roommanagementapp.data.user.datasource.UserDataSource
+import net.arx.roommanagementapp.domain.user.repository.UserRepository
 import net.arx.roommanagementapp.framework.db.entity.UserEntity
 import javax.inject.Inject
 

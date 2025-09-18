@@ -1,6 +1,6 @@
 package net.arx.roommanagementapp.usecase.user
 
-import net.arx.roommanagementapp.data.user.UserRepositoryImpl
+import net.arx.roommanagementapp.data.user.repository.UserRepositoryImpl
 import net.arx.roommanagementapp.framework.db.entity.UserEntity
 import net.arx.roommanagementapp.usecase.UseCase
 import timber.log.Timber

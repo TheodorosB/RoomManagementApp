@@ -25,10 +25,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import net.arx.roommanagementapp.R
-import net.arx.roommanagementapp.ui.base.compose.noRippleClickable
 import net.arx.roommanagementapp.ui.dashboard.model.DateUiItem
 import net.arx.roommanagementapp.ui.theme.ColorBaseGrey
-import net.arx.roommanagementapp.util.ext.formatDate
+import net.arx.roommanagementapp.ui.util.ext.formatDate
 
 @Composable
 fun DashboardToolBar(
@@ -138,7 +137,7 @@ fun DashboardBackButton(
             Icon(
                 modifier = Modifier
                     .size(70.dp)
-                    .noRippleClickable {
+                    .clickable {
                         onBackButtonClicked()
                     },
                 painter = painterResource(id = R.drawable.ic_back_button),

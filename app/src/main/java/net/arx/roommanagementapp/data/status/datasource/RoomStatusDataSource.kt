@@ -1,8 +1,8 @@
-package net.arx.roommanagementapp.domain.status
+package net.arx.roommanagementapp.data.status.datasource
 
 import net.arx.roommanagementapp.framework.db.entity.RoomStatusEntity
 
-interface RoomStatusRepository {
+interface RoomStatusDataSource {
 
     suspend fun insertRoomStatus(task: RoomStatusEntity): Long
 

@@ -1,6 +1,6 @@
 package net.arx.roommanagementapp.usecase.status
 
-import net.arx.roommanagementapp.data.task.RoomStatusRepositoryImpl
+import net.arx.roommanagementapp.data.status.repository.RoomStatusRepositoryImpl
 import net.arx.roommanagementapp.framework.db.entity.RoomStatusEntity
 import net.arx.roommanagementapp.usecase.UseCase
 import timber.log.Timber

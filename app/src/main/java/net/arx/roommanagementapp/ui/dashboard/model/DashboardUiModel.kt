@@ -8,7 +8,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.graphics.Color
 import net.arx.roommanagementapp.R
-import net.arx.roommanagementapp.util.ext.dayBounds
+import net.arx.roommanagementapp.ui.util.ext.dayBounds
 import java.util.Calendar
 
 data class DashboardUiState(

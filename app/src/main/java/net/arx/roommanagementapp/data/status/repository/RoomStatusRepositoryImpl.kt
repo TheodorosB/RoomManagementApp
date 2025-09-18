@@ -1,8 +1,8 @@
-package net.arx.roommanagementapp.data.task
+package net.arx.roommanagementapp.data.status.repository
 
-import net.arx.roommanagementapp.domain.status.RoomStatusRepository
+import net.arx.roommanagementapp.domain.status.repository.RoomStatusRepository
 import net.arx.roommanagementapp.framework.db.entity.RoomStatusEntity
-import net.arx.roommanagementapp.framework.status.RoomStatusDataSourceImpl
+import net.arx.roommanagementapp.framework.status.datasource.RoomStatusDataSourceImpl
 import javax.inject.Inject
 
 class RoomStatusRepositoryImpl @Inject constructor(

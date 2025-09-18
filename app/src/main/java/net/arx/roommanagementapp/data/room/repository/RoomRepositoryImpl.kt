@@ -1,8 +1,8 @@
-package net.arx.roommanagementapp.data.room
+package net.arx.roommanagementapp.data.room.repository
 
-import net.arx.roommanagementapp.domain.room.RoomRepository
+import net.arx.roommanagementapp.domain.room.repository.RoomRepository
 import net.arx.roommanagementapp.framework.db.entity.RoomEntity
-import net.arx.roommanagementapp.framework.room.RoomDataSourceImpl
+import net.arx.roommanagementapp.framework.room.datasource.RoomDataSourceImpl
 import javax.inject.Inject
 
 class RoomRepositoryImpl @Inject constructor(

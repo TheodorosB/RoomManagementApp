@@ -1,4 +1,4 @@
-package net.arx.roommanagementapp.data.room
+package net.arx.roommanagementapp.data.room.datasource
 
 import net.arx.roommanagementapp.framework.db.entity.RoomEntity
 

@@ -1,4 +1,4 @@
-package net.arx.roommanagementapp.data.user
+package net.arx.roommanagementapp.data.user.datasource
 
 import net.arx.roommanagementapp.framework.db.entity.UserEntity
 

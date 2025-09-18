@@ -4,13 +4,10 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import net.arx.roommanagementapp.R
 import net.arx.roommanagementapp.framework.db.entity.UserRole
-import net.arx.roommanagementapp.ui.base.BaseViewModel
+import net.arx.roommanagementapp.ui.core.BaseViewModel
 import net.arx.roommanagementapp.ui.dashboard.model.DashboardNavEntries
 import net.arx.roommanagementapp.ui.dashboard.model.DashboardUiState
-import net.arx.roommanagementapp.ui.user.mapper.UserUiMapper
-import net.arx.roommanagementapp.ui.user.model.UserUiItem
 import net.arx.roommanagementapp.usecase.user.GetUserUseCase
 import net.arx.roommanagementapp.usecase.user.InsertUserUseCase
 import net.arx.roommanagementapp.usecase.user.LoginUserUseCase

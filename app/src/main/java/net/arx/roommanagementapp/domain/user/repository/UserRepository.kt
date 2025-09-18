@@ -1,4 +1,4 @@
-package net.arx.roommanagementapp.domain.user
+package net.arx.roommanagementapp.domain.user.repository
 
 import net.arx.roommanagementapp.framework.db.entity.UserEntity
 

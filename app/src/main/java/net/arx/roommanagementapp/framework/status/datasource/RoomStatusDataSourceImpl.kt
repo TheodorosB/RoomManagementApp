@@ -1,6 +1,6 @@
-package net.arx.roommanagementapp.framework.status
+package net.arx.roommanagementapp.framework.status.datasource
 
-import net.arx.roommanagementapp.data.task.RoomStatusDataSource
+import net.arx.roommanagementapp.data.status.datasource.RoomStatusDataSource
 import net.arx.roommanagementapp.framework.db.dao.RoomStatusDao
 import net.arx.roommanagementapp.framework.db.entity.RoomStatusEntity
 import javax.inject.Inject

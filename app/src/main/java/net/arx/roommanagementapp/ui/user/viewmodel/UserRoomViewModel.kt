@@ -4,7 +4,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import net.arx.roommanagementapp.ui.base.BaseViewModel
+import net.arx.roommanagementapp.ui.core.BaseViewModel
 import net.arx.roommanagementapp.ui.dashboard.model.DateUiItem
 import net.arx.roommanagementapp.ui.room.mapper.RoomUiMapper
 import net.arx.roommanagementapp.ui.user.mapper.UserUiMapper

@@ -4,10 +4,10 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityRetainedComponent
-import net.arx.roommanagementapp.data.task.RoomStatusDataSource
-import net.arx.roommanagementapp.data.task.RoomStatusRepositoryImpl
-import net.arx.roommanagementapp.domain.status.RoomStatusRepository
-import net.arx.roommanagementapp.framework.status.RoomStatusDataSourceImpl
+import net.arx.roommanagementapp.data.status.datasource.RoomStatusDataSource
+import net.arx.roommanagementapp.data.status.repository.RoomStatusRepositoryImpl
+import net.arx.roommanagementapp.domain.status.repository.RoomStatusRepository
+import net.arx.roommanagementapp.framework.status.datasource.RoomStatusDataSourceImpl
 
 @Module
 @InstallIn(ActivityRetainedComponent::class)

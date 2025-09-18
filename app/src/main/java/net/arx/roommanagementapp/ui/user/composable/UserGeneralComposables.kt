@@ -26,7 +26,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import net.arx.roommanagementapp.R
-import net.arx.roommanagementapp.ui.base.compose.ifable
 import net.arx.roommanagementapp.ui.theme.ColorBaseBackground
 import net.arx.roommanagementapp.ui.user.model.UserUiItem
 
@@ -81,10 +80,8 @@ fun UserIcon(
             )
             .clip(shape = RoundedCornerShape(25.dp))
             .background(user.backgroundColor)
-            .ifable(condition = user.isClickable) {
-                clickable {
-                    onUserClicked(user.id)
-                }
+            .clickable(enabled = user.isClickable) {
+                onUserClicked(user.id)
             }
             .padding(all = 12.dp),
         horizontalArrangement = Arrangement.spacedBy(space = 6.dp, alignment = Alignment.CenterHorizontally),

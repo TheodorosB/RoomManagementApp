@@ -1,6 +1,6 @@
 package net.arx.roommanagementapp.usecase.room
 
-import net.arx.roommanagementapp.data.room.RoomRepositoryImpl
+import net.arx.roommanagementapp.data.room.repository.RoomRepositoryImpl
 import net.arx.roommanagementapp.framework.room.mapper.RoomEntityMapper
 import net.arx.roommanagementapp.usecase.UseCase
 import timber.log.Timber

@@ -8,7 +8,7 @@ import net.arx.roommanagementapp.R
 import net.arx.roommanagementapp.ui.lobby.model.DialogFormUiItem
 import net.arx.roommanagementapp.ui.lobby.model.FieldUiItem
 import net.arx.roommanagementapp.ui.lobby.model.LobbyUiState
-import net.arx.roommanagementapp.ui.base.BaseViewModel
+import net.arx.roommanagementapp.ui.core.BaseViewModel
 import net.arx.roommanagementapp.ui.dashboard.model.DateUiItem
 import net.arx.roommanagementapp.ui.room.mapper.RoomUiMapper
 import net.arx.roommanagementapp.ui.user.mapper.UserUiMapper
