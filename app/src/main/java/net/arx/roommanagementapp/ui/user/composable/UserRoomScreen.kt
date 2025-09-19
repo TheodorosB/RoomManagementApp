@@ -13,8 +13,6 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -25,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import net.arx.roommanagementapp.R
 import net.arx.roommanagementapp.ui.room.composable.RoomItem
@@ -98,7 +97,7 @@ private fun UserRoomRow(
             modifier = Modifier
                 .fillMaxWidth(0.05f)
                 .aspectRatio(1f),
-            imageVector = Icons.Filled.KeyboardArrowRight,
+            painter = painterResource(R.drawable.ic_right_arrow),
             contentDescription = null
         )
 
