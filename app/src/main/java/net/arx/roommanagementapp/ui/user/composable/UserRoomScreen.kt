@@ -19,17 +19,14 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import net.arx.roommanagementapp.R
-import net.arx.roommanagementapp.ui.dashboard.model.DateUiItem
 import net.arx.roommanagementapp.ui.room.composable.RoomItem
 import net.arx.roommanagementapp.ui.room.model.RoomUiItem
 import net.arx.roommanagementapp.ui.room.model.TaskUiItem
@@ -38,32 +35,19 @@ import net.arx.roommanagementapp.ui.theme.SpacingEighth_2dp
 import net.arx.roommanagementapp.ui.theme.SpacingHalf_8dp
 import net.arx.roommanagementapp.ui.theme.SpacingQuarter_4dp
 import net.arx.roommanagementapp.ui.user.model.UserRoomUiState
-import net.arx.roommanagementapp.ui.user.viewmodel.UserRoomViewModel
 
 @Composable
 internal fun UserRoomScreen(
-    roomId: Long?,
-    date: DateUiItem
+    uiState: State<UserRoomUiState>
 ) {
-
-    val viewModel: UserRoomViewModel = hiltViewModel()
-    val uiState = viewModel.uiState.collectAsStateWithLifecycle()
-
-    LaunchedEffect(key1 = roomId, key2 = date.dayStart.value) {
-        viewModel.loadUserData(
-            date = date,
-            roomId = roomId
-        )
-    }
-
     UserRoomContent(
-        uiState = uiState.value,
+        uiState = uiState,
     )
 }
 
 @Composable
 private fun UserRoomContent(
-    uiState: UserRoomUiState
+    uiState: State<UserRoomUiState>
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -71,9 +55,9 @@ private fun UserRoomContent(
         verticalArrangement = Arrangement.spacedBy(space = SpacingHalf_8dp, alignment = Alignment.Top)
     ) {
         UserItem(
-            userId = uiState.user.value.id,
-            name = uiState.user.value.name,
-            backgroundColor = uiState.user.value.backgroundColor,
+            userId = uiState.value.user.value.id,
+            name = uiState.value.user.value.name,
+            backgroundColor = uiState.value.user.value.backgroundColor,
             iconResId = R.drawable.ic_cleaner_profile
         )
 
@@ -84,8 +68,8 @@ private fun UserRoomContent(
         )
 
         UserRoomRow(
-            room = uiState.room.value,
-            onUpdateStatus = uiState.onUpdateStatus
+            room = uiState.value.room.value,
+            onUpdateStatus = uiState.value.onUpdateStatus
         )
     }
 }

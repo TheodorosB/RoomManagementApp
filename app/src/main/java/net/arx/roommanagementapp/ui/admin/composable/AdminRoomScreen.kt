@@ -10,20 +10,15 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import net.arx.roommanagementapp.R
-import net.arx.roommanagementapp.ui.dashboard.model.DateUiItem
-import net.arx.roommanagementapp.ui.room.composable.RoomItem
 import net.arx.roommanagementapp.ui.admin.model.AdminRoomUiState
+import net.arx.roommanagementapp.ui.room.composable.RoomItem
 import net.arx.roommanagementapp.ui.room.model.TaskUiItem
-import net.arx.roommanagementapp.ui.admin.viewmodel.AdminRoomViewModel
 import net.arx.roommanagementapp.ui.theme.SpacingCustom_14dp
 import net.arx.roommanagementapp.ui.theme.SpacingHalf_8dp
 import net.arx.roommanagementapp.ui.user.composable.TaskItem
@@ -32,16 +27,8 @@ import net.arx.roommanagementapp.ui.user.model.UserUiItem
 
 @Composable
 internal fun AdminRoomScreen(
-    roomId: Long?,
-    date: DateUiItem
+    uiState: State<AdminRoomUiState>
 ) {
-    val viewModel: AdminRoomViewModel = hiltViewModel()
-    val uiState = viewModel.uiState.collectAsStateWithLifecycle()
-
-    LaunchedEffect(key1 = roomId, key2 = date.dayStart.value, key3 = date.dayEnd.value) {
-        viewModel.updateRoomDetails(roomId = roomId, date = date)
-    }
-
     AdminRoomContent(
         uiState = uiState
     )

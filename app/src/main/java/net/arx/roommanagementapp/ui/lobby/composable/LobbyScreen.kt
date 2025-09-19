@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -12,12 +11,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import net.arx.roommanagementapp.ui.composable.dialog.FormDialog
-import net.arx.roommanagementapp.ui.dashboard.model.DateUiItem
 import net.arx.roommanagementapp.ui.lobby.model.LobbyUiState
-import net.arx.roommanagementapp.ui.lobby.viewmodel.LobbyViewModel
 import net.arx.roommanagementapp.ui.room.composable.RoomsRow
 import net.arx.roommanagementapp.ui.room.model.RoomUiItem
 import net.arx.roommanagementapp.ui.theme.SpacingHalf_8dp
@@ -26,18 +21,9 @@ import net.arx.roommanagementapp.ui.user.model.UserUiItem
 
 @Composable
 internal fun LobbyScreen(
-    date: State<DateUiItem>,
-    isAdmin: State<Boolean>,
+    uiState: State<LobbyUiState>,
     onNavigateToRoom: (Long) -> Unit
 ) {
-
-    val viewModel: LobbyViewModel = hiltViewModel()
-    val uiState = viewModel.uiState.collectAsStateWithLifecycle()
-
-    LaunchedEffect(key1 = date.value.dayStart.value, key2 = isAdmin.value) {
-        viewModel.refreshData(date = date.value, isAdmin = isAdmin.value)
-    }
-
     LobbyContent(
         uiState = uiState,
         onNavigateToRoom = onNavigateToRoom

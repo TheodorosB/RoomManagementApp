@@ -10,17 +10,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.ui.NavDisplay
-import net.arx.roommanagementapp.ui.admin.composable.AdminRoomScreen
+import net.arx.roommanagementapp.ui.admin.navigation.adminRoomScreen
 import net.arx.roommanagementapp.ui.composable.dialog.PinDialog
 import net.arx.roommanagementapp.ui.dashboard.composable.DashboardToolBar
 import net.arx.roommanagementapp.ui.dashboard.model.DashboardNavEntries
 import net.arx.roommanagementapp.ui.dashboard.viewmodel.DashboardViewModel
-import net.arx.roommanagementapp.ui.lobby.composable.LobbyScreen
+import net.arx.roommanagementapp.ui.lobby.navigation.lobbyScreen
 import net.arx.roommanagementapp.ui.theme.ColorBaseBackground
 import net.arx.roommanagementapp.ui.theme.SpacingHalf_8dp
-import net.arx.roommanagementapp.ui.user.composable.UserRoomScreen
+import net.arx.roommanagementapp.ui.user.navigation.userRoomScreen
 
 @Composable
 internal fun DashboardNavDisplay() {
@@ -49,35 +48,20 @@ internal fun DashboardNavDisplay() {
             contentAlignment = Alignment.Center,
             entryProvider = { key ->
                 when (key) {
-                    DashboardNavEntries.Lobby -> NavEntry(
-                        key = key,
-                        content = {
-                            LobbyScreen(
-                                date = uiState.value.date,
-                                isAdmin = uiState.value.isAdmin,
-                                onNavigateToRoom = uiState.value.onNavigateToRoom
-                            )
-                        }
+                    DashboardNavEntries.Lobby -> key.lobbyScreen(
+                        date = uiState.value.date,
+                        isAdmin = uiState.value.isAdmin,
+                        onNavigateToRoom = uiState.value.onNavigateToRoom
                     )
 
-                    DashboardNavEntries.UserRoom -> NavEntry(
-                        key = key,
-                        content = {
-                            UserRoomScreen(
-                                date = uiState.value.date.value,
-                                roomId = uiState.value.selectedRoomId.value
-                            )
-                        }
+                    DashboardNavEntries.AdminRoom -> key.adminRoomScreen(
+                        roomId = uiState.value.selectedRoomId,
+                        date = uiState.value.date,
                     )
 
-                    DashboardNavEntries.AdminRoom -> NavEntry(
-                        key = key,
-                        content = {
-                            AdminRoomScreen(
-                                roomId = uiState.value.selectedRoomId.value,
-                                date = uiState.value.date.value,
-                            )
-                        }
+                    DashboardNavEntries.UserRoom -> key.userRoomScreen(
+                        date = uiState.value.date,
+                        roomId = uiState.value.selectedRoomId
                     )
                 }
             }
