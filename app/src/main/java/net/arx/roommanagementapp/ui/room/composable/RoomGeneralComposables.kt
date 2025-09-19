@@ -14,6 +14,8 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicText
+import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -26,9 +28,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.sp
 import net.arx.roommanagementapp.R
-import net.arx.roommanagementapp.ui.composable.text.AutoSizeText
 import net.arx.roommanagementapp.ui.room.model.RoomUiItem
 import net.arx.roommanagementapp.ui.theme.SpacingCustom_10dp
 import net.arx.roommanagementapp.ui.theme.SpacingCustom_14dp
@@ -100,11 +100,15 @@ internal fun RoomItem(
                 contentDescription = null,
                 tint = roomUiItem.statusColor
             )
-            AutoSizeText(
-                modifier = Modifier.alpha(0.6f),
+            BasicText(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(5f)
+                    .alpha(0.5f),
                 text = roomUiItem.user.name,
-                textAlign = TextAlign.Center,
-                maxFontSize = 40.sp
+                maxLines = 1,
+                style = MaterialTheme.typography.titleMedium.copy(textAlign = TextAlign.Center),
+                autoSize = TextAutoSize.StepBased()
             )
         } else {
             Spacer(modifier = Modifier.height(SpacingCustom_10dp))
@@ -112,23 +116,23 @@ internal fun RoomItem(
 
         Row (
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(space = SpacingQuarter_4dp, alignment = Alignment.CenterHorizontally),
+            horizontalArrangement = Arrangement.spacedBy(space = SpacingHalf_8dp, alignment = Alignment.CenterHorizontally),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
                 modifier = Modifier
-                    .weight(0.2f)
+                    .fillMaxWidth(0.35f)
                     .aspectRatio(1f),
                 painter = painterResource(roomUiItem.roomIcon),
                 tint = roomUiItem.roomIconColor,
                 contentDescription = null
             )
-            AutoSizeText(
-                modifier = Modifier
-                    .weight(0.5f),
+            BasicText(
+                modifier = Modifier.fillMaxWidth(0.65f),
                 text = roomUiItem.name,
-                textAlign = TextAlign.Center,
-                maxFontSize = 50.sp
+                maxLines = 1,
+                style = MaterialTheme.typography.bodyMedium,
+                autoSize = TextAutoSize.StepBased()
             )
         }
     }
