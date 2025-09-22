@@ -1,6 +1,7 @@
 package net.arx.roommanagementapp.ui.user.composable
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -22,7 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import net.arx.roommanagementapp.R
@@ -30,6 +31,8 @@ import net.arx.roommanagementapp.ui.room.composable.RoomItem
 import net.arx.roommanagementapp.ui.room.model.RoomUiItem
 import net.arx.roommanagementapp.ui.room.model.TaskUiItem
 import net.arx.roommanagementapp.ui.theme.SpacingCustom_24dp
+import net.arx.roommanagementapp.ui.theme.SpacingCustom_6dp
+import net.arx.roommanagementapp.ui.theme.SpacingDefault_16dp
 import net.arx.roommanagementapp.ui.theme.SpacingEighth_2dp
 import net.arx.roommanagementapp.ui.theme.SpacingHalf_8dp
 import net.arx.roommanagementapp.ui.theme.SpacingQuarter_4dp
@@ -49,21 +52,24 @@ private fun UserRoomContent(
     uiState: State<UserRoomUiState>
 ) {
     Column(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = SpacingDefault_16dp),
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.spacedBy(space = SpacingHalf_8dp, alignment = Alignment.Top)
     ) {
         UserItem(
             userId = uiState.value.user.value.id,
             name = uiState.value.user.value.name,
-            backgroundColor = uiState.value.user.value.backgroundColor,
+            isSelected = uiState.value.user.value.isSelected.value,
             iconResId = R.drawable.ic_cleaner_profile
         )
 
         Text(
             modifier = Modifier.alpha(0.5f),
             text = stringResource(id = R.string.user_room_tasks_title),
-            style = MaterialTheme.typography.bodyMedium
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.primary
         )
 
         UserRoomRow(
@@ -98,6 +104,7 @@ private fun UserRoomRow(
                 .fillMaxWidth(0.05f)
                 .aspectRatio(1f),
             painter = painterResource(R.drawable.ic_right_arrow),
+            tint = MaterialTheme.colorScheme.onBackground,
             contentDescription = null
         )
 
@@ -138,8 +145,18 @@ internal fun TaskItem(
         modifier = Modifier
             .fillMaxWidth()
             .aspectRatio(3f)
+            .padding(all = SpacingCustom_6dp)
+            .shadow(
+                elevation = SpacingCustom_6dp,
+                shape = RoundedCornerShape(SpacingCustom_24dp)
+            )
+            .border(
+                width = SpacingQuarter_4dp,
+                color = MaterialTheme.colorScheme.surface,
+                shape = RoundedCornerShape(SpacingCustom_24dp)
+            )
             .clip(shape = RoundedCornerShape(SpacingCustom_24dp))
-            .background(Color.White)
+            .background(color = MaterialTheme.colorScheme.onBackground)
             .clickable {
                 task.onTaskClicked()
                 onUpdateStatus()
@@ -152,7 +169,8 @@ internal fun TaskItem(
             modifier = Modifier,
             text = stringResource(id = task.title),
             textDecoration = task.textDecoration,
-            style = MaterialTheme.typography.bodyMedium
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.scrim
         )
     }
 }

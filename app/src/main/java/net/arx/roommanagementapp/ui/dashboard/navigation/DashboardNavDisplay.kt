@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -17,7 +18,6 @@ import net.arx.roommanagementapp.ui.dashboard.composable.DashboardToolBar
 import net.arx.roommanagementapp.ui.dashboard.model.DashboardNavEntries
 import net.arx.roommanagementapp.ui.dashboard.viewmodel.DashboardViewModel
 import net.arx.roommanagementapp.ui.lobby.navigation.lobbyScreen
-import net.arx.roommanagementapp.ui.theme.ColorBaseBackground
 import net.arx.roommanagementapp.ui.theme.SpacingHalf_8dp
 import net.arx.roommanagementapp.ui.user.navigation.userRoomScreen
 
@@ -29,13 +29,14 @@ internal fun DashboardNavDisplay() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = ColorBaseBackground),
+            .background(color = MaterialTheme.colorScheme.background),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(space = SpacingHalf_8dp, alignment = Alignment.Top)
     ) {
         DashboardToolBar(
             date = uiState.value.date.value,
             hasBackButton = uiState.value.hasBackButton,
+            isAdmin = !uiState.value.isAdmin.value,
             onBackButtonClicked = uiState.value.onBackButtonClicked,
             onPreviousDateClick = { uiState.value.onPreviousDateClicked() },
             onNextDateClick = { uiState.value.onNextDateClicked() },

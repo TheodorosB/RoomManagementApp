@@ -1,6 +1,7 @@
 package net.arx.roommanagementapp.ui.dashboard.composable
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -15,23 +16,23 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import net.arx.roommanagementapp.R
 import net.arx.roommanagementapp.ui.dashboard.model.DateUiItem
-import net.arx.roommanagementapp.ui.theme.ColorBaseGrey
 import net.arx.roommanagementapp.ui.theme.SpacingCustom_14dp
 import net.arx.roommanagementapp.ui.theme.SpacingCustom_20dp
 import net.arx.roommanagementapp.ui.theme.SpacingCustom_40dp
 import net.arx.roommanagementapp.ui.theme.SpacingHalf_8dp
+import net.arx.roommanagementapp.ui.theme.SpacingQuarter_4dp
 import net.arx.roommanagementapp.ui.util.ext.formatDate
 
 @Composable
 internal fun DashboardToolBar(
     date: DateUiItem,
     hasBackButton: Boolean,
+    isAdmin: Boolean,
     modifier: Modifier = Modifier,
     onPreviousDateClick: () -> Unit,
     onNextDateClick: () -> Unit,
@@ -64,7 +65,7 @@ internal fun DashboardToolBar(
 
         ToolbarActionButton(
             modifier = Modifier.weight(0.3f),
-            hasButton = true,
+            hasButton = isAdmin,
             arrangement = Arrangement.End,
             painter = painterResource(id = R.drawable.ic_admin_profile),
             onButtonClicked = onOpenAdminPinFormClicked
@@ -85,11 +86,19 @@ private fun ToolbarDateRow(
             .shadow(
                 elevation = SpacingHalf_8dp,
                 shape = RoundedCornerShape(
-                    bottomStart = SpacingCustom_40dp,
-                    bottomEnd = SpacingCustom_40dp
+                    bottomEnd = SpacingCustom_40dp,
+                    bottomStart = SpacingCustom_40dp
                 )
             )
-            .background(Color.White)
+            .border(
+                width = SpacingQuarter_4dp,
+                color = MaterialTheme.colorScheme.surface,
+                shape = RoundedCornerShape(
+                    bottomEnd = SpacingCustom_40dp,
+                    bottomStart = SpacingCustom_40dp
+                )
+            )
+            .background(color = MaterialTheme.colorScheme.onBackground)
             .padding(horizontal = SpacingCustom_20dp),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
@@ -105,7 +114,8 @@ private fun ToolbarDateRow(
             modifier = Modifier.weight(1f),
             text = date,
             textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.bodySmall
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.scrim
         )
 
         ToolbarDateIcon(
@@ -126,7 +136,7 @@ private fun ToolbarDateIcon(
         modifier = modifier
             .aspectRatio(1f)
             .clickable { onButtonClicked() },
-        tint = ColorBaseGrey,
+        tint = MaterialTheme.colorScheme.secondary,
         painter = painter,
         contentDescription = null
     )
@@ -154,7 +164,7 @@ private fun ToolbarActionButton(
                         onButtonClicked()
                     },
                 painter = painter,
-                tint = Color.Black,
+                tint = MaterialTheme.colorScheme.primary,
                 contentDescription = null
             )
         }

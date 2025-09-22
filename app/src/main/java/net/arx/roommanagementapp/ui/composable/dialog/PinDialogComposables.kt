@@ -34,6 +34,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
@@ -82,7 +83,8 @@ private fun PinDialogContent(
             ) {
                 Text(
                     text = stringResource(id = pinForm.title),
-                    style = MaterialTheme.typography.bodySmall
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.primary
                 )
 
                 Icon(
@@ -91,7 +93,8 @@ private fun PinDialogContent(
                         .aspectRatio(1f)
                         .clickable { onDismissRequest() },
                     painter = painterResource(R.drawable.ic_room_management_close),
-                    contentDescription = null
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary
                 )
             }
         },
@@ -169,9 +172,11 @@ private fun PinField(
                     .size(SpacingCustom_60dp)
                     .border(
                         width = SpacingEighth_2dp,
-                        color = pinForm.borderColor,
+                        color = if(pinForm.isError.value) Color.Red else MaterialTheme.colorScheme.primary,
                         shape = RoundedCornerShape(SpacingCustom_12dp)
                     )
+                    .clip(shape = RoundedCornerShape(SpacingCustom_12dp))
+                    .background(color = MaterialTheme.colorScheme.background)
                     .clickable { focusRequester.requestFocus() },
                 contentAlignment = Alignment.Center
             ) {
@@ -179,7 +184,8 @@ private fun PinField(
                     item.isFilled -> {
                         Text(
                             text = stringResource(id = R.string.pin_filled_digit),
-                            style = MaterialTheme.typography.bodyMedium
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.primary
                         )
                     }
                     showCursor -> {

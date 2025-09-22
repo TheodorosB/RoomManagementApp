@@ -1,6 +1,7 @@
 package net.arx.roommanagementapp.ui.room.composable
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -22,20 +23,19 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import net.arx.roommanagementapp.R
 import net.arx.roommanagementapp.ui.room.model.RoomUiItem
 import net.arx.roommanagementapp.ui.theme.SpacingCustom_10dp
-import net.arx.roommanagementapp.ui.theme.SpacingCustom_14dp
 import net.arx.roommanagementapp.ui.theme.SpacingCustom_18dp
 import net.arx.roommanagementapp.ui.theme.SpacingCustom_36dp
 import net.arx.roommanagementapp.ui.theme.SpacingCustom_6dp
 import net.arx.roommanagementapp.ui.theme.SpacingDefault_16dp
+import net.arx.roommanagementapp.ui.theme.SpacingEighth_2dp
 import net.arx.roommanagementapp.ui.theme.SpacingHalf_8dp
 import net.arx.roommanagementapp.ui.theme.SpacingQuarter_4dp
 
@@ -56,7 +56,7 @@ internal fun RoomsRow(
     ) {
         items(items = rooms, key = { it.id }) { room ->
             RoomItem(
-                modifier = Modifier.aspectRatio(1f),
+                modifier = Modifier.aspectRatio(0.95f),
                 roomUiItem = room,
                 onRoomClicked = onRoomClicked,
                 arrangement = Arrangement.SpaceBetween
@@ -82,12 +82,22 @@ internal fun RoomItem(
     Column(
         modifier = modifier
             .fillMaxWidth()
+            .padding(bottom = SpacingCustom_10dp)
+            .shadow(
+                elevation = SpacingCustom_6dp,
+                shape = RoundedCornerShape(SpacingCustom_36dp)
+            )
+            .border(
+                width = SpacingEighth_2dp,
+                color = MaterialTheme.colorScheme.surface,
+                shape = RoundedCornerShape(SpacingCustom_36dp)
+            )
             .clip(shape = RoundedCornerShape(SpacingCustom_36dp))
-            .background(Color.White)
+            .background(color = MaterialTheme.colorScheme.onBackground)
             .clickable(enabled = roomUiItem.isClickable) {
                 onRoomClicked(roomUiItem.id)
             }
-            .padding(horizontal = SpacingCustom_14dp, vertical = SpacingCustom_6dp),
+            .padding(horizontal = SpacingHalf_8dp, vertical = SpacingQuarter_4dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = arrangement
     ) {
@@ -103,11 +113,13 @@ internal fun RoomItem(
             BasicText(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .aspectRatio(5f)
-                    .alpha(0.5f),
+                    .aspectRatio(5f),
                 text = roomUiItem.user.name,
                 maxLines = 1,
-                style = MaterialTheme.typography.titleMedium.copy(textAlign = TextAlign.Center),
+                style = MaterialTheme.typography.titleMedium.copy(
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colorScheme.secondary
+                ),
                 autoSize = TextAutoSize.StepBased()
             )
         } else {
@@ -116,7 +128,7 @@ internal fun RoomItem(
 
         Row (
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(space = SpacingHalf_8dp, alignment = Alignment.CenterHorizontally),
+            horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
@@ -128,10 +140,13 @@ internal fun RoomItem(
                 contentDescription = null
             )
             BasicText(
-                modifier = Modifier.fillMaxWidth(0.65f),
+                modifier = Modifier.fillMaxWidth(0.5f),
                 text = roomUiItem.name,
                 maxLines = 1,
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.titleMedium.copy(
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colorScheme.scrim
+                ),
                 autoSize = TextAutoSize.StepBased()
             )
         }
@@ -146,10 +161,20 @@ private fun AddNewRoomItem(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .aspectRatio(1f)
+            .aspectRatio(0.95f)
+            .padding(bottom = SpacingCustom_10dp)
+            .shadow(
+                elevation = SpacingCustom_6dp,
+                shape = RoundedCornerShape(SpacingCustom_36dp)
+            )
+            .border(
+                width = SpacingEighth_2dp,
+                color = MaterialTheme.colorScheme.surface,
+                shape = RoundedCornerShape(SpacingCustom_36dp)
+            )
             .clip(shape = RoundedCornerShape(SpacingCustom_36dp))
             .clickable { onAddNewRoomClicked() }
-            .background(Color.White)
+            .background(color = MaterialTheme.colorScheme.onBackground)
             .padding(horizontal = SpacingHalf_8dp, vertical = SpacingQuarter_4dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(space = SpacingDefault_16dp, alignment = Alignment.CenterVertically)
@@ -160,11 +185,12 @@ private fun AddNewRoomItem(
                 .aspectRatio(1f),
             painter = painterResource(id = R.drawable.ic_add_new_room),
             contentDescription = null,
-            tint = Color.Black
+            tint = MaterialTheme.colorScheme.scrim
         )
         Text(
             text = stringResource(R.string.lobby_button_add_room_title),
-            style = MaterialTheme.typography.bodyMedium,
+            style = MaterialTheme.typography.titleLarge,
+            color = MaterialTheme.colorScheme.scrim,
             textAlign = TextAlign.Center
         )
     }

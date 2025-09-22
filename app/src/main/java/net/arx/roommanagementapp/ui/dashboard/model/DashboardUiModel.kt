@@ -63,8 +63,6 @@ data class PinFormUiItem(
     val text: MutableState<String> = mutableStateOf(""),
     val isError: MutableState<Boolean> = mutableStateOf(false)
 ) {
-    val borderColor: Color
-        get() = if (isError.value) Color.Red else Color.Black
     val isComplete: Boolean
         get() = text.value.length == length
 

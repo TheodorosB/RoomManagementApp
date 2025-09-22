@@ -15,6 +15,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -54,7 +55,8 @@ internal fun FormDialog(
             ) {
                 Text(
                     text = stringResource(id = formUiItem.title.value),
-                    style = MaterialTheme.typography.bodySmall
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.primary
                 )
                 Icon(
                     modifier = Modifier
@@ -64,6 +66,7 @@ internal fun FormDialog(
                             onDismissRequest()
                         },
                     painter = painterResource(R.drawable.ic_room_management_close),
+                    tint = MaterialTheme.colorScheme.primary,
                     contentDescription = null
                 )
             }
@@ -123,11 +126,12 @@ private fun FormDialogFields(
                 label = {
                     Text(
                         text = stringResource(field.label),
-                        style = MaterialTheme.typography.labelMedium
+                        style = MaterialTheme.typography.labelMedium,
+                        color = Color.Black
                     )
                 },
                 isError = field.alreadyExists.value,
-                textStyle = MaterialTheme.typography.titleMedium,
+                textStyle = MaterialTheme.typography.titleLarge,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = field.keyboardType,
                     imeAction = ImeAction.Done
@@ -135,8 +139,13 @@ private fun FormDialogFields(
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = Color.White,
                     unfocusedContainerColor = Color.White,
-                    disabledContainerColor = Color.White,
                     errorContainerColor = Color.White,
+                    disabledContainerColor = MaterialTheme.colorScheme.background,
+                    cursorColor = MaterialTheme.colorScheme.background,
+                    errorTextColor = Color.Red,
+                    errorCursorColor = Color.Black,
+                    focusedTextColor = Color.Black,
+                    unfocusedTextColor = Color.Black
                 )
             )
         }
@@ -156,11 +165,18 @@ internal fun DialogFormButton(
         onClick = {
             onClick()
         },
+        colors = ButtonDefaults.buttonColors(
+            containerColor = MaterialTheme.colorScheme.tertiary,
+            contentColor = Color.Unspecified,
+            disabledContainerColor = Color.Unspecified,
+            disabledContentColor = Color.Unspecified,
+        ),
         enabled = isEnabled
     ) {
         Text(
             text = text,
-            style = MaterialTheme.typography.labelMedium
+            style = MaterialTheme.typography.labelMedium,
+            color = Color.White
         )
     }
 }

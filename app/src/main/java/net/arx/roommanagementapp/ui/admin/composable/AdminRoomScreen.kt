@@ -19,8 +19,9 @@ import net.arx.roommanagementapp.R
 import net.arx.roommanagementapp.ui.admin.model.AdminRoomUiState
 import net.arx.roommanagementapp.ui.room.composable.RoomItem
 import net.arx.roommanagementapp.ui.room.model.TaskUiItem
-import net.arx.roommanagementapp.ui.theme.SpacingCustom_14dp
+import net.arx.roommanagementapp.ui.theme.SpacingDefault_16dp
 import net.arx.roommanagementapp.ui.theme.SpacingHalf_8dp
+import net.arx.roommanagementapp.ui.theme.SpacingQuarter_4dp
 import net.arx.roommanagementapp.ui.user.composable.TaskItem
 import net.arx.roommanagementapp.ui.user.composable.UserItem
 import net.arx.roommanagementapp.ui.user.model.UserUiItem
@@ -42,7 +43,7 @@ private fun AdminRoomContent(
         modifier = Modifier
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(space = SpacingCustom_14dp, alignment = Alignment.Top)
+        verticalArrangement = Arrangement.spacedBy(space = SpacingDefault_16dp, alignment = Alignment.Top)
     ) {
         RoomItem(
             modifier = Modifier
@@ -72,23 +73,24 @@ private fun AdminRoomUsersGrid(
     Text(
         modifier = Modifier.alpha(0.5f),
         text = stringResource(id = R.string.admin_room_user_selection_title),
-        style = MaterialTheme.typography.bodyLarge
+        style = MaterialTheme.typography.bodyLarge,
+        color = MaterialTheme.colorScheme.primary
     )
 
     LazyVerticalGrid(
-        modifier = Modifier.fillMaxWidth(0.8f),
+        modifier = Modifier.fillMaxWidth(0.9f),
         columns = GridCells.Fixed(4),
-        horizontalArrangement = Arrangement.spacedBy(space = SpacingCustom_14dp, alignment = Alignment.Start),
-        verticalArrangement = Arrangement.spacedBy(space = SpacingCustom_14dp, alignment = Alignment.Top)
+        horizontalArrangement = Arrangement.spacedBy(space = SpacingQuarter_4dp, alignment = Alignment.Start),
+        verticalArrangement = Arrangement.spacedBy(space = SpacingQuarter_4dp, alignment = Alignment.Top)
     ) {
 
         items(items = users, key = { it.id ?: 0 }) { user ->
             UserItem(
                 userId = user.id,
-                backgroundColor = user.backgroundColor,
                 name = user.name,
                 isClickable = true,
-                onUserClicked = onUserClicked
+                onUserClicked = onUserClicked,
+                isSelected = user.isSelected.value
             )
         }
     }
@@ -102,14 +104,15 @@ private fun AdminRoomTasksGrid(
     Text(
         modifier = Modifier.alpha(0.5f),
         text = stringResource(id = R.string.admin_room_task_selection_title),
-        style = MaterialTheme.typography.bodyLarge
+        style = MaterialTheme.typography.bodyLarge,
+        color = MaterialTheme.colorScheme.primary
     )
 
     LazyVerticalGrid(
-        modifier = Modifier.fillMaxWidth(0.8f),
+        modifier = Modifier.fillMaxWidth(0.9f),
         columns = GridCells.Fixed(4),
-        horizontalArrangement = Arrangement.spacedBy(space = SpacingCustom_14dp, alignment = Alignment.Start),
-        verticalArrangement = Arrangement.spacedBy(space = SpacingCustom_14dp, alignment = Alignment.Top)
+        horizontalArrangement = Arrangement.spacedBy(space = SpacingQuarter_4dp, alignment = Alignment.Start),
+        verticalArrangement = Arrangement.spacedBy(space = SpacingQuarter_4dp, alignment = Alignment.Top)
     ) {
 
         items(items = tasks, key = { it.title }) { task ->

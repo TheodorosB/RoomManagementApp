@@ -21,11 +21,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import net.arx.roommanagementapp.R
-import net.arx.roommanagementapp.ui.theme.ColorBaseBackground
 import net.arx.roommanagementapp.ui.theme.SpacingCustom_10dp
 import net.arx.roommanagementapp.ui.theme.SpacingCustom_12dp
 import net.arx.roommanagementapp.ui.theme.SpacingCustom_24dp
@@ -55,7 +53,7 @@ internal fun UsersRow(
                 modifier = Modifier.fillMaxWidth(0.2f),
                 name = user.name,
                 userId = user.id,
-                backgroundColor = user.backgroundColor
+                isSelected = user.isSelected.value
             )
         }
         if(isAdmin) {
@@ -78,38 +76,43 @@ internal fun UserItem(
     modifier: Modifier = Modifier,
     userId: Long? = null,
     isClickable: Boolean = false,
-    backgroundColor: Color = ColorBaseBackground,
+    isSelected: Boolean = false,
     @DrawableRes iconResId: Int = R.drawable.ic_cleaner_profile,
     onUserClicked: (Long?) -> Unit = {}
 ) {
     Row(
         modifier = modifier
+            .padding(all = SpacingCustom_6dp)
             .shadow(
                 elevation = SpacingCustom_6dp,
                 shape = RoundedCornerShape(SpacingCustom_24dp)
             )
             .border(
                 width = SpacingQuarter_4dp,
-                color = Color.White,
+                color = MaterialTheme.colorScheme.surface,
                 shape = RoundedCornerShape(SpacingCustom_24dp)
             )
             .clip(shape = RoundedCornerShape(SpacingCustom_24dp))
-            .background(backgroundColor)
+            .background(
+                color = if(isSelected) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onBackground
+            )
             .clickable(enabled = isClickable) {
                 onUserClicked(userId)
             }
             .padding(all = SpacingCustom_12dp),
-        horizontalArrangement = Arrangement.spacedBy(space = SpacingCustom_6dp, alignment = Alignment.CenterHorizontally),
+        horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
             modifier = Modifier.size(SpacingCustom_60dp),
             painter = painterResource(id = iconResId),
+            tint = MaterialTheme.colorScheme.scrim,
             contentDescription = null
         )
         Text(
             text = name,
-            style = MaterialTheme.typography.bodyLarge
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.scrim
         )
     }
 }
