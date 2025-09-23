@@ -51,8 +51,8 @@ internal fun RoomsRow(
             .fillMaxWidth()
             .padding(horizontal = SpacingCustom_18dp),
         columns = GridCells.Fixed(5),
-        horizontalArrangement = Arrangement.spacedBy(space = SpacingHalf_8dp, alignment = Alignment.Start),
-        verticalArrangement = Arrangement.spacedBy(space = SpacingHalf_8dp, alignment = Alignment.Top)
+        horizontalArrangement = Arrangement.spacedBy(space = SpacingDefault_16dp, alignment = Alignment.Start),
+        verticalArrangement = Arrangement.spacedBy(space = SpacingQuarter_4dp, alignment = Alignment.Top)
     ) {
         items(items = rooms, key = { it.id }) { room ->
             RoomItem(

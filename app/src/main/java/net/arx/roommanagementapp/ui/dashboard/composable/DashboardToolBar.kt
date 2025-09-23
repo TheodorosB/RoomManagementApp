@@ -32,6 +32,7 @@ import net.arx.roommanagementapp.ui.util.ext.formatDate
 internal fun DashboardToolBar(
     date: DateUiItem,
     hasBackButton: Boolean,
+    isUserRoomEditing: Boolean,
     isAdmin: Boolean,
     modifier: Modifier = Modifier,
     onPreviousDateClick: () -> Unit,
@@ -59,6 +60,7 @@ internal fun DashboardToolBar(
         ToolbarDateRow(
             modifier = Modifier.weight(0.4f),
             date = date.dayStart.value.formatDate(),
+            isUserRoomEditing = isUserRoomEditing,
             onNextDateClick = onNextDateClick,
             onPreviousDateClick = onPreviousDateClick
         )
@@ -76,6 +78,7 @@ internal fun DashboardToolBar(
 @Composable
 private fun ToolbarDateRow(
     date: String,
+    isUserRoomEditing: Boolean,
     onPreviousDateClick: () -> Unit,
     onNextDateClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -103,12 +106,13 @@ private fun ToolbarDateRow(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
-
-        ToolbarDateIcon(
-            modifier = Modifier.weight(0.15f),
-            painter = painterResource(id = R.drawable.ic_left_arrow),
-            onButtonClicked = onPreviousDateClick
-        )
+        if(!isUserRoomEditing) {
+            ToolbarDateIcon(
+                modifier = Modifier.weight(0.15f),
+                painter = painterResource(id = R.drawable.ic_left_arrow),
+                onButtonClicked = onPreviousDateClick
+            )
+        }
 
         Text(
             modifier = Modifier.weight(1f),
@@ -118,11 +122,14 @@ private fun ToolbarDateRow(
             color = MaterialTheme.colorScheme.scrim
         )
 
-        ToolbarDateIcon(
-            modifier = Modifier.weight(0.15f),
-            painter = painterResource(id = R.drawable.ic_right_arrow),
-            onButtonClicked = onNextDateClick
-        )
+
+        if(!isUserRoomEditing) {
+            ToolbarDateIcon(
+                modifier = Modifier.weight(0.15f),
+                painter = painterResource(id = R.drawable.ic_right_arrow),
+                onButtonClicked = onNextDateClick
+            )
+        }
     }
 }
 

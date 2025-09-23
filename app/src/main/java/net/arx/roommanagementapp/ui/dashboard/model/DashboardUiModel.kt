@@ -6,17 +6,12 @@ import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
-import androidx.compose.ui.graphics.Color
 import net.arx.roommanagementapp.R
 import net.arx.roommanagementapp.ui.util.ext.dayBounds
 import java.util.Calendar
 
 data class DashboardUiState(
     val date: MutableState<DateUiItem> = mutableStateOf(DateUiItem()),
-    val navScreens: List<DashboardNavEntries> = listOf(
-        DashboardNavEntries.Lobby,
-        DashboardNavEntries.AdminRoom
-    ),
     val backstackEntries: SnapshotStateList<DashboardNavEntries> = mutableStateListOf(
         DashboardNavEntries.Lobby
     ),
@@ -33,6 +28,9 @@ data class DashboardUiState(
 
     val hasBackButton: Boolean
         get() = backstackEntries.lastOrNull()?.hasBackButton ?: false || isAdmin.value
+
+    val isUserRoomEditing: Boolean
+        get() = backstackEntries.lastOrNull() is DashboardNavEntries.UserRoom
 
     private val calendar = Calendar.getInstance()
 

@@ -23,6 +23,7 @@ import net.arx.roommanagementapp.ui.user.navigation.userRoomScreen
 
 @Composable
 internal fun DashboardNavDisplay() {
+
     val viewModel: DashboardViewModel = hiltViewModel()
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -36,6 +37,7 @@ internal fun DashboardNavDisplay() {
         DashboardToolBar(
             date = uiState.value.date.value,
             hasBackButton = uiState.value.hasBackButton,
+            isUserRoomEditing = uiState.value.isUserRoomEditing,
             isAdmin = !uiState.value.isAdmin.value,
             onBackButtonClicked = uiState.value.onBackButtonClicked,
             onPreviousDateClick = { uiState.value.onPreviousDateClicked() },
