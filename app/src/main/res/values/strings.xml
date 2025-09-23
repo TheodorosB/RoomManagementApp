@@ -13,6 +13,10 @@
     <!-- Form Dialog -->
     <string name="form_dialog_cleaner_field_label">Καθαριστής</string>
     <string name="form_dialog_room_field_label">Αριθμός Δωματίου</string>
+    <string name="form_dialog_delete_title">Επιβεβαίωση διαγραφής</string>
+    <string name="form_dialog_delete_user_description">Οριστική διαγραφή χρήστη&#160;</string>
+    <string name="form_dialog_delete_room_description">Οριστική διαγραφή δωματίου&#160;</string>
+    <string name="form_dialog_delete_button">Διαγραφή</string>
     <string name="form_dialog_confirm_button">Προσθήκη</string>
     <string name="form_dialog_cancel_button">Ακύρωση</string>
 
@@ -30,5 +34,6 @@
     <string name="admin_room_user_selection_title">Επιλογή Χρήστη</string>
     <string name="admin_room_task_selection_title">Επιλογή Εργασιών</string>
 
+    <string name="question_mark">;</string>
     <string name="empty_string" />
 </resources>

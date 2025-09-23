@@ -19,5 +19,4 @@ class RoomStatusDataSourceImpl @Inject constructor(
     override suspend fun getRoomStatus(dayStart: Long, dayEnd: Long, id: Long): RoomStatusEntity? {
         return roomStatusDao.getRoomStatus(dayStart = dayStart, dayEnd = dayEnd, id = id)
     }
-
 }

@@ -13,6 +13,10 @@ class UserDataSourceImpl @Inject constructor(
         return userDao.insertUser(userEntity = userEntity)
     }
 
+    override suspend fun deleteUser(id: Long) {
+        return userDao.deleteUser(id = id)
+    }
+
     override suspend fun usernameExists(username: String): UserEntity? {
         return userDao.usernameExists(username = username)
     }

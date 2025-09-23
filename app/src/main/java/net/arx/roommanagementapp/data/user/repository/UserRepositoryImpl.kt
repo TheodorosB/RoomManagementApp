@@ -12,6 +12,10 @@ class UserRepositoryImpl @Inject constructor(
         return dataSource.insertUser(userEntity = userEntity)
     }
 
+    override suspend fun deleteUser(id: Long) {
+        return dataSource.deleteUser(id = id)
+    }
+
     override suspend fun usernameExists(username: String): UserEntity? {
         return dataSource.usernameExists(username = username)
     }

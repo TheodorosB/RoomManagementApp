@@ -21,11 +21,5 @@ abstract class AppDatabase : RoomDatabase() {
 
     abstract fun userDao(): UserDao
     abstract fun roomDao(): RoomDao
-    abstract fun cleaningTaskDao(): RoomStatusDao
-
-    companion object {
-
-        @Volatile
-        private var INSTANCE: AppDatabase? = null
-    }
+    abstract fun roomStatusDao(): RoomStatusDao
 }

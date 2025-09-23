@@ -8,8 +8,18 @@ import androidx.room.PrimaryKey
 @Entity(
     tableName = "room_statuses",
     foreignKeys = [
-        ForeignKey(entity = RoomEntity::class, parentColumns = ["id"], childColumns = ["roomId"]),
-        ForeignKey(entity = UserEntity::class, parentColumns = ["id"], childColumns = ["userId"])
+        ForeignKey(
+            entity = RoomEntity::class,
+            parentColumns = ["id"],
+            childColumns = ["roomId"],
+            onDelete = ForeignKey.CASCADE
+        ),
+        ForeignKey(
+            entity = UserEntity::class,
+            parentColumns = ["id"],
+            childColumns = ["userId"],
+            onDelete = ForeignKey.SET_NULL
+        )
     ],
     indices = [Index(value = ["roomId", "dayStart", "dayEnd"], unique = true)]
 )

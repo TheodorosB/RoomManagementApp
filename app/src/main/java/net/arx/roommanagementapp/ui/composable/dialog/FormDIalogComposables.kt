@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -28,11 +29,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.withStyle
 import net.arx.roommanagementapp.R
 import net.arx.roommanagementapp.ui.lobby.model.DialogFormUiItem
 import net.arx.roommanagementapp.ui.lobby.model.FieldUiItem
 import net.arx.roommanagementapp.ui.theme.SpacingCustom_10dp
+import net.arx.roommanagementapp.ui.theme.SpacingCustom_40dp
 import net.arx.roommanagementapp.ui.theme.SpacingHalf_8dp
 import net.arx.roommanagementapp.ui.theme.SpacingQuarter_4dp
 
@@ -48,20 +52,18 @@ internal fun FormDialog(
         onDismissRequest = onDismissRequest,
         title = {
             Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = stringResource(id = formUiItem.title.value),
-                    style = MaterialTheme.typography.bodySmall,
+                    text = stringResource(id = formUiItem.title),
+                    style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.primary
                 )
                 Icon(
                     modifier = Modifier
-                        .fillMaxWidth(0.15f)
-                        .aspectRatio(1f)
+                        .size(SpacingCustom_40dp)
                         .clickable {
                             onDismissRequest()
                         },
@@ -76,10 +78,28 @@ internal fun FormDialog(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(shape = RoundedCornerShape(SpacingCustom_10dp))
-                    .padding(horizontal = SpacingHalf_8dp, vertical = SpacingQuarter_4dp),
+                    .padding(horizontal = SpacingHalf_8dp, vertical = SpacingHalf_8dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(space = SpacingHalf_8dp, alignment = Alignment.CenterVertically)
             ) {
+                if(formUiItem.descriptionResId != R.string.empty_string) {
+                    Text(
+                        modifier = Modifier,
+                        text = buildAnnotatedString {
+                            append(
+                                stringResource(id = formUiItem.descriptionResId)
+                            )
+                            withStyle(style = MaterialTheme.typography.titleLarge.toSpanStyle()) {
+                                append(formUiItem.descriptionParam.value)
+                            }
+                            append(
+                                stringResource(R.string.question_mark)
+                            )
+                        },
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
                 FormDialogFields(
                     fields = formUiItem.fields,
                     onValidateText = onValidateText
@@ -93,9 +113,15 @@ internal fun FormDialog(
             )
         },
         confirmButton = {
+            val buttonThemeColor = when(formUiItem) {
+                is DialogFormUiItem.DeleteRoomForm -> MaterialTheme.colorScheme.onTertiary
+                is DialogFormUiItem.DeleteUserForm -> MaterialTheme.colorScheme.onTertiary
+                else -> MaterialTheme.colorScheme.tertiary
+            }
             DialogFormButton(
-                text = stringResource(R.string.form_dialog_confirm_button),
+                text = stringResource(formUiItem.confirmButtonResId),
                 onClick = onAddCleanerClicked,
+                color = buttonThemeColor,
                 isEnabled = !formUiItem.hasError
             )
         }
@@ -155,6 +181,7 @@ private fun FormDialogFields(
 @Composable
 internal fun DialogFormButton(
     text: String,
+    color: Color = MaterialTheme.colorScheme.tertiary,
     isEnabled: Boolean = true,
     onClick: () -> Unit
 ) {
@@ -166,7 +193,7 @@ internal fun DialogFormButton(
             onClick()
         },
         colors = ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.tertiary,
+            containerColor = color,
             contentColor = Color.Unspecified,
             disabledContainerColor = Color.Unspecified,
             disabledContentColor = Color.Unspecified,

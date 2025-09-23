@@ -11,6 +11,9 @@ interface RoomDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertRoom(room: RoomEntity): Long
 
+    @Query("DELETE FROM rooms WHERE id = :id")
+    suspend fun deleteRoom(id: Long)
+
     @Query("SELECT * FROM rooms WHERE name = :name")
     suspend fun roomExists(name: String): RoomEntity?
 

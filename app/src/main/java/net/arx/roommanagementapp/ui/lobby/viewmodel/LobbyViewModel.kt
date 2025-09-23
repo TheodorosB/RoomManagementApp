@@ -4,18 +4,21 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import net.arx.roommanagementapp.R
 import net.arx.roommanagementapp.ui.lobby.model.DialogFormUiItem
 import net.arx.roommanagementapp.ui.lobby.model.FieldUiItem
 import net.arx.roommanagementapp.ui.lobby.model.LobbyUiState
 import net.arx.roommanagementapp.ui.core.BaseViewModel
 import net.arx.roommanagementapp.ui.dashboard.model.DateUiItem
 import net.arx.roommanagementapp.ui.room.mapper.RoomUiMapper
+import net.arx.roommanagementapp.ui.room.model.RoomUiItem
 import net.arx.roommanagementapp.ui.user.mapper.UserUiMapper
+import net.arx.roommanagementapp.ui.user.model.UserUiItem
+import net.arx.roommanagementapp.usecase.room.DeleteRoomUseCase
 import net.arx.roommanagementapp.usecase.room.GetAllRoomsUseCase
 import net.arx.roommanagementapp.usecase.room.InsertRoomUseCase
 import net.arx.roommanagementapp.usecase.room.RoomExistsUseCase
 import net.arx.roommanagementapp.usecase.status.GetRoomStatusesUseCase
+import net.arx.roommanagementapp.usecase.user.DeleteUserUseCase
 import net.arx.roommanagementapp.usecase.user.GetAllUsersUseCase
 import net.arx.roommanagementapp.usecase.user.InsertUserUseCase
 import net.arx.roommanagementapp.usecase.user.UsernameExistsUseCase
@@ -32,16 +35,20 @@ class LobbyViewModel @Inject constructor(
     private val getAllRoomsUseCase: GetAllRoomsUseCase,
     private val getAllUsersUseCase: GetAllUsersUseCase,
     private val usernameExistsUseCase: UsernameExistsUseCase,
-    private val getRoomStatusesUseCase: GetRoomStatusesUseCase
+    private val getRoomStatusesUseCase: GetRoomStatusesUseCase,
+    private val deleteRoomUseCase: DeleteRoomUseCase,
+    private val deleteUserUseCase: DeleteUserUseCase,
 ): BaseViewModel() {
 
     private val _uiState = MutableStateFlow(
         LobbyUiState(
+            onDeleteUserClicked = { onDeleteUserClicked(it) },
             onAddNewUserClicked = { onAddNewUserClicked() },
+            onDeleteRoomClicked = { onDeleteRoomClicked(it) },
             onAddNewRoomClicked = { onAddNewRoomClicked() },
             onCloseDialogForm = { closeDialogForm() },
             onSubmitFormClicked = { onSubmitFormClicked() },
-            onValidateText = { onValidateText(it) }
+            onValidateText = { onValidateText(it) },
         )
     )
     val uiState: StateFlow<LobbyUiState> = _uiState.asStateFlow()
@@ -63,10 +70,30 @@ class LobbyViewModel @Inject constructor(
         fetchData = isAdmin
     }
 
+    private fun onDeleteUserClicked(user: UserUiItem) {
+        user.id?.let {
+            _uiState.value.selectedUser.value = user
+            _uiState.value.formUiItem.value = DialogFormUiItem.DeleteUserForm()
+            _uiState.value.formUiItem.value.descriptionParam.value = user.name
+            openDialogForm()
+        }
+    }
+
     private fun onAddNewUserClicked() {
-        _uiState.value.formUiItem.value = DialogFormUiItem.User()
-        _uiState.value.formUiItem.value.title.value = R.string.lobby_button_add_cleaner_title
-        _uiState.value.openDialogForm.value = true
+        _uiState.value.formUiItem.value = DialogFormUiItem.UserForm()
+        openDialogForm()
+    }
+
+    private fun onDeleteRoomClicked(room: RoomUiItem) {
+        _uiState.value.selectedRoom.value = room
+        _uiState.value.formUiItem.value = DialogFormUiItem.DeleteRoomForm()
+        _uiState.value.formUiItem.value.descriptionParam.value = room.name
+        openDialogForm()
+    }
+
+    private fun onAddNewRoomClicked() {
+        _uiState.value.formUiItem.value = DialogFormUiItem.RoomForm()
+        openDialogForm()
     }
 
     private fun onValidateText(field: FieldUiItem) {
@@ -87,28 +114,59 @@ class LobbyViewModel @Inject constructor(
     }
 
     private fun onSubmitFormClicked() {
-        val formUiItem = _uiState.value.formUiItem.value
-        when(formUiItem) {
-            is DialogFormUiItem.User -> {
-                launch {
-                    insertUserUseCase(username = formUiItem.fields.firstOrNull { it is FieldUiItem.UsernameField }?.text?.value)
-                    fetchData = _uiState.value.isAdmin.value
-                }
+        val form = _uiState.value.formUiItem.value
+        when(form) {
+            is DialogFormUiItem.DeleteUserForm -> {
+                deleteUser()
             }
-            is DialogFormUiItem.Room -> {
-                launch {
-                    insertRoomUseCase(roomName = formUiItem.fields.firstOrNull { it is FieldUiItem.RoomField }?.text?.value)
-                    fetchData = _uiState.value.isAdmin.value
-                }
+            is DialogFormUiItem.UserForm -> {
+                insertUser(form = form)
+            }
+            is DialogFormUiItem.DeleteRoomForm -> {
+                deleteRoom()
+            }
+            is DialogFormUiItem.RoomForm -> {
+                insertRoom(form = form)
             }
         }
         _uiState.value.formUiItem.value.resetForm()
         closeDialogForm()
     }
 
-    private fun onAddNewRoomClicked() {
-        _uiState.value.formUiItem.value = DialogFormUiItem.Room()
-        _uiState.value.formUiItem.value.title.value = R.string.lobby_button_add_room_title
+    private fun deleteUser() {
+        launch {
+            val id = _uiState.value.selectedUser.value?.id
+            id?.let {
+                deleteUserUseCase(id = id)
+                fetchData = _uiState.value.isAdmin.value
+            }
+            _uiState.value.selectedUser.value = null
+        }
+    }
+    private fun insertUser(form: DialogFormUiItem) {
+        launch {
+            insertUserUseCase(username = form.fields.firstOrNull { it is FieldUiItem.UsernameField }?.text?.value)
+            fetchData = _uiState.value.isAdmin.value
+        }
+    }
+    private fun deleteRoom() {
+        launch {
+            val id = _uiState.value.selectedRoom.value?.id
+            id?.let {
+                deleteRoomUseCase(id = id)
+                fetchData = _uiState.value.isAdmin.value
+            }
+            _uiState.value.selectedRoom.value = null
+        }
+    }
+    private fun insertRoom(form: DialogFormUiItem) {
+        launch {
+            insertRoomUseCase(roomName = form.fields.firstOrNull { it is FieldUiItem.RoomField }?.text?.value)
+            fetchData = _uiState.value.isAdmin.value
+        }
+    }
+
+    private fun openDialogForm() {
         _uiState.value.openDialogForm.value = true
     }
 

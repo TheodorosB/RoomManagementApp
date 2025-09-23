@@ -27,6 +27,7 @@ import net.arx.roommanagementapp.R
 import net.arx.roommanagementapp.ui.theme.SpacingCustom_10dp
 import net.arx.roommanagementapp.ui.theme.SpacingCustom_12dp
 import net.arx.roommanagementapp.ui.theme.SpacingCustom_24dp
+import net.arx.roommanagementapp.ui.theme.SpacingCustom_50dp
 import net.arx.roommanagementapp.ui.theme.SpacingCustom_60dp
 import net.arx.roommanagementapp.ui.theme.SpacingCustom_6dp
 import net.arx.roommanagementapp.ui.theme.SpacingHalf_8dp
@@ -37,6 +38,7 @@ import net.arx.roommanagementapp.ui.user.model.UserUiItem
 internal fun UsersRow(
     isAdmin: Boolean,
     users: List<UserUiItem>,
+    onDeleteUserClicked: (UserUiItem) -> Unit,
     onAddNewUserClicked: (Long?) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -51,9 +53,11 @@ internal fun UsersRow(
         items(items = users, key = { it.id ?: 0 }) { user ->
             UserItem(
                 modifier = Modifier.fillMaxWidth(0.2f),
+                isUserDeletable = isAdmin,
                 name = user.name,
                 userId = user.id,
-                isSelected = user.isSelected.value
+                isSelected = user.isSelected.value,
+                onDeleteUserClicked = { onDeleteUserClicked(user) }
             )
         }
         if(isAdmin) {
@@ -77,8 +81,10 @@ internal fun UserItem(
     userId: Long? = null,
     isClickable: Boolean = false,
     isSelected: Boolean = false,
+    isUserDeletable: Boolean = false,
     @DrawableRes iconResId: Int = R.drawable.ic_cleaner_profile,
-    onUserClicked: (Long?) -> Unit = {}
+    onUserClicked: (Long?) -> Unit = {},
+    onDeleteUserClicked: () -> Unit = {}
 ) {
     Row(
         modifier = modifier
@@ -94,13 +100,13 @@ internal fun UserItem(
             )
             .clip(shape = RoundedCornerShape(SpacingCustom_24dp))
             .background(
-                color = if(isSelected) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onBackground
+                color = if (isSelected) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onBackground
             )
             .clickable(enabled = isClickable) {
                 onUserClicked(userId)
             }
             .padding(all = SpacingCustom_12dp),
-        horizontalArrangement = Arrangement.Center,
+        horizontalArrangement = Arrangement.spacedBy(space = SpacingCustom_6dp, alignment = Alignment.CenterHorizontally),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
@@ -110,9 +116,22 @@ internal fun UserItem(
             contentDescription = null
         )
         Text(
+            modifier = Modifier,
             text = name,
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.scrim
         )
+        if(isUserDeletable) {
+            Icon(
+                modifier = Modifier
+                    .size(SpacingCustom_50dp)
+                    .clickable {
+                        onDeleteUserClicked()
+                    },
+                painter = painterResource(id = R.drawable.ic_delete),
+                tint = MaterialTheme.colorScheme.secondary,
+                contentDescription = null
+            )
+        }
     }
 }

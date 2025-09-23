@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -33,6 +34,7 @@ import net.arx.roommanagementapp.ui.room.model.RoomUiItem
 import net.arx.roommanagementapp.ui.theme.SpacingCustom_10dp
 import net.arx.roommanagementapp.ui.theme.SpacingCustom_18dp
 import net.arx.roommanagementapp.ui.theme.SpacingCustom_36dp
+import net.arx.roommanagementapp.ui.theme.SpacingCustom_60dp
 import net.arx.roommanagementapp.ui.theme.SpacingCustom_6dp
 import net.arx.roommanagementapp.ui.theme.SpacingDefault_16dp
 import net.arx.roommanagementapp.ui.theme.SpacingEighth_2dp
@@ -44,6 +46,7 @@ internal fun RoomsRow(
     rooms: List<RoomUiItem>,
     isAdmin: Boolean,
     onRoomClicked: (Long) -> Unit,
+    onDeleteRoomClicked: (RoomUiItem) -> Unit,
     onAddNewRoomClicked: () -> Unit
 ) {
     LazyVerticalGrid(
@@ -58,8 +61,10 @@ internal fun RoomsRow(
             RoomItem(
                 modifier = Modifier.aspectRatio(0.95f),
                 roomUiItem = room,
+                isRoomDeletable = isAdmin,
+                arrangement = Arrangement.SpaceBetween,
                 onRoomClicked = onRoomClicked,
-                arrangement = Arrangement.SpaceBetween
+                onDeleteRoomClicked = { onDeleteRoomClicked(room) }
             )
         }
         if(isAdmin) {
@@ -77,7 +82,9 @@ internal fun RoomItem(
     roomUiItem: RoomUiItem,
     arrangement: Arrangement.Vertical,
     modifier: Modifier = Modifier,
-    onRoomClicked: (Long) -> Unit = {}
+    isRoomDeletable: Boolean = false,
+    onRoomClicked: (Long) -> Unit = {},
+    onDeleteRoomClicked: () -> Unit = {}
 ) {
     Column(
         modifier = modifier
@@ -101,30 +108,47 @@ internal fun RoomItem(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = arrangement
     ) {
-        if(roomUiItem.hasStatus) {
-            Icon(
-                modifier = Modifier
-                    .fillMaxWidth(0.3f)
-                    .aspectRatio(1f),
-                imageVector = roomUiItem.statusIcon,
-                contentDescription = null,
-                tint = roomUiItem.statusColor
-            )
-            BasicText(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .aspectRatio(5f),
-                text = roomUiItem.user.name,
-                maxLines = 1,
-                style = MaterialTheme.typography.titleMedium.copy(
-                    textAlign = TextAlign.Center,
-                    color = MaterialTheme.colorScheme.secondary
-                ),
-                autoSize = TextAutoSize.StepBased()
-            )
-        } else {
-            Spacer(modifier = Modifier.height(SpacingCustom_10dp))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Spacer(modifier = Modifier.size(SpacingCustom_60dp))
+            if(roomUiItem.hasStatus) {
+                Icon(
+                    modifier = Modifier.size(SpacingCustom_60dp),
+                    imageVector = roomUiItem.statusIcon,
+                    contentDescription = null,
+                    tint = roomUiItem.statusColor
+                )
+            } else {
+                Spacer(modifier = Modifier.height(SpacingCustom_10dp))
+            }
+            if(isRoomDeletable) {
+                Icon(
+                    modifier = Modifier
+                        .size(SpacingCustom_60dp)
+                        .clickable {
+                            onDeleteRoomClicked()
+                        },
+                    painter = painterResource(id = R.drawable.ic_delete),
+                    tint = MaterialTheme.colorScheme.secondary,
+                    contentDescription = null
+                )
+            }
         }
+        BasicText(
+            modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(5f),
+            text = roomUiItem.user.name,
+            maxLines = 1,
+            style = MaterialTheme.typography.titleMedium.copy(
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.secondary
+            ),
+            autoSize = TextAutoSize.StepBased()
+        )
 
         Row (
             modifier = Modifier.fillMaxWidth(),

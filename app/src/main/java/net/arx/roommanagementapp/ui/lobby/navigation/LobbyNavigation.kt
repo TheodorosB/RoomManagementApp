@@ -30,5 +30,4 @@ internal fun DashboardNavEntries.lobbyScreen(
             onNavigateToRoom = onNavigateToRoom
         )
     }
-
 }

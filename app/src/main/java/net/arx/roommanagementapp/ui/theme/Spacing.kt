@@ -11,6 +11,7 @@ val SpacingSingle_1dp = 1.dp
 
 //Custom Spacing
 val SpacingCustom_60dp = 60.dp
+val SpacingCustom_50dp = 50.dp
 val SpacingCustom_40dp = 40.dp
 val SpacingCustom_36dp = 36.dp
 val SpacingCustom_24dp = 24.dp

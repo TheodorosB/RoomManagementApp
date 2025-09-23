@@ -2,7 +2,6 @@ package net.arx.roommanagementapp.ui.lobby.model
 
 import androidx.annotation.StringRes
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
@@ -17,18 +16,25 @@ data class LobbyUiState(
     val isAdmin: MutableState<Boolean> = mutableStateOf(false),
     val users: SnapshotStateList<UserUiItem> = mutableStateListOf(),
     val rooms: SnapshotStateList<RoomUiItem> = mutableStateListOf(),
+    val selectedUser: MutableState<UserUiItem?> = mutableStateOf(null),
+    val selectedRoom: MutableState<RoomUiItem?> = mutableStateOf(null),
     val onAddNewUserClicked: (Long?) -> Unit,
-    val onSubmitFormClicked: () -> Unit,
+    val onDeleteUserClicked: (UserUiItem) -> Unit,
+    val onDeleteRoomClicked: (RoomUiItem) -> Unit,
     val onAddNewRoomClicked: () -> Unit,
+    val onSubmitFormClicked: () -> Unit,
     val onValidateText: (FieldUiItem) -> Unit,
     val openDialogForm: MutableState<Boolean?> = mutableStateOf(null),
-    val formUiItem: MutableState<DialogFormUiItem> = mutableStateOf(DialogFormUiItem.User()),
+    val formUiItem: MutableState<DialogFormUiItem> = mutableStateOf(DialogFormUiItem.UserForm()),
     val onCloseDialogForm: () -> Unit,
 )
 
 sealed class DialogFormUiItem(
     val fields: List<FieldUiItem> = emptyList(),
-    @StringRes val title: MutableState<Int> = mutableIntStateOf(R.string.empty_string),
+    val descriptionParam: MutableState<String> = mutableStateOf(""),
+    @StringRes val title: Int = R.string.empty_string,
+    @StringRes val descriptionResId: Int = R.string.empty_string,
+    @StringRes val confirmButtonResId: Int = R.string.empty_string,
 ) {
     val hasError: Boolean
         get() = fields.any { !it.validate() }
@@ -39,16 +45,32 @@ sealed class DialogFormUiItem(
         }
     }
 
-    class User : DialogFormUiItem(
+    class UserForm: DialogFormUiItem(
         fields = listOf(
             FieldUiItem.UsernameField()
-        )
+        ),
+        title = R.string.lobby_button_add_cleaner_title,
+        confirmButtonResId = R.string.form_dialog_confirm_button
     )
 
-    class Room : DialogFormUiItem(
+    class RoomForm: DialogFormUiItem(
         fields = listOf(
             FieldUiItem.RoomField()
-        )
+        ),
+        title = R.string.lobby_button_add_room_title,
+        confirmButtonResId = R.string.form_dialog_confirm_button
+    )
+
+    class DeleteRoomForm: DialogFormUiItem(
+        title = R.string.form_dialog_delete_title,
+        descriptionResId = R.string.form_dialog_delete_room_description,
+        confirmButtonResId = R.string.form_dialog_delete_button
+    )
+
+    class DeleteUserForm: DialogFormUiItem(
+        title = R.string.form_dialog_delete_title,
+        descriptionResId = R.string.form_dialog_delete_user_description,
+        confirmButtonResId = R.string.form_dialog_delete_button
     )
 }
 

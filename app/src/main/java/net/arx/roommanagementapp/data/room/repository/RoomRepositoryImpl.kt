@@ -13,6 +13,10 @@ class RoomRepositoryImpl @Inject constructor(
         return dataSource.insertRoom(room = room)
     }
 
+    override suspend fun deleteRoom(id: Long) {
+        dataSource.deleteRoom(id = id)
+    }
+
     override suspend fun roomExists(name: String): RoomEntity? {
         return dataSource.roomExists(name = name)
     }

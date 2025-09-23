@@ -6,6 +6,8 @@ interface UserDataSource {
 
     suspend fun insertUser(userEntity: UserEntity): Long
 
+    suspend fun deleteUser(id: Long)
+
     suspend fun usernameExists(username: String): UserEntity?
 
     suspend fun login(password: String): UserEntity?

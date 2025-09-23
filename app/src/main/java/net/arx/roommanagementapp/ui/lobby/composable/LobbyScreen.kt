@@ -44,6 +44,7 @@ private fun LobbyContent(
         UsersRow(
             users = uiState.value.users,
             isAdmin = uiState.value.isAdmin.value,
+            onDeleteUserClicked = uiState.value.onDeleteUserClicked,
             onAddNewUserClicked = uiState.value.onAddNewUserClicked
         )
 
@@ -51,7 +52,8 @@ private fun LobbyContent(
             rooms = uiState.value.rooms,
             isAdmin = uiState.value.isAdmin.value,
             onRoomClicked = onNavigateToRoom,
-            onAddNewRoomClicked = uiState.value.onAddNewRoomClicked
+            onAddNewRoomClicked = uiState.value.onAddNewRoomClicked,
+            onDeleteRoomClicked = uiState.value.onDeleteRoomClicked
         )
     }
 
@@ -109,6 +111,8 @@ private fun LobbyContentPreview() {
                 ),
                 onSubmitFormClicked = {},
                 onCloseDialogForm = {},
+                onDeleteUserClicked = {},
+                onDeleteRoomClicked = {},
                 onAddNewUserClicked = {},
                 onAddNewRoomClicked = {},
                 onValidateText = {}
