@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -32,8 +33,11 @@ import androidx.compose.ui.text.style.TextAlign
 import net.arx.roommanagementapp.R
 import net.arx.roommanagementapp.ui.room.model.RoomUiItem
 import net.arx.roommanagementapp.ui.theme.SpacingCustom_10dp
+import net.arx.roommanagementapp.ui.theme.SpacingCustom_12dp
 import net.arx.roommanagementapp.ui.theme.SpacingCustom_18dp
+import net.arx.roommanagementapp.ui.theme.SpacingCustom_20dp
 import net.arx.roommanagementapp.ui.theme.SpacingCustom_36dp
+import net.arx.roommanagementapp.ui.theme.SpacingCustom_40dp
 import net.arx.roommanagementapp.ui.theme.SpacingCustom_60dp
 import net.arx.roommanagementapp.ui.theme.SpacingCustom_6dp
 import net.arx.roommanagementapp.ui.theme.SpacingDefault_16dp
@@ -104,7 +108,7 @@ internal fun RoomItem(
             .clickable(enabled = roomUiItem.isClickable) {
                 onRoomClicked(roomUiItem.id)
             }
-            .padding(horizontal = SpacingHalf_8dp, vertical = SpacingQuarter_4dp),
+            .padding(horizontal = SpacingHalf_8dp, vertical = SpacingDefault_16dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = arrangement
     ) {
@@ -113,7 +117,7 @@ internal fun RoomItem(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Spacer(modifier = Modifier.size(SpacingCustom_60dp))
+            Spacer(modifier = Modifier.width(SpacingCustom_40dp))
             if(roomUiItem.hasStatus) {
                 Icon(
                     modifier = Modifier.size(SpacingCustom_60dp),
@@ -122,8 +126,9 @@ internal fun RoomItem(
                     tint = roomUiItem.statusColor
                 )
             } else {
-                Spacer(modifier = Modifier.height(SpacingCustom_10dp))
+                Spacer(modifier = Modifier.width(SpacingCustom_10dp))
             }
+
             if(isRoomDeletable) {
                 Icon(
                     modifier = Modifier
@@ -137,27 +142,30 @@ internal fun RoomItem(
                 )
             }
         }
-        BasicText(
-            modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(5f),
-            text = roomUiItem.user.name,
-            maxLines = 1,
-            style = MaterialTheme.typography.titleMedium.copy(
-                textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.secondary
-            ),
-            autoSize = TextAutoSize.StepBased()
-        )
 
-        Row (
+        if(roomUiItem.user.name.isNotBlank()) {
+            BasicText(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(5f),
+                text = roomUiItem.user.name,
+                maxLines = 1,
+                style = MaterialTheme.typography.titleMedium.copy(
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colorScheme.secondary
+                ),
+                autoSize = TextAutoSize.StepBased()
+            )
+        }
+
+        Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
                 modifier = Modifier
-                    .fillMaxWidth(0.35f)
+                    .fillMaxWidth(0.3f)
                     .aspectRatio(1f),
                 painter = painterResource(roomUiItem.roomIcon),
                 tint = roomUiItem.roomIconColor,

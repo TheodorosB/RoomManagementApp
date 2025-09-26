@@ -17,7 +17,7 @@ data class RoomUiItem(
     val isAdmin: Boolean = false,
     val isLobby: Boolean = false,
     val user: UserUiItem = UserUiItem(),
-    @DrawableRes val roomIcon: Int = R.drawable.ic_room_cleaning_status,
+    @DrawableRes val roomIcon: Int = R.drawable.ic_cleaning_status,
     val statusIcon: ImageVector = Icons.Outlined.CheckCircle,
     val tasks: List<TaskUiItem> = listOf(
         TaskUiItem.Mopping(),
@@ -31,7 +31,7 @@ data class RoomUiItem(
         get() = tasks.all { it.isDone.value }
 
     val isClickable: Boolean
-        get() = isAdmin || !isCleaned
+        get() = (isAdmin || !isCleaned) && isLobby
 
     val hasStatus: Boolean
         get() = isLobby && user.id != null
