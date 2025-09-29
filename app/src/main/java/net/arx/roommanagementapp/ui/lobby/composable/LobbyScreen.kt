@@ -3,6 +3,8 @@ package net.arx.roommanagementapp.ui.lobby.composable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
@@ -36,7 +38,9 @@ private fun LobbyContent(
     onNavigateToRoom: (Long) -> Unit
 ) {
     Column(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(space = SpacingHalf_8dp, alignment = Alignment.Top)
     ) {
@@ -50,6 +54,7 @@ private fun LobbyContent(
 
         RoomsRow(
             rooms = uiState.value.rooms,
+            gridUiItem = uiState.value.gridUiItem,
             isAdmin = uiState.value.isAdmin.value,
             onRoomClicked = onNavigateToRoom,
             onAddNewRoomClicked = uiState.value.onAddNewRoomClicked,

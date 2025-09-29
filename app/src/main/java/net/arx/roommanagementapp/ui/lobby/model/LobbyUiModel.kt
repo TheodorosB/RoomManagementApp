@@ -6,9 +6,13 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.times
 import net.arx.roommanagementapp.R
 import net.arx.roommanagementapp.ui.dashboard.model.DateUiItem
 import net.arx.roommanagementapp.ui.room.model.RoomUiItem
+import net.arx.roommanagementapp.ui.theme.GridRoomRowBaseHeight
+import net.arx.roommanagementapp.ui.theme.SpacingQuarter_4dp
 import net.arx.roommanagementapp.ui.user.model.UserUiItem
 
 data class LobbyUiState(
@@ -27,7 +31,28 @@ data class LobbyUiState(
     val openDialogForm: MutableState<Boolean?> = mutableStateOf(null),
     val formUiItem: MutableState<DialogFormUiItem> = mutableStateOf(DialogFormUiItem.UserForm()),
     val onCloseDialogForm: () -> Unit,
-)
+) {
+    val gridUiItem: GridUiItem
+        get() = GridUiItem(
+            roomsSize = rooms.size,
+            hasExtraItem = isAdmin.value,
+            baseHeight = GridRoomRowBaseHeight
+        )
+}
+
+data class GridUiItem(
+    val baseHeight: Dp,
+    val roomsSize: Int,
+    val hasExtraItem: Boolean,
+    val columns: Int = 5,
+    val verticalSpacing: Dp = SpacingQuarter_4dp
+) {
+    private val totalRooms = if(hasExtraItem) roomsSize + 1 else roomsSize
+    private val totalRows = (totalRooms + (columns - 1)) / columns
+
+    val gridHeight: Dp
+        get() = totalRows * (baseHeight + verticalSpacing)
+}
 
 sealed class DialogFormUiItem(
     val fields: List<FieldUiItem> = emptyList(),

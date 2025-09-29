@@ -4,9 +4,13 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -17,6 +21,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
 import net.arx.roommanagementapp.R
 import net.arx.roommanagementapp.ui.admin.model.AdminRoomUiState
+import net.arx.roommanagementapp.ui.lobby.model.GridUiItem
 import net.arx.roommanagementapp.ui.room.composable.RoomItem
 import net.arx.roommanagementapp.ui.room.model.TaskUiItem
 import net.arx.roommanagementapp.ui.theme.SpacingDefault_16dp
@@ -41,7 +46,9 @@ private fun AdminRoomContent(
 ) {
     Column(
         modifier = Modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .verticalScroll(rememberScrollState())
+            .padding(vertical = SpacingHalf_8dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(space = SpacingDefault_16dp, alignment = Alignment.Top)
     ) {
@@ -55,11 +62,13 @@ private fun AdminRoomContent(
 
         AdminRoomUsersGrid(
             users = uiState.value.users,
+            gridUiItem = uiState.value.userGridUiItem,
             onUserClicked = uiState.value.onUserClicked
         )
 
         AdminRoomTasksGrid(
             tasks = uiState.value.room.value.tasks,
+            gridUiItem = uiState.value.tasksGridUiItem,
             onUpdateStatus = uiState.value.onUpdateStatus
         )
     }
@@ -68,6 +77,7 @@ private fun AdminRoomContent(
 @Composable
 private fun AdminRoomUsersGrid(
     users: List<UserUiItem>,
+    gridUiItem: GridUiItem,
     onUserClicked: (Long?) -> Unit
 ) {
     Text(
@@ -78,10 +88,13 @@ private fun AdminRoomUsersGrid(
     )
 
     LazyVerticalGrid(
-        modifier = Modifier.fillMaxWidth(0.9f),
-        columns = GridCells.Fixed(4),
+        modifier = Modifier
+            .fillMaxWidth(0.9f)
+            .height(gridUiItem.gridHeight),
+        userScrollEnabled = false,
+        columns = GridCells.Fixed(gridUiItem.columns),
         horizontalArrangement = Arrangement.spacedBy(space = SpacingQuarter_4dp, alignment = Alignment.Start),
-        verticalArrangement = Arrangement.spacedBy(space = SpacingQuarter_4dp, alignment = Alignment.Top)
+        verticalArrangement = Arrangement.spacedBy(space = gridUiItem.verticalSpacing, alignment = Alignment.Top)
     ) {
 
         items(items = users, key = { it.id ?: 0 }) { user ->
@@ -99,6 +112,7 @@ private fun AdminRoomUsersGrid(
 @Composable
 private fun AdminRoomTasksGrid(
     tasks: List<TaskUiItem>,
+    gridUiItem: GridUiItem,
     onUpdateStatus: () -> Unit
 ) {
     Text(
@@ -109,10 +123,13 @@ private fun AdminRoomTasksGrid(
     )
 
     LazyVerticalGrid(
-        modifier = Modifier.fillMaxWidth(0.9f),
-        columns = GridCells.Fixed(4),
+        modifier = Modifier
+            .fillMaxWidth(0.9f)
+            .height(gridUiItem.gridHeight),
+        userScrollEnabled = false,
+        columns = GridCells.Fixed(gridUiItem.columns),
         horizontalArrangement = Arrangement.spacedBy(space = SpacingQuarter_4dp, alignment = Alignment.Start),
-        verticalArrangement = Arrangement.spacedBy(space = SpacingQuarter_4dp, alignment = Alignment.Top)
+        verticalArrangement = Arrangement.spacedBy(space = gridUiItem.verticalSpacing, alignment = Alignment.Top)
     ) {
 
         items(items = tasks, key = { it.title }) { task ->

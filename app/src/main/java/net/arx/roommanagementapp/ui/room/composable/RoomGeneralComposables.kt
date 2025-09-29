@@ -31,11 +31,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import net.arx.roommanagementapp.R
+import net.arx.roommanagementapp.ui.lobby.model.GridUiItem
 import net.arx.roommanagementapp.ui.room.model.RoomUiItem
 import net.arx.roommanagementapp.ui.theme.SpacingCustom_10dp
-import net.arx.roommanagementapp.ui.theme.SpacingCustom_12dp
 import net.arx.roommanagementapp.ui.theme.SpacingCustom_18dp
-import net.arx.roommanagementapp.ui.theme.SpacingCustom_20dp
 import net.arx.roommanagementapp.ui.theme.SpacingCustom_36dp
 import net.arx.roommanagementapp.ui.theme.SpacingCustom_40dp
 import net.arx.roommanagementapp.ui.theme.SpacingCustom_60dp
@@ -48,18 +47,22 @@ import net.arx.roommanagementapp.ui.theme.SpacingQuarter_4dp
 @Composable
 internal fun RoomsRow(
     rooms: List<RoomUiItem>,
+    gridUiItem: GridUiItem,
     isAdmin: Boolean,
     onRoomClicked: (Long) -> Unit,
     onDeleteRoomClicked: (RoomUiItem) -> Unit,
     onAddNewRoomClicked: () -> Unit
 ) {
+
     LazyVerticalGrid(
         modifier = Modifier
             .fillMaxWidth()
+            .height(gridUiItem.gridHeight)
             .padding(horizontal = SpacingCustom_18dp),
-        columns = GridCells.Fixed(5),
+        columns = GridCells.Fixed(gridUiItem.columns),
+        userScrollEnabled = false,
         horizontalArrangement = Arrangement.spacedBy(space = SpacingDefault_16dp, alignment = Alignment.Start),
-        verticalArrangement = Arrangement.spacedBy(space = SpacingQuarter_4dp, alignment = Alignment.Top)
+        verticalArrangement = Arrangement.spacedBy(space = gridUiItem.verticalSpacing, alignment = Alignment.Top)
     ) {
         items(items = rooms, key = { it.id }) { room ->
             RoomItem(
@@ -126,7 +129,7 @@ internal fun RoomItem(
                     tint = roomUiItem.statusColor
                 )
             } else {
-                Spacer(modifier = Modifier.width(SpacingCustom_10dp))
+                Spacer(modifier = Modifier.width(SpacingCustom_60dp))
             }
 
             if(isRoomDeletable) {
@@ -140,6 +143,8 @@ internal fun RoomItem(
                     tint = MaterialTheme.colorScheme.secondary,
                     contentDescription = null
                 )
+            } else {
+                Spacer(modifier = Modifier.width(SpacingCustom_60dp))
             }
         }
 
